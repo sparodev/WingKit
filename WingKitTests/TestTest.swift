@@ -71,6 +71,7 @@ class TestTest: WingKitTestCase {
         let expectedTotalVolume = 6.0
         let expectedPEF = 5.0
         let expectedFEV1 = 4.0
+        let expectedUploadTargetId = UUID().uuidString
 
         let json: JSON = [
             Test.Keys.id: expectedId,
@@ -80,7 +81,8 @@ class TestTest: WingKitTestCase {
             Test.Keys.exhaleCurve: expectedExhaleCurve,
             Test.Keys.totalVolume: expectedTotalVolume,
             Test.Keys.pef: expectedPEF,
-            Test.Keys.fev1: expectedFEV1
+            Test.Keys.fev1: expectedFEV1,
+            Test.Keys.upload: expectedUploadTargetId
         ]
 
         let decoder = WingKit.JSONDecoder()
@@ -111,6 +113,7 @@ class TestTest: WingKitTestCase {
         XCTAssertEqual(testObject.totalVolume, expectedTotalVolume)
         XCTAssertEqual(testObject.pef, expectedPEF)
         XCTAssertEqual(testObject.fev1, expectedFEV1)
+        XCTAssertEqual(testObject.uploadTargetId, expectedUploadTargetId)
     }
 
     func testFailsDecodingWhenIdIsNil() {

@@ -75,6 +75,9 @@ struct Test: Decodable {
     /// The FEV1 value for the test.
     var fev1: Double = 0
 
+    /// The id of the associated upload target.
+    var uploadTargetId: String?
+
     init?(from decoder: JSONDecoder) {
 
         guard let json = decoder.json,
@@ -108,6 +111,10 @@ struct Test: Decodable {
 
         if let fev1 = json[Keys.fev1] as? Double {
             self.fev1 = fev1
+        }
+
+        if let uploadTargetId = json[Keys.upload] as? String {
+            self.uploadTargetId = uploadTargetId
         }
     }
 }

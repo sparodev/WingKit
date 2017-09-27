@@ -54,13 +54,40 @@ extension Client {
                 return
             }
 
-            let decoder = JSONDecoder()
-            do {
-                let testSession = try decoder.decode(TestSession.self, from: json)
-                completion(testSession, nil)
-            } catch {
-                completion(nil, error)
+            parseTestSession(fromJSON: json, completion: completion)
+        }
+    }
+
+    static func retrieveTestSession(withId id: String, completion: @escaping (TestSession?, Error?) -> Void) {
+
+        var request: URLRequestConvertible
+        do {
+            request = try self.request(for: TestSessionEndpoint.retrieve(sessionId: id))
+        } catch {
+            return completion(nil, error)
+        }
+
+        Network.shared.send(request: request) { (json, error) in
+
+            if let error = error {
+                return completion(nil, error)
             }
+
+            guard let json = json else {
+                return completion(nil, NetworkError.invalidResponse)
+            }
+
+            parseTestSession(fromJSON: json, completion: completion)
+        }
+    }
+
+    static fileprivate func parseTestSession(fromJSON json: JSON, completion: (TestSession?, Error?) -> Void) {
+        let decoder = JSONDecoder()
+        do {
+            let testSession = try decoder.decode(TestSession.self, from: json)
+            completion(testSession, nil)
+        } catch {
+            completion(nil, error)
         }
     }
 }
