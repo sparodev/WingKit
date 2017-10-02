@@ -160,7 +160,7 @@ func == (lhs: TestSessionState, rhs: TestSessionState) -> Bool {
     return lhs.code == rhs.code
 }
 
-struct TestSession: Decodable {
+public struct TestSession: Decodable {
 
     struct Keys {
         static let id = "id"

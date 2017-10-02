@@ -39,8 +39,31 @@ class Client_TestSessionTest: WingKitTestCase {
 
     // MARK: - Create Test Session
 
+    func testCreateTestSessionWhenTokenIsNil() {
+
+        Client.token = nil
+
+        let errorExpectation = expectation(description: "wait for unauthorized error")
+
+        Client.createTestSession { (testSession, error) in
+
+            guard let error = error else {
+                XCTFail("Expected to catch unauthorized error!")
+                return
+            }
+
+            switch error {
+            case ClientError.unauthorized: errorExpectation.fulfill()
+            default: XCTFail()
+            }
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
     func testCreateTestSessionWhenSuccessful() {
 
+        let expectedToken = UUID().uuidString
         let expectedTestSessionId = UUID().uuidString
         let expectedStartedAt = Date()
 
@@ -55,6 +78,8 @@ class Client_TestSessionTest: WingKitTestCase {
         let completionCallbackExpectation = expectation(description: "wait for callback")
         let sendRequestExpectation = expectation(description: "wait for send request to be called")
 
+        Client.token = expectedToken
+
         mockNetwork.sendRequestStub = { request, completion in
 
             do {
@@ -62,6 +87,8 @@ class Client_TestSessionTest: WingKitTestCase {
 
                 XCTAssertEqual(urlRequest.url?.absoluteString, Client.baseURLPath + TestSessionEndpoint.create.path)
                 XCTAssertEqual(urlRequest.httpMethod, TestSessionEndpoint.create.method.rawValue)
+                XCTAssertEqual(urlRequest.allHTTPHeaderFields?["Authorization"], expectedToken)
+
             } catch {
                 XCTFail()
             }
@@ -128,6 +155,8 @@ class Client_TestSessionTest: WingKitTestCase {
         let completionCallbackExpectation = expectation(description: "wait for callback")
         let sendRequestExpectation = expectation(description: "wait for send request to be called")
 
+        Client.token = UUID().uuidString
+
         mockNetwork.sendRequestStub = { request, completion in
 
             completion([
@@ -170,6 +199,8 @@ class Client_TestSessionTest: WingKitTestCase {
 
     func testCreateTestSessionWhenResponseIsInvalid() {
 
+        Client.token = UUID().uuidString
+
         let completionCallbackExpectation = expectation(description: "wait for callback")
         let sendRequestExpectation = expectation(description: "wait for send request to be called")
 
@@ -200,6 +231,8 @@ class Client_TestSessionTest: WingKitTestCase {
     }
 
     func testCreateTestSessionWhenServerRespondsWithError() {
+
+        Client.token = UUID().uuidString
 
         let expectedStatusCode = 400
         let completionCallbackExpectation = expectation(description: "wait for callback")
@@ -238,7 +271,30 @@ class Client_TestSessionTest: WingKitTestCase {
 
     // MARK: - Retrieve Test Session
 
+    func testRetrieveTestSessionWhenTokenIsNil() {
+
+        Client.token = nil
+
+        let errorExpectation = expectation(description: "wait for error")
+
+        Client.retrieveTestSession(withId: UUID().uuidString) { (testSession, error) in
+            guard let error = error else {
+                XCTFail()
+                return
+            }
+
+            switch error {
+            case ClientError.unauthorized: errorExpectation.fulfill()
+            default: XCTFail()
+            }
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
     func testRetrieveTestSessionWhenSuccessful() {
+
+        Client.token = UUID().uuidString
 
         let expectedTestSessionId = UUID().uuidString
         let expectedStartedAt = Date().addingTimeInterval(-700)
@@ -441,6 +497,8 @@ class Client_TestSessionTest: WingKitTestCase {
 
     func testRetrieveTestSessionWhenDecodingFails() {
 
+        Client.token = UUID().uuidString
+
         let expectedTestSessionId = UUID().uuidString
         let expectedStartedAt = Date()
 
@@ -497,6 +555,8 @@ class Client_TestSessionTest: WingKitTestCase {
 
     func testRetrieveTestSessionWhenResponseIsInvalid() {
 
+        Client.token = UUID().uuidString
+
         let completionCallbackExpectation = expectation(description: "wait for callback")
         let sendRequestExpectation = expectation(description: "wait for send request to be called")
 
@@ -527,6 +587,8 @@ class Client_TestSessionTest: WingKitTestCase {
     }
 
     func testRetrieveTestSessionWhenServerRespondsWithError() {
+
+        Client.token = UUID().uuidString
 
         let expectedStatusCode = 400
         let completionCallbackExpectation = expectation(description: "wait for callback")
