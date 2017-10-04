@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
-                    Provides the ability for third party applications to integrate with the Wing REST API and perform lung function tests.
+  An SDK that allows third parties to interface with Wing API and perform lung function tests.
                    DESC
 
   s.homepage     = "https://github.com/sparodev/WingKit"
@@ -53,7 +53,7 @@ Pod::Spec.new do |s|
   #  profile URL.
   #
 
-  s.author             = { "Matt Wahlig" => "matt@sparolabs.com" }
+  s.author             = { "Matt Wahlig" => "mwahlig17@gmail.com" }
   # Or just: s.author    = "Matt Wahlig"
   # s.authors            = { "Matt Wahlig" => "mwahlig17@gmail.com" }
   # s.social_media_url   = "http://twitter.com/Matt Wahlig"
@@ -80,7 +80,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/sparodev/WingKit.git", :tag => "#{s.version}" }
+  s.source       = { :git => "git@github.com:mwahlig/WingKit.git", :tag => "#{s.version}" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -91,7 +91,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "Classes", "WingKit/Classes/**/*.swift"
+  s.source_files  = "WingKit/Classes", "WingKit/Classes/**/*.swift"
   s.exclude_files = "Classes/Exclude"
 
   # s.public_header_files = "Classes/**/*.h"

@@ -68,6 +68,9 @@
 		6CE17A741F74D88800789D00 /* Date+ISO8601.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ISO8601.swift"; sourceTree = "<group>"; };
 		6CE17A771F75965B00789D00 /* TestSessionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSessionTest.swift; sourceTree = "<group>"; };
 		6CE17A791F75966D00789D00 /* TestTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTest.swift; sourceTree = "<group>"; };
+		6CF1C1721F855FC900C4F952 /* SensorMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorMonitor.swift; sourceTree = "<group>"; };
+		6CF1C1731F855FC900C4F952 /* AmbientNoiseMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbientNoiseMonitor.swift; sourceTree = "<group>"; };
+		6CF1C1741F855FC900C4F952 /* ReachabilityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityMonitor.swift; sourceTree = "<group>"; };
 		846069578BD4FDF47618DFE6 /* Pods_WingKitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WingKitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8EDA753260E429AB8E829D6B /* Pods_WingKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WingKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9DA5ECD775C30D4D089E9857 /* Pods-WingKitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WingKitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WingKitTests/Pods-WingKitTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -152,6 +155,7 @@
 		6CA9A0101F743B0B0085E247 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				6CF1C1711F855FC900C4F952 /* Monitors */,
 				6CE17A721F74D7E500789D00 /* Extensions */,
 				6CE17A6F1F74D25E00789D00 /* Protocols */,
 				6CE17A6C1F74C9F000789D00 /* UploadTarget */,
@@ -228,6 +232,16 @@
 				6CE17A741F74D88800789D00 /* Date+ISO8601.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6CF1C1711F855FC900C4F952 /* Monitors */ = {
+			isa = PBXGroup;
+			children = (
+				6CF1C1721F855FC900C4F952 /* SensorMonitor.swift */,
+				6CF1C1731F855FC900C4F952 /* AmbientNoiseMonitor.swift */,
+				6CF1C1741F855FC900C4F952 /* ReachabilityMonitor.swift */,
+			);
+			path = Monitors;
 			sourceTree = "<group>";
 		};
 		9345E7DAD294DB07AFEC62A7 /* Pods */ = {

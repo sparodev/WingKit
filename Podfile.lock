@@ -6,19 +6,22 @@ PODS:
   - AWSCore (2.6.1)
   - AWSS3 (2.6.1):
     - AWSCore (= 2.6.1)
+  - ReachabilitySwift (3)
 
 DEPENDENCIES:
   - AWSCognito
   - AWSCognitoIdentityProvider
   - AWSCore
   - AWSS3
+  - ReachabilitySwift
 
 SPEC CHECKSUMS:
   AWSCognito: 9aad635e11de0febf026e8a8acbbd345b2016801
   AWSCognitoIdentityProvider: a335678a0024fa2b44213bc4e86b46b21773e567
   AWSCore: e7d37fa0715def975acf1b0d75556576780088b8
   AWSS3: 2e18ede28199a5530955dc1a65434da43dcc4d2c
+  ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
 
-PODFILE CHECKSUM: c613f50bf91b8944df444eb843e3f53034dbbe6e
+PODFILE CHECKSUM: f4811200c8b1ca96836fae5982534dab84a4ad13
 
 COCOAPODS: 1.2.1
