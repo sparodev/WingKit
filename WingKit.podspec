@@ -91,10 +91,10 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "WingKit/Classes", "WingKit/Classes/**/*.swift"
+  s.source_files  = "WingKit/Classes", "WingKit/Classes/**/*.{swift,h,mm,cpp}"
   s.exclude_files = "Classes/Exclude"
 
-  # s.public_header_files = "Classes/**/*.h"
+  s.public_header_files = "WingKit/Classes/Lung Function Test/WaveTrimming/trimming.h"
 
 
   # ――― Resources ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
