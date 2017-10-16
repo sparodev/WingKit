@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum BestTestChoice: Int {
+public enum BestTestChoice: Int {
     case reproducible = 1
     case highestReference
 
@@ -28,7 +28,7 @@ enum BestTestChoice: Int {
     }
 }
 
-enum LungFunctionZone: Int {
+public enum LungFunctionZone: Int {
     case greenZone = 1
     case yellowZone
     case redZone
@@ -51,7 +51,7 @@ enum LungFunctionZone: Int {
     }
 }
 
-enum RespiratoryState: Int {
+public enum RespiratoryState: Int {
     case greenZone = 1
     case yellowZone
     case redZone
@@ -77,89 +77,6 @@ enum RespiratoryState: Int {
     }
 }
 
-enum LocalTestFailureReason {
-    case sensorDisconnected
-    case internetDisconnected
-    case animationThresholdNotMet
-
-    var title: String {
-        switch self {
-        case .sensorDisconnected: return "Sensor Error"
-        case .internetDisconnected: return "Internet Error"
-        case .animationThresholdNotMet: return "Processing Error"
-        }
-    }
-
-    var subtitle: String {
-        switch self {
-        case .sensorDisconnected: return "Where's the sensor?"
-        case .internetDisconnected: return "No Internet Connection"
-        case .animationThresholdNotMet: return "Something went wrong!"
-        }
-    }
-
-    var message: String {
-        switch self {
-        case .sensorDisconnected:
-            return "Be sure Wing is plugged in and be careful not to pull on the cord when blowing into Wing!"
-        case .internetDisconnected:
-            return "You must be connected to the internet in order to take a test. "
-                + "Please fix your connection and try again."
-        case .animationThresholdNotMet:
-            return "Let's try doing that test again!"
-        }
-    }
-}
-
-enum TestSessionState: Equatable {
-    case noTest
-    case goodTestFirst
-    case notProcessedTestFirst
-    case notReproducibleTestFirst
-    case notReproducibleTestFinal
-    case reproducibleTestFinal
-    case notProcessedTestFinal
-    case testSessionInterrupted(reason: LocalTestFailureReason)
-
-    static func state(forCode code: Int) -> TestSessionState? {
-        switch code {
-        case 0: return .noTest
-        case 1: return .goodTestFirst
-        case 2: return .reproducibleTestFinal
-        case 100: return .notProcessedTestFirst
-        case 101: return .notReproducibleTestFirst
-        case 102: return .notReproducibleTestFinal
-        case 103: return .notProcessedTestFinal
-        case 200: return .testSessionInterrupted(reason: .internetDisconnected)
-        case 201: return .testSessionInterrupted(reason: .sensorDisconnected)
-        case 202: return .testSessionInterrupted(reason: .animationThresholdNotMet)
-        default: return nil
-        }
-    }
-
-    var code: Int {
-        switch self {
-        case .noTest: return 0
-        case .goodTestFirst: return 1
-        case .reproducibleTestFinal: return 2
-        case .notProcessedTestFirst: return 100
-        case .notReproducibleTestFirst: return 101
-        case .notReproducibleTestFinal: return 102
-        case .notProcessedTestFinal: return 103
-        case .testSessionInterrupted(let reason):
-            switch reason {
-            case .internetDisconnected: return 200
-            case .sensorDisconnected: return 201
-            case .animationThresholdNotMet: return 202
-            }
-        }
-    }
-}
-
-func == (lhs: TestSessionState, rhs: TestSessionState) -> Bool {
-    return lhs.code == rhs.code
-}
-
 public struct TestSession: Decodable {
 
     struct Keys {
@@ -181,46 +98,43 @@ public struct TestSession: Decodable {
     }
 
     /// The identifier for the test session.
-    var id: String
+    public var id: String
 
     /// The date/time for when the test session started.
-    var startedAt: Date
-
-    /// The state of the test session.
-    var state: TestSessionState = .noTest
+    public var startedAt: Date
 
     /// The date/time for when the test session ended.
-    var endedAt: Date?
+    public var endedAt: Date?
 
     /// The lung function based on the result of the test.
-    var lungFunctionZone: LungFunctionZone?
+    public var lungFunctionZone: LungFunctionZone?
 
     /// The respiratory state based on the result of the test.
-    var respiratoryState: RespiratoryState?
+    public var respiratoryState: RespiratoryState?
 
     /// The latitude of the device at time of session start.
-    var latitude: Double?
+    public var latitude: Double?
 
     /// The longitude of the device at time of session start.
-    var longitude: Double?
+    public var longitude: Double?
 
     /// The altitude of the device at time of session start.
-    var altitude: Double?
+    public var altitude: Double?
 
     /// The estimated floor of the device at time of session start.
-    var floor: Double?
+    public var floor: Double?
 
     /// The test chosen as the best test candidate to derive results from.
-    var bestTest: Test?
+    public var bestTest: Test?
 
     /// The tests taken during the test session.
-    var tests: [Test] = []
+    public var tests: [Test] = []
 
     /// The upload targets used to upload lung function recordings to.
     var uploadTargets: [UploadTarget] = []
 
     /// How the best test was chosen
-    var bestTestChoice: BestTestChoice?
+    public var bestTestChoice: BestTestChoice?
 
     init?(from decoder: JSONDecoder) {
 

@@ -12,13 +12,11 @@ enum TestSessionEndpoint: Endpoint {
 
     case create
     case retrieve(sessionId: String)
-    case update(sessionId: String)
 
     var path: String {
         switch self {
         case .create: return "/test-sessions"
         case .retrieve(let sessionId): return "/test-sessions/\(sessionId)"
-        case .update(let sessionId): return "/test-sessions/\(sessionId)"
         }
     }
 
@@ -26,7 +24,6 @@ enum TestSessionEndpoint: Endpoint {
         switch self {
         case .create: return .post
         case .retrieve: return .get
-        case .update: return .put
         }
     }
 }
@@ -43,6 +40,7 @@ public extension Client {
         var request: URLRequestConvertible
         do {
             request = try self.request(for: TestSessionEndpoint.create,
+                                       parameters: ["localTimezone": Date().iso8601],
                                        headers: ["Authorization": token])
         } catch {
             return completion(nil, error)

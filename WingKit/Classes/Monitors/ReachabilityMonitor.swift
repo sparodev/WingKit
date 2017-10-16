@@ -19,10 +19,12 @@ public protocol ReachabilityMonitorDelegate: class {
 
 public class ReachabilityMonitor {
 
+    /// Object that the monitor delegates reachability state changes to.
     public weak var delegate: ReachabilityMonitorDelegate?
 
     fileprivate(set) var isActive = false
 
+    /// Indicates whether or not the device is connected to the internet.
     public var isConnectedToInternet: Bool {
         return reachability?.isReachable ?? false
     }
@@ -41,6 +43,7 @@ public class ReachabilityMonitor {
 
     // MARK: - Start/Stop
 
+    /// Starts monitoring the device's internet reachability.
     public func start() throws {
 
         guard !isActive else { return }
@@ -59,6 +62,7 @@ public class ReachabilityMonitor {
         }
     }
 
+    /// Stops monitoring the device's internet reachability.
     public func stop() {
         isActive = false
 

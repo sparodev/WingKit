@@ -8,33 +8,47 @@
 import Foundation
 import AVFoundation
 
+/**
+ The delegate of the AmbientNoiseMonitor object must adopt the `AmbientNoiseMonitorDelegate` protocol.  This allows
+ the delegate to observe whenever `isBlowThreshold` state changes.
+ */
 public protocol AmbientNoiseMonitorDelegate: class {
+
+    /// Tells the delegate that the monitor state changed.
     func ambientNoiseMonitorDidChangeState(_ monitor: AmbientNoiseMonitor)
 }
 
 public class AmbientNoiseMonitor {
 
     public enum Error: Swift.Error {
+
+        /// Occurs when the user has denied
         case microphonePermissionDenied
+
+        /// Indicates that an error occurred while configuring the recorder.
         case recorderConfigurationError
     }
 
+    /// The object that acts as the delegate of the monitor.
     public weak var delegate: AmbientNoiseMonitorDelegate?
 
-    fileprivate(set) var isActive = false
+    /// Indicates whether the ambient noise level is below or above the allowed threshold.
+    public fileprivate(set) var isBelowThreshold: Bool = true
+
+    /// Indicates whether the monitor is active or not.
+    public fileprivate(set) var isActive = false
 
     fileprivate var recorder: AVAudioRecorder?
     fileprivate var audioSession = AVAudioSession.sharedInstance()
 
-    public fileprivate(set) var isBelowThreshold: Bool = true
-
-    public var noiseThreshold: Float = -10.0
-    public var noiseCheckInterval: TimeInterval = 0.25
+    fileprivate var noiseThreshold: Float = -10.0
+    fileprivate var noiseCheckInterval: TimeInterval = 0.25
 
     fileprivate var noiseCheckTimer: Timer?
 
     public init() {}
 
+    /// Starts measuring the amount of ambient noise.
     public func start(completion: @escaping (Error?) -> Void) {
 
         guard !isActive else { return }
@@ -55,6 +69,7 @@ public class AmbientNoiseMonitor {
         }
     }
 
+    /// Stops measuring the amount of ambient noise.
     public func stop() {
 
         isActive = false

@@ -9,26 +9,84 @@
 import Foundation
 import AVFoundation
 
-class TestSessionRecorder {
+public enum TestRecorderState {
+    case ready
+    case recording
+    case finished
+}
+
+public protocol TestRecorderDelegate: class {
+    func recorderStateChanged(_ state: TestRecorderState)
+    func signalStrengthChanged(_ strength: Double)
+}
+
+public class TestSessionRecorder {
+
+    let testDuration: TimeInterval = 6.0
 
     /**
-     The duration of the recording session before it times out.
+     The threshold that the sensor recording strength must surpass to be considered a valid test.
      */
-    static let testTimeoutDuration = 6.0
+    let signalStrengthThreshold: Double = 0.6
 
     /**
-     The duration to record once a signal is detected that passes test threshold.
+     The duration of the recording session.
      */
-    static let blowDuration = 6.0
+    static let recordingDuration = 6.0
 
-    var soundFilePath: String?
-    var soundFileTrimmedPath: String?
+    public weak var delegate: TestRecorderDelegate?
+
+    public fileprivate(set) var state: TestRecorderState = .ready {
+        didSet {
+            delegate?.recorderStateChanged(state)
+        }
+    }
+
+    public fileprivate(set) var signalStrengthThresholdPassed = false
+
+    fileprivate var testTimer: Timer?
+    fileprivate var signalStrengthUpdateTimer: Timer?
+
+    fileprivate var baselineBlow: Double? {
+        didSet {
+            if let blow = baselineBlow {
+                baselineBlow = min(1.0, max(0, blow))
+            }
+        }
+    }
+    fileprivate var baselineBlowBackground = 0.5
+    fileprivate let defaultBaselineBlow = 0.5
+
+    public var recordingFilepath: String? {
+        if let soundFilePath = soundFilePath,
+            let soundFileTrimmedPath = soundFileTrimmedPath,
+            TrimmingWrapper.trim(withInputFileName: soundFilePath, outputFileName: soundFilePath) == 0 {
+
+            return soundFileTrimmedPath
+        }
+
+        return soundFilePath
+    }
+
+    fileprivate var soundFilePath: String?
+    fileprivate var soundFileTrimmedPath: String?
+
     var audioRecorder: AVAudioRecorder?
     var blowRecorder: AVAudioRecorder?
 
-    public func configureRecorders() throws {
+    public init() {}
+
+    deinit {
+        testTimer?.invalidate()
+        signalStrengthUpdateTimer?.invalidate()
+        stopRecorders()
+    }
+
+    public func configure() throws {
         try configureBlowRecorder()
         try configureAudioRecorder()
+
+        startBlowRecorder()
     }
 
     fileprivate func configureBlowRecorder() throws {
@@ -73,41 +131,128 @@ class TestSessionRecorder {
         audioRecorder?.prepareToRecord()
     }
 
-    func recordingFilepath() -> String? {
-        if let soundFilePath = soundFilePath,
-            let soundFileTrimmedPath = soundFileTrimmedPath,
-            TrimmingWrapper.trim(withInputFileName: soundFilePath, outputFileName: soundFilePath) == 0 {
+    /**
+     Starts the recording for a lung function test.
+     */
+    public func startRecording() {
 
-            return soundFileTrimmedPath
-        }
+        guard state == .ready else { return }
 
-        return soundFilePath
+        startAudioRecorder()
+        startTestTimer()
+
+        baselineBlow = baselineBlowBackground
+
+        state = .recording
     }
 
-    func startAudioRecorder() {
+    public func stopRecording() {
+        stopTimers()
+        stopRecorders()
+    }
+
+    fileprivate func startAudioRecorder() {
         audioRecorder?.record()
     }
 
-    func stopAudioRecorder() {
+    fileprivate func startBlowRecorder() {
+        blowRecorder?.record()
+
+        signalStrengthUpdateTimer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(updateSignalStrength),
+                                               userInfo: nil, repeats: true)
+    }
+
+    fileprivate func stopRecorders() {
+        stopAudioRecorder()
+        stopBlowRecorder()
+    }
+
+    fileprivate func stopAudioRecorder() {
         audioRecorder?.stop()
         audioRecorder = nil
     }
 
-    func startBlowRecorder() {
-        blowRecorder?.record()
-    }
-
-    func stopBlowRecorder() {
+    fileprivate func stopBlowRecorder() {
         blowRecorder?.stop()
         blowRecorder = nil
+
+        signalStrengthUpdateTimer?.invalidate()
     }
 
-    func updateBlowLevel() -> Double? {
-        guard let recorder = blowRecorder else {
-            return nil
-        }
+    fileprivate func startTestTimer() {
+        testTimer?.invalidate()
+        testTimer = Timer.scheduledTimer(
+            timeInterval: testDuration,
+            target: self, selector: #selector(testTimerFinished),
+            userInfo: nil, repeats: false)
+    }
+
+    fileprivate func stopTimers() {
+        signalStrengthUpdateTimer?.invalidate()
+        testTimer?.invalidate()
+    }
+
+    @objc func testTimerFinished() {
+        stopRecording()
+
+        state = .finished
+    }
+
+    @objc fileprivate func updateSignalStrength() {
+        guard let recorder = blowRecorder else { return }
 
         recorder.updateMeters()
-        return (Double(recorder.averagePower(forChannel: 0)) + 160.0) / 160.0
+
+        let blowLevel = (Double(recorder.averagePower(forChannel: 0)) + 160.0) / 160.0
+
+        switch state {
+        case .ready:
+
+            baselineBlowBackground = defaultBaselineBlow * blowLevel
+                + (1 - defaultBaselineBlow) * baselineBlowBackground
+
+        case .recording:
+
+//            let signalStrength = transformStrength(blowLevel)
+            let signalStrength = Double(arc4random()) / Double(UInt32.max)
+            currentSignal += signalStrength > 0.3 ? 0.1 : -0.1
+            currentSignal = min(1.0, max(0, currentSignal))
+
+            if currentSignal > signalStrengthThreshold
+                && !signalStrengthThresholdPassed {
+
+                signalStrengthThresholdPassed = true
+                startTestTimer()
+            }
+
+            delegate?.signalStrengthChanged(currentSignal)
+
+        default: return
+        }
+
+//        let signalStrength = Double(arc4random()) / Double(UInt32.max)
+//        currentSignal += signalStrength > 0.3 ? 0.1 : -0.1
+//        currentSignal = min(1.0, max(0, currentSignal))
+//
+//        delegate?.signalStrengthChanged(currentSignal)
+    }
+
+    var currentSignal: Double = 0.5
+
+    /**
+     Helper function that takes in strength and applies a mathematical transform
+     to return an adjusted strength
+
+     - parameter strength:
+     - returns: transformed strength
+     */
+    func transformStrength(_ strength: Double) -> Double {
+        var strength = min(strength, 1.0)
+        let baselineBlowOrDefault = (baselineBlow ?? defaultBaselineBlow) * 1.10
+        strength -= baselineBlowOrDefault
+        guard strength > 0.0 else { return 0.0 }
+        strength *= (1.0 / (1.0 - baselineBlowOrDefault))
+        strength = pow(strength + 0.2, 4) / pow(1.2, 4)
+        return strength
     }
 }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Test: Decodable {
+public struct Test: Decodable {
 
     enum Status: Int {
         case started = 0

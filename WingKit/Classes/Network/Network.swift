@@ -64,7 +64,7 @@ internal class Network: NetworkProtocol {
                 return
             }
 
-            URLSession.shared.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
+            let task = URLSession.shared.dataTask(with: urlRequest, completionHandler: { (data, response, error) in
 
                 if let error = error {
                     DispatchQueue.main.async { completion(nil, error) }
@@ -91,6 +91,8 @@ internal class Network: NetworkProtocol {
                     DispatchQueue.main.async { completion(nil, error) }
                 }
             })
+
+        task.resume()
     }
 
     func uploadFile(atFilepath filepath: String, toBucket bucket: String,

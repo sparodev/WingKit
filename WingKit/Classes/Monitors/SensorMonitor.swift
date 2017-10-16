@@ -56,11 +56,16 @@ public class SensorMonitor: NSObject {
     }
 
     @objc func routeChanged(_ notification: Notification) {
-        refreshState()
+        let updatedIsPluggedIn = verifySensorIsPluggedIn(forSession: audioSession)
 
-        DispatchQueue.main.async {
-            self.delegate?.sensorStateDidChange(self)
+        if isPluggedIn != updatedIsPluggedIn {
+            refreshState()
+
+            DispatchQueue.main.async {
+                self.delegate?.sensorStateDidChange(self)
+            }
         }
+
     }
 
     fileprivate func refreshState() {

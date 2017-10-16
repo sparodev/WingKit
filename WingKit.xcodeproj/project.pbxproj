@@ -41,6 +41,7 @@
 		6CE17A711F74D26B00789D00 /* Codable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE17A701F74D26B00789D00 /* Codable.swift */; };
 		6CE17A781F75965B00789D00 /* TestSessionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE17A771F75965B00789D00 /* TestSessionTest.swift */; };
 		6CE17A7A1F75966D00789D00 /* TestTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE17A791F75966D00789D00 /* TestTest.swift */; };
+		6CE893E91F91447F00BACCBB /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CE893E81F91447F00BACCBB /* Timer.swift */; };
 		6CF1C1771F85687100C4F952 /* TestSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF1C1761F85687100C4F952 /* TestSessionManager.swift */; };
 		6CF1C1791F85688400C4F952 /* TestSessionRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CF1C1781F85688400C4F952 /* TestSessionRecorder.swift */; };
 		AABA537FD4272A2A75C86658 /* Pods_WingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8EDA753260E429AB8E829D6B /* Pods_WingKit.framework */; };
@@ -83,6 +84,7 @@
 		6CE17A741F74D88800789D00 /* Date+ISO8601.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+ISO8601.swift"; sourceTree = "<group>"; };
 		6CE17A771F75965B00789D00 /* TestSessionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSessionTest.swift; sourceTree = "<group>"; };
 		6CE17A791F75966D00789D00 /* TestTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTest.swift; sourceTree = "<group>"; };
+		6CE893E81F91447F00BACCBB /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		6CF1C1721F855FC900C4F952 /* SensorMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorMonitor.swift; sourceTree = "<group>"; };
 		6CF1C1731F855FC900C4F952 /* AmbientNoiseMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbientNoiseMonitor.swift; sourceTree = "<group>"; };
 		6CF1C1741F855FC900C4F952 /* ReachabilityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityMonitor.swift; sourceTree = "<group>"; };
@@ -258,6 +260,7 @@
 			isa = PBXGroup;
 			children = (
 				6CE17A741F74D88800789D00 /* Date+ISO8601.swift */,
+				6CE893E81F91447F00BACCBB /* Timer.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -518,6 +521,7 @@
 				6C4708CC1F875A9D009CE4E7 /* amparray.cpp in Sources */,
 				6C4708A91F86C3B9009CE4E7 /* ReachabilityMonitor.swift in Sources */,
 				6C4708A61F86C3AF009CE4E7 /* Date+ISO8601.swift in Sources */,
+				6CE893E91F91447F00BACCBB /* Timer.swift in Sources */,
 				6CF1C1771F85687100C4F952 /* TestSessionManager.swift in Sources */,
 				6CA9A01C1F7443950085E247 /* Network.swift in Sources */,
 				6CE17A6E1F74CA1900789D00 /* UploadTarget.swift in Sources */,
