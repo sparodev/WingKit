@@ -150,7 +150,7 @@ public class TestSessionManager {
                 return
             }
 
-            self.testSession = testSession
+            self.testSession.merge(with: testSession)
 
             let completedTests = testSession.tests.filter {
                 return $0.status == .complete || $0.status == .error
@@ -167,8 +167,6 @@ public class TestSessionManager {
                     self.refreshTestSession(completion: completion)
                 })
             }
-
-            completion(nil)
         }
     }
 

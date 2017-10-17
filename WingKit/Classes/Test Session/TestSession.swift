@@ -228,4 +228,40 @@ public struct TestSession: Decodable {
             self.uploadTargets = uploadTargets
         }
     }
+
+    mutating func merge(with testSession: TestSession) {
+
+        endedAt = testSession.endedAt
+        lungFunctionZone = testSession.lungFunctionZone
+        respiratoryState = testSession.respiratoryState
+        bestTestChoice = testSession.bestTestChoice
+
+        if let latitude = testSession.latitude {
+            self.latitude = latitude
+        }
+
+        if let longitude = testSession.longitude {
+            self.longitude = longitude
+        }
+
+        if let altitude = testSession.altitude {
+            self.altitude = altitude
+        }
+
+        if let floor = testSession.floor {
+            self.floor = floor
+        }
+
+        if let bestTest = testSession.bestTest {
+            self.bestTest = bestTest
+        }
+
+        if !testSession.tests.isEmpty {
+            self.tests = testSession.tests
+        }
+
+        if !testSession.uploadTargets.isEmpty {
+            self.uploadTargets = testSession.uploadTargets
+        }
+    }
 }

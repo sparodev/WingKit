@@ -65,6 +65,10 @@ public class Client {
             updatedHeaders["Content-Type"] = "application/json"
         }
 
+        if let token = token {
+            updatedHeaders["Authorization"] = token
+        }
+
         return NetworkRequest(url: url, method: endpoint.method, parameters: parameters, headers: updatedHeaders)
     }
 

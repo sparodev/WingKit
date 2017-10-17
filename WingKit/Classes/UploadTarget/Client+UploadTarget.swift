@@ -59,7 +59,7 @@ extension Client {
         }
     }
 
-    static func uploadFile(atFilepath filepath: String, to uploadTarget: UploadTarget, completion: (Error?) -> Void) {
+    static func uploadFile(atFilepath filepath: String, to uploadTarget: UploadTarget, completion: @escaping (Error?) -> Void) {
 
         Network.shared.uploadFile(atFilepath: filepath, toBucket: uploadTarget.bucket,
                                   withKey: uploadTarget.key, completion: completion)

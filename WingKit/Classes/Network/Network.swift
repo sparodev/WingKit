@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AWSS3
 
 internal typealias JSON = [String: Any]
 
@@ -45,7 +46,7 @@ enum NetworkError: Error {
 protocol NetworkProtocol {
     func send(request: URLRequestConvertible, completion: @escaping (JSON?, Error?) -> Void)
     func uploadFile(atFilepath filepath: String, toBucket bucket: String,
-                    withKey key: String, completion: (Error?) -> Void)
+                    withKey key: String, completion: @escaping (Error?) -> Void)
 }
 
 internal class Network: NetworkProtocol {
@@ -53,6 +54,20 @@ internal class Network: NetworkProtocol {
     static var shared: NetworkProtocol = Network()
 
     fileprivate var acceptableStatusCodes: [Int] { return Array(200..<300) }
+    fileprivate let identityPoolId = "us-east-1:af3df912-5e61-40dc-9c5e-651f7e0b3789"
+    fileprivate let cognitoRegion = AWSRegionType.USEast1
+    fileprivate let bucketRegion = AWSRegionType.USEast1
+
+    init() {
+
+        AWSServiceManager.default().defaultServiceConfiguration = AWSServiceConfiguration(
+            region: bucketRegion,
+            credentialsProvider: AWSCognitoCredentialsProvider(
+                regionType: cognitoRegion,
+                identityPoolId: identityPoolId
+            )
+        )
+    }
 
     func send(request: URLRequestConvertible, completion: @escaping (JSON?, Error?) -> Void) {
 
@@ -96,11 +111,23 @@ internal class Network: NetworkProtocol {
     }
 
     func uploadFile(atFilepath filepath: String, toBucket bucket: String,
-                           withKey key: String, completion: (Error?) -> Void) {
+                    withKey key: String, completion: @escaping (Error?) -> Void) {
 
+        let expression = AWSS3TransferUtilityUploadExpression()
 
+        expression.progressBlock = { task, progress in
+            DispatchQueue.main.async { print("Uploading test \(progress)") }
+        }
 
-
+        AWSS3TransferUtility.default().uploadFile(
+            URL(fileURLWithPath: filepath),
+            bucket: bucket, key: key,
+            contentType: "audio/x-wav",
+            expression: expression) { (_, error) in
+                DispatchQueue.main.async {
+                    completion(error)
+                }
+        }
     }
 
     fileprivate func validateResponse(_ response: URLResponse) throws {
