@@ -109,7 +109,6 @@ public class TestSessionManager {
 
     var testSession: TestSession
 
-    fileprivate var activeUploadTarget: UploadTarget?
     fileprivate var usedUploadTargetIds = [String]()
 
     let failedTestsThreshold = 2
@@ -131,12 +130,12 @@ public class TestSessionManager {
         self.testSession = testSession
     }
 
-    public func refreshTestSession(completion: @escaping (Swift.Error?) -> Void) {
+    /**
+     Retrieves and applies the updated details of the associated test session.
 
-        guard let _ = activeUploadTarget else {
-            completion(Error.invalidUploadTarget)
-            return
-        }
+     - throws:
+     */
+    public func refreshTestSession(completion: @escaping (Swift.Error?) -> Void) {
 
         Client.retrieveTestSession(withId: testSession.id) { (testSession, error) in
 
@@ -159,6 +158,8 @@ public class TestSessionManager {
             if completedTests.count == self.usedUploadTargetIds.count
                 && completedTests.count == testSession.tests.count {
 
+                self.updateState()
+
                 completion(nil)
 
             } else {
@@ -177,14 +178,13 @@ public class TestSessionManager {
                 return
             }
 
-            self.activeUploadTarget = uploadTarget
             self.usedUploadTargetIds.append(uploadTarget.id)
 
             Client.uploadFile(atFilepath: filepath, to: uploadTarget, completion: completion)
         }
     }
 
-    func getUploadTarget(completion: @escaping (UploadTarget?, Swift.Error?) -> Void) {
+    fileprivate func getUploadTarget(completion: @escaping (UploadTarget?, Swift.Error?) -> Void) {
         if let uploadTarget = testSession.uploadTargets.filter({ !usedUploadTargetIds.contains($0.id) }).first {
             completion(uploadTarget, nil)
             return
@@ -206,7 +206,7 @@ public class TestSessionManager {
         }
     }
 
-    public func updateState() {
+    fileprivate func updateState() {
         var newState = state
 
         switch testSession.bestTestChoice {

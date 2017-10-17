@@ -76,6 +76,9 @@ public class Client {
         return URL(string: baseURLPath + endpoint.path)
     }
 
+    /**
+     Authenticates the application with the Wing API using the assigned Client ID/Secret.
+     */
     public static func authenticate(completion: @escaping (String?, Error?) -> Void) {
 
         guard let oauth = oauth else {

@@ -8,7 +8,13 @@
 import Foundation
 import AVFoundation
 
+/**
+ The delegate of a SensorMonitor object must adopt the `SensorMonitorDelegate` protocol. Methods of the protocol
+ allow the delegate to observe sensor plugged in state changes.
+ */
 public protocol SensorMonitorDelegate: class {
+
+    /// Tells the delegate when the state of the sensor has changed.
     func sensorStateDidChange(_ monitor: SensorMonitor)
 }
 

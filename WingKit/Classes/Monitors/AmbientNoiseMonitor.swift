@@ -48,7 +48,15 @@ public class AmbientNoiseMonitor {
 
     public init() {}
 
-    /// Starts measuring the amount of ambient noise.
+    deinit {
+        stop()
+    }
+
+    /**
+     Starts measuring the amount of ambient noise.
+
+     - throws: `AmbientNoiseMonitor.Error.microphonePermissionDenied` if the user denys permission to access the microphone.
+     */
     public func start(completion: @escaping (Error?) -> Void) {
 
         guard !isActive else { return }
@@ -153,7 +161,7 @@ public class AmbientNoiseMonitor {
     /**
      Checks whether the ambient noise is above a threshold
      */
-    @objc func checkAmbientNoise() {
+    @objc fileprivate func checkAmbientNoise() {
         recorder?.updateMeters()
 
         let previousState = isBelowThreshold

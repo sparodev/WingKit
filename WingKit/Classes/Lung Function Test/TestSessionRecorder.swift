@@ -9,19 +9,36 @@
 import Foundation
 import AVFoundation
 
-public enum TestRecorderState {
-    case ready
-    case recording
-    case finished
-}
-
+/**
+ The delegate of a TestSessionRecorder object must adopt the `TestRecorderDelegate` protocol. Methods of the protocol
+ allow the delegate to observe recorder state changes and signal strength changes.
+ */
 public protocol TestRecorderDelegate: class {
-    func recorderStateChanged(_ state: TestRecorderState)
+    func recorderStateChanged(_ state: TestSessionRecorder.State)
     func signalStrengthChanged(_ strength: Double)
 }
 
 public class TestSessionRecorder {
 
+    public enum State {
+        case ready
+        case recording
+        case finished
+    }
+
+    public enum Error: Swift.Error {
+        case configurationFailed
+
+        public var localizedDescription: String {
+            switch self {
+            case .configurationFailed: return "An error occurred while configuring the audio recorder."
+            }
+        }
+    }
+
+    /**
+     The duration of the recording session.
+     */
     let testDuration: TimeInterval = 6.0
 
     /**
@@ -29,14 +46,11 @@ public class TestSessionRecorder {
      */
     let signalStrengthThreshold: Double = 0.6
 
-    /**
-     The duration of the recording session.
-     */
-    static let recordingDuration = 6.0
-
+    /// The object that acts as the delegate for the recorder.
     public weak var delegate: TestRecorderDelegate?
 
-    public fileprivate(set) var state: TestRecorderState = .ready {
+    /// The current state of the recorder.
+    public fileprivate(set) var state: State = .ready {
         didSet {
             delegate?.recorderStateChanged(state)
         }
@@ -87,8 +101,8 @@ public class TestSessionRecorder {
     fileprivate var soundFilePath: String?
     fileprivate var soundFileTrimmedPath: String?
 
-    var audioRecorder: AVAudioRecorder?
-    var blowRecorder: AVAudioRecorder?
+    fileprivate var audioRecorder: AVAudioRecorder?
+    fileprivate var blowRecorder: AVAudioRecorder?
 
     public init() {}
 
@@ -98,9 +112,18 @@ public class TestSessionRecorder {
         stopRecorders()
     }
 
+    /**
+     Configures the blow detection and audio recorders. Starts the blow detection recorder.
+
+     - throws: TestSessionRecorder.Error.configurationFailed if either the blow detection or audio recorders configuration fails.
+     */
     public func configure() throws {
-        try configureBlowRecorder()
-        try configureAudioRecorder()
+        do {
+            try configureBlowRecorder()
+            try configureAudioRecorder()
+        } catch {
+            throw Error.configurationFailed
+        }
 
         startBlowRecorder()
     }
@@ -162,6 +185,7 @@ public class TestSessionRecorder {
         state = .recording
     }
 
+    /// Ends the recording session.
     public func stopRecording() {
         stopTimers()
         stopRecorders()
@@ -208,7 +232,9 @@ public class TestSessionRecorder {
         testTimer?.invalidate()
     }
 
-    @objc func testTimerFinished() {
+    // MARK: - Timer Actions
+
+    @objc fileprivate func testTimerFinished() {
         stopRecording()
 
         state = .finished
@@ -229,40 +255,29 @@ public class TestSessionRecorder {
 
         case .recording:
 
-//            let signalStrength = transformStrength(blowLevel)
-            let signalStrength = Double(arc4random()) / Double(UInt32.max)
-            currentSignal += signalStrength > 0.3 ? 0.1 : -0.1
-            currentSignal = min(1.0, max(0, currentSignal))
+            let signalStrength = transformStrength(blowLevel)
 
-            if currentSignal > signalStrengthThreshold
+            if signalStrength > signalStrengthThreshold
                 && !signalStrengthThresholdPassed {
 
                 signalStrengthThresholdPassed = true
                 startTestTimer()
             }
 
-            delegate?.signalStrengthChanged(currentSignal)
+            delegate?.signalStrengthChanged(signalStrength)
 
         default: return
         }
-
-//        let signalStrength = Double(arc4random()) / Double(UInt32.max)
-//        currentSignal += signalStrength > 0.3 ? 0.1 : -0.1
-//        currentSignal = min(1.0, max(0, currentSignal))
-//
-//        delegate?.signalStrengthChanged(currentSignal)
     }
-
-    var currentSignal: Double = 0.5
 
     /**
      Helper function that takes in strength and applies a mathematical transform
      to return an adjusted strength
 
-     - parameter strength:
-     - returns: transformed strength
+     - parameter strength: The signal strength to transform.
+     - returns: The transformed signal strength.
      */
-    func transformStrength(_ strength: Double) -> Double {
+    fileprivate func transformStrength(_ strength: Double) -> Double {
         var strength = min(strength, 1.0)
         let baselineBlowOrDefault = (baselineBlow ?? defaultBaselineBlow) * 1.10
         strength -= baselineBlowOrDefault
