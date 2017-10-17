@@ -14,7 +14,7 @@ enum UploadTargetEndpoint: Endpoint {
 
     var path: String {
         switch self {
-        case .create(let sessionId): return "/test-sessions/\(sessionId)/upload"
+        case .create(let sessionId): return "/patients/5yEwdO6MVR8ZA/test-sessions/\(sessionId)/upload"
         }
     }
 

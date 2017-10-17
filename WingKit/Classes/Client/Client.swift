@@ -41,9 +41,11 @@ enum AuthenticationEndpoint: Endpoint {
 
 public class Client {
 
-    static let baseURLPath = "https://api.mywing.io/v2"
+    static let baseURLPath = "https://api-development.mywing.io/api/v2"
     static var oauth: OAuthCredentials? = nil
-    static var token: String?
+    static var token: String? {
+        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IktyNDJ5b2pHdzM4V3oiLCJ0eXBlIjoiYXV0aCIsImtleUdlbiI6IjEyRUJBYmxnTHJOSlAiLCJpYXQiOjE1MDc1NjQ0NDUsImV4cCI6MTUzOTEwMDQ0NX0.Tz1bn1dq0NQaHA-kEo9XQx8ueTTMFLc32j6p4eQy6z0"
+    }
 
     static func request(for endpoint: Endpoint,
                         parameters: [String: Any]? = nil,
