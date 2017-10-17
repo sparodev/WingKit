@@ -57,7 +57,23 @@ public class TestSessionRecorder {
     fileprivate var baselineBlowBackground = 0.5
     fileprivate let defaultBaselineBlow = 0.5
 
+    public var skipRecording = true
+
+    fileprivate var debugWavUrl: String? {
+
+        let podBundle = Bundle(for: TestSessionRecorder.self)
+        guard let debuggingBundleURL = podBundle.url(forResource: "WingKitDebugging", withExtension: "bundle") else {
+            return nil
+        }
+
+        return Bundle(url: debuggingBundleURL)?.path(forResource: "debuggingWav", ofType: "wav")
+    }
+
     public var recordingFilepath: String? {
+        if skipRecording {
+            return debugWavUrl
+        }
+
         if let soundFilePath = soundFilePath,
             let soundFileTrimmedPath = soundFileTrimmedPath,
             TrimmingWrapper.trim(withInputFileName: soundFilePath, outputFileName: soundFilePath) == 0 {

@@ -85,6 +85,7 @@
 		6CE17A771F75965B00789D00 /* TestSessionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSessionTest.swift; sourceTree = "<group>"; };
 		6CE17A791F75966D00789D00 /* TestTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTest.swift; sourceTree = "<group>"; };
 		6CE893E81F91447F00BACCBB /* Timer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
+		6CEEFD891F953BE800E42F8D /* debuggingWav.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = debuggingWav.wav; sourceTree = "<group>"; };
 		6CF1C1721F855FC900C4F952 /* SensorMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SensorMonitor.swift; sourceTree = "<group>"; };
 		6CF1C1731F855FC900C4F952 /* AmbientNoiseMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmbientNoiseMonitor.swift; sourceTree = "<group>"; };
 		6CF1C1741F855FC900C4F952 /* ReachabilityMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReachabilityMonitor.swift; sourceTree = "<group>"; };
@@ -159,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				6CA9A0101F743B0B0085E247 /* Classes */,
+				6CEEFD891F953BE800E42F8D /* debuggingWav.wav */,
 				6CA99FF61F7435600085E247 /* WingKit.h */,
 				6CA99FF71F7435600085E247 /* Info.plist */,
 			);
