@@ -78,6 +78,9 @@ public enum TestSessionManagerError: Error {
     case invalidRecording
 }
 
+/**
+ The `TestSessionManager` keeps track of a test session's state and also is the mediator for all the necessary network requests that occur during a test session.
+ */
 public class TestSessionManager {
 
     /// The state of the test session.
@@ -87,21 +90,23 @@ public class TestSessionManager {
 
     fileprivate var usedUploadTargetIds = [String]()
 
+    /// The number of tests that are allowed to fail processing before the test session is considered invalid.
     public let failedTestsThreshold = 2
+
+    /// The number of tests that are allowed to fail due to local failure reasons before the test session is considered invalid.s
     public let localTestFailureThreshold = 2
 
-    /// The interval at which the server will be pinged to check if processing is complete.
-
+    /// The interval at which the server will be pinged to check if processing is complete.s
     let processingPollingInterval: Double = 0.8
 
     /// The threshold that represents the number of times the app should attempt to refresh the test session.
-
     let processingTimeoutThreshold = 10
 
     /// The number of attempts the test session has been refreshed in effort to determine the processing state.
-
     var numberOfProcessingAttempts = 0
 
+
+    /// Initializes the `TestSessionManager` with the test session passed in as an argument.
     public init(testSession: TestSession) {
         self.testSession = testSession
     }

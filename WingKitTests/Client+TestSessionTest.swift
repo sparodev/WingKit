@@ -27,14 +27,12 @@ class Client_TestSessionTest: WingKitTestCase {
 
         XCTAssertEqual(TestSessionEndpoint.create.path, "/test-sessions")
         XCTAssertEqual(TestSessionEndpoint.retrieve(sessionId: "test-id").path, "/test-sessions/test-id")
-        XCTAssertEqual(TestSessionEndpoint.update(sessionId: "test-id").path, "/test-sessions/test-id")
     }
 
     func testTestSessionEndpointMethods() {
 
         XCTAssertEqual(TestSessionEndpoint.create.method, .post)
         XCTAssertEqual(TestSessionEndpoint.retrieve(sessionId: "test-id").method, .get)
-        XCTAssertEqual(TestSessionEndpoint.update(sessionId: "test-id").method, .put)
     }
 
     // MARK: - Create Test Session
@@ -308,7 +306,7 @@ class Client_TestSessionTest: WingKitTestCase {
         let expectedPef1 = 1234.0
         let expectedFev11 = 2345.0
         let expectedTestTakenAt1 = Date().addingTimeInterval(-500)
-        let expectedTestStatus1 = Test.Status.complete.string
+        let expectedTestStatus1 = TestStatus.complete.string
         let expectedTestBreathDuration1 = 2351.0
         let expectedTestTotalVolume1 = 3591.0
         let expectedTestExhaleCurve1 = [
@@ -320,7 +318,7 @@ class Client_TestSessionTest: WingKitTestCase {
         let expectedPef2 = 612.0
         let expectedFev12 = 829.0
         let expectedTestTakenAt2 = Date().addingTimeInterval(-20)
-        let expectedTestStatus2 = Test.Status.complete.string
+        let expectedTestStatus2 = TestStatus.complete.string
         let expectedTestBreathDuration2 = 4810.0
         let expectedTestTotalVolume2 = 8108.0
 
@@ -353,9 +351,9 @@ class Client_TestSessionTest: WingKitTestCase {
                 TestSession.Keys.id: expectedTestSessionId,
                 TestSession.Keys.startedAt: expectedStartedAt.iso8601,
                 TestSession.Keys.endedAt: expectedEndedAt.iso8601,
-                TestSession.Keys.bestTestChoice: expectedBestTestChoice.string,
-                TestSession.Keys.lungFunctionZone: expectedLungFunctionZone.string,
-                TestSession.Keys.respiratoryState: expectedRespiratoryState.string,
+                TestSession.Keys.bestTestChoice: expectedBestTestChoice.rawValue,
+                TestSession.Keys.lungFunctionZone: expectedLungFunctionZone.rawValue,
+                TestSession.Keys.respiratoryState: expectedRespiratoryState.rawValue,
                 TestSession.Keys.bestTest: [
                     Test.Keys.id: expectedTestId1,
                     Test.Keys.breathDuration: expectedTestBreathDuration1,

@@ -20,8 +20,14 @@ public protocol TestRecorderDelegate: class {
 
 /// The various states of the `TestSessionRecorder` class during a recording session.
 public enum TestRecorderState {
+
+    /// Indicates the recrders have been configured and are ready to start recording.
     case ready
+
+    /// Indicates that the recording is currently in progress.
     case recording
+
+    /// Indicates that the recording has concluded.
     case finished
 }
 

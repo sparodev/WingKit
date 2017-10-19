@@ -39,8 +39,8 @@ class TestSessionTest: WingKitTestCase {
             TestSession.Keys.id: expectedId,
             TestSession.Keys.startedAt: expectedStartedAt.iso8601,
             TestSession.Keys.endedAt: expectedEndedAt.iso8601,
-            TestSession.Keys.lungFunctionZone: expectedLungFunctionZone.string,
-            TestSession.Keys.respiratoryState: expectedRespiratoryState.string,
+            TestSession.Keys.lungFunctionZone: expectedLungFunctionZone.rawValue,
+            TestSession.Keys.respiratoryState: expectedRespiratoryState.rawValue,
             TestSession.Keys.metadata: [
                 TestSession.Keys.latitude: expectedLatitude,
                 TestSession.Keys.longitude: expectedLongitude,
@@ -83,42 +83,42 @@ class TestSessionTest: WingKitTestCase {
     }
 
     func testBestTestChoiceStringValues() {
-        XCTAssertEqual(BestTestChoice.reproducible.string, "reproducible")
-        XCTAssertEqual(BestTestChoice.highestReference.string, "highest reference")
+        XCTAssertEqual(BestTestChoice.reproducible.rawValue, "reproducible")
+        XCTAssertEqual(BestTestChoice.highestReference.rawValue, "highest reference")
     }
 
     func testBestTestChoiceStringToEnum() {
-        XCTAssertEqual(BestTestChoice.stringToEnum("reproducible"), BestTestChoice.reproducible)
-        XCTAssertEqual(BestTestChoice.stringToEnum("highest reference"), BestTestChoice.highestReference)
-        XCTAssertEqual(BestTestChoice.stringToEnum("stark"), nil)
+        XCTAssertEqual(BestTestChoice(rawValue: "reproducible"), BestTestChoice.reproducible)
+        XCTAssertEqual(BestTestChoice(rawValue: "highest reference"), BestTestChoice.highestReference)
+        XCTAssertEqual(BestTestChoice(rawValue: "stark"), nil)
     }
 
     func testLungFunctionZoneStringValues() {
-        XCTAssertEqual(LungFunctionZone.greenZone.string, "green zone")
-        XCTAssertEqual(LungFunctionZone.yellowZone.string, "yellow zone")
-        XCTAssertEqual(LungFunctionZone.redZone.string, "red zone")
+        XCTAssertEqual(LungFunctionZone.greenZone.rawValue, "green zone")
+        XCTAssertEqual(LungFunctionZone.yellowZone.rawValue, "yellow zone")
+        XCTAssertEqual(LungFunctionZone.redZone.rawValue, "red zone")
     }
 
     func testLungFunctionZoneStringToEnum() {
-        XCTAssertEqual(LungFunctionZone.stringToEnum("green zone"), LungFunctionZone.greenZone)
-        XCTAssertEqual(LungFunctionZone.stringToEnum("yellow zone"), LungFunctionZone.yellowZone)
-        XCTAssertEqual(LungFunctionZone.stringToEnum("red zone"), LungFunctionZone.redZone)
-        XCTAssertEqual(LungFunctionZone.stringToEnum("stark"), nil)
+        XCTAssertEqual(LungFunctionZone(rawValue: "green zone"), LungFunctionZone.greenZone)
+        XCTAssertEqual(LungFunctionZone(rawValue: "yellow zone"), LungFunctionZone.yellowZone)
+        XCTAssertEqual(LungFunctionZone(rawValue: "red zone"), LungFunctionZone.redZone)
+        XCTAssertEqual(LungFunctionZone(rawValue: "stark"), nil)
     }
 
     func testRespiratoryStateStringValues() {
-        XCTAssertEqual(RespiratoryState.greenZone.string, "green zone")
-        XCTAssertEqual(RespiratoryState.yellowZone.string, "yellow zone")
-        XCTAssertEqual(RespiratoryState.redZone.string, "red zone")
-        XCTAssertEqual(RespiratoryState.criticalZone.string, "critical zone")
+        XCTAssertEqual(RespiratoryState.greenZone.rawValue, "green zone")
+        XCTAssertEqual(RespiratoryState.yellowZone.rawValue, "yellow zone")
+        XCTAssertEqual(RespiratoryState.redZone.rawValue, "red zone")
+        XCTAssertEqual(RespiratoryState.criticalZone.rawValue, "critical zone")
     }
 
     func testRespiratoryStateStringToEnum() {
-        XCTAssertEqual(RespiratoryState.stringToEnum("green zone"), RespiratoryState.greenZone)
-        XCTAssertEqual(RespiratoryState.stringToEnum("yellow zone"), RespiratoryState.yellowZone)
-        XCTAssertEqual(RespiratoryState.stringToEnum("red zone"), RespiratoryState.redZone)
-        XCTAssertEqual(RespiratoryState.stringToEnum("critical zone"), RespiratoryState.criticalZone)
-        XCTAssertEqual(RespiratoryState.stringToEnum("stark"), nil)
+        XCTAssertEqual(RespiratoryState(rawValue: "green zone"), RespiratoryState.greenZone)
+        XCTAssertEqual(RespiratoryState(rawValue: "yellow zone"), RespiratoryState.yellowZone)
+        XCTAssertEqual(RespiratoryState(rawValue: "red zone"), RespiratoryState.redZone)
+        XCTAssertEqual(RespiratoryState(rawValue: "critical zone"), RespiratoryState.criticalZone)
+        XCTAssertEqual(RespiratoryState(rawValue: "stark"), nil)
     }
 
     func testLocalTestFailureReasonTitleValues() {
@@ -153,37 +153,5 @@ class TestSessionTest: WingKitTestCase {
             LocalTestFailureReason.animationThresholdNotMet.message,
             "Let's try doing that test again!"
         )
-    }
-
-    func testTestSessionStateCodeValues() {
-
-        XCTAssertEqual(TestSessionState.noTest.code, 0)
-        XCTAssertEqual(TestSessionState.goodTestFirst.code, 1)
-        XCTAssertEqual(TestSessionState.reproducibleTestFinal.code, 2)
-        XCTAssertEqual(TestSessionState.notProcessedTestFirst.code, 100)
-        XCTAssertEqual(TestSessionState.notReproducibleTestFirst.code, 101)
-        XCTAssertEqual(TestSessionState.notReproducibleTestFinal.code, 102)
-        XCTAssertEqual(TestSessionState.notProcessedTestFinal.code, 103)
-        XCTAssertEqual(TestSessionState.testSessionInterrupted(reason: .internetDisconnected).code, 200)
-        XCTAssertEqual(TestSessionState.testSessionInterrupted(reason: .sensorDisconnected).code, 201)
-        XCTAssertEqual(TestSessionState.testSessionInterrupted(reason: .animationThresholdNotMet).code, 202)
-    }
-
-    func testTestSessionStateStateForCode() {
-
-        XCTAssertEqual(TestSessionState.state(forCode: 0)!, TestSessionState.noTest)
-        XCTAssertEqual(TestSessionState.state(forCode: 1)!, TestSessionState.goodTestFirst)
-        XCTAssertEqual(TestSessionState.state(forCode: 2)!, TestSessionState.reproducibleTestFinal)
-        XCTAssertEqual(TestSessionState.state(forCode: 100)!, TestSessionState.notProcessedTestFirst)
-        XCTAssertEqual(TestSessionState.state(forCode: 101)!, TestSessionState.notReproducibleTestFirst)
-        XCTAssertEqual(TestSessionState.state(forCode: 102)!, TestSessionState.notReproducibleTestFinal)
-        XCTAssertEqual(TestSessionState.state(forCode: 103)!, TestSessionState.notProcessedTestFinal)
-        XCTAssertEqual(TestSessionState.state(forCode: 200)!,
-                       TestSessionState.testSessionInterrupted(reason: .internetDisconnected))
-        XCTAssertEqual(TestSessionState.state(forCode: 201)!,
-                       TestSessionState.testSessionInterrupted(reason: .sensorDisconnected))
-        XCTAssertEqual(TestSessionState.state(forCode: 202)!,
-                       TestSessionState.testSessionInterrupted(reason: .animationThresholdNotMet))
-        XCTAssertNil(TestSessionState.state(forCode: 12341234))
     }
 }
