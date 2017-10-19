@@ -8,75 +8,40 @@
 
 import Foundation
 
-public enum BestTestChoice: Int {
-    case reproducible = 1
-    case highestReference
+/// Represents the method used to determine the result (best test) of a test session.
+public enum BestTestChoice: String {
 
-    var string: String {
-        switch self {
-        case .reproducible: return "reproducible"
-        case .highestReference: return "highest reference"
-        }
-    }
+    /// Indicates that the test session had reproducible results to derive the best test from.
+    case reproducible = "reproducible"
 
-    static func stringToEnum(_ string: String) -> BestTestChoice? {
-        switch string {
-        case "reproducible": return reproducible
-        case "highest reference": return highestReference
-        default: return nil
-        }
-    }
+    /// Indicates that the test session did not have reproducible results, thus the test with highest reference value was used as the result.
+    case highestReference = "highest reference"
 }
 
-public enum LungFunctionZone: Int {
-    case greenZone = 1
-    case yellowZone
-    case redZone
 
-    var string: String {
-        switch self {
-        case .greenZone: return "green zone"
-        case .yellowZone: return "yellow zone"
-        case .redZone: return "red zone"
-        }
-    }
+/// Represents the Peak Flow measurement zones that doctors use when developing an asthma management plan.
+public enum LungFunctionZone: String {
 
-    static func stringToEnum(_ string: String) -> LungFunctionZone? {
-        switch string {
-        case "green zone": return greenZone
-        case "yellow zone": return yellowZone
-        case "red zone": return redZone
-        default: return nil
-        }
-    }
+    /// Indicates that 80 to 100 percent of the usual or normal peak flow readings are clear.
+    case greenZone = "green zone"
+
+    /// Indicates that 50 to 79 percent of the usual or normal peak flow readings.
+    case yellowZone = "yellow zone"
+
+    /// Indicates that less than 50 percent of the usual or normal peak flow readings.
+    case redZone = "red zone"
 }
 
-public enum RespiratoryState: Int {
-    case greenZone = 1
-    case yellowZone
-    case redZone
-    case criticalZone
-
-    var string: String {
-        switch self {
-        case .greenZone: return "green zone"
-        case .yellowZone: return "yellow zone"
-        case .redZone: return "red zone"
-        case .criticalZone: return "critical zone"
-        }
-    }
-
-    static func stringToEnum(_ string: String) -> RespiratoryState? {
-        switch string {
-        case "green zone": return greenZone
-        case "yellow zone": return yellowZone
-        case "red zone": return redZone
-        case "critical zone": return criticalZone
-        default: return nil
-        }
-    }
+public enum RespiratoryState: String {
+    case greenZone = "green zone"
+    case yellowZone = "yellow zone"
+    case redZone = "red zone"
+    case criticalZone = "critical zone"
 }
 
+/**
+ The `TestSession` struct represents a session of multiple lung function tests.
+ */
 public struct TestSession: Decodable {
 
     struct Keys {
@@ -150,17 +115,17 @@ public struct TestSession: Decodable {
         endedAt = (json[Keys.endedAt] as? String)?.dateFromISO8601
 
         if let lungFunctionZoneString = json[Keys.lungFunctionZone] as? String,
-            let lungFunctionZone = LungFunctionZone.stringToEnum(lungFunctionZoneString) {
+            let lungFunctionZone = LungFunctionZone(rawValue: lungFunctionZoneString) {
             self.lungFunctionZone = lungFunctionZone
         }
 
         if let respiratoryStateString = json[Keys.respiratoryState] as? String,
-            let respiratoryState = RespiratoryState.stringToEnum(respiratoryStateString) {
+            let respiratoryState = RespiratoryState(rawValue: respiratoryStateString) {
             self.respiratoryState = respiratoryState
         }
 
         if let bestTestChoiceString = json[Keys.bestTestChoice] as? String,
-            let bestTestChoice = BestTestChoice.stringToEnum(bestTestChoiceString) {
+            let bestTestChoice = BestTestChoice(rawValue: bestTestChoiceString) {
             self.bestTestChoice = bestTestChoice
         }
 

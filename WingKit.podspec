@@ -105,9 +105,6 @@ Pod::Spec.new do |s|
   #  non-essential files like tests, examples and documentation.
   #
 
-  s.resource_bundles = {
-      "WingKitDebugging" => ["WingKit/debuggingWav.wav"]
-  }
   # s.resource  = "WingKit/debuggingWav.wav"
   # s.resources = "Resources/*.png"
 

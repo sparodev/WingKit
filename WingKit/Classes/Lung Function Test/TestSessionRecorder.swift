@@ -14,48 +14,58 @@ import AVFoundation
  allow the delegate to observe recorder state changes and signal strength changes.
  */
 public protocol TestRecorderDelegate: class {
-    func recorderStateChanged(_ state: TestSessionRecorder.State)
+    func recorderStateChanged(_ state: TestRecorderState)
     func signalStrengthChanged(_ strength: Double)
 }
 
-public class TestSessionRecorder {
+/// The various states of the `TestSessionRecorder` class during a recording session.
+public enum TestRecorderState {
+    case ready
+    case recording
+    case finished
+}
 
-    public enum State {
-        case ready
-        case recording
-        case finished
-    }
+/// The `TestRecorderError` enum describes domain specific errors for the `TestSessionRecorder` class.
+public enum TestRecorderError: Error {
 
-    public enum Error: Swift.Error {
-        case configurationFailed
+    /// Indicates the recorder failed to configure the underlying audio session used for recording.
+    case configurationFailed
 
-        public var localizedDescription: String {
-            switch self {
-            case .configurationFailed: return "An error occurred while configuring the audio recorder."
-            }
+    public var localizedDescription: String {
+        switch self {
+        case .configurationFailed: return "An error occurred while configuring the audio recorder."
         }
     }
+}
+
+/**
+ The `TestSessionRecorder` class is used to detect and record when a user blows into the Wing sensor.
+ */
+public class TestSessionRecorder {
 
     /**
      The duration of the recording session.
      */
-    let testDuration: TimeInterval = 6.0
+    public let testDuration: TimeInterval = 6.0
 
     /**
      The threshold that the sensor recording strength must surpass to be considered a valid test.
      */
-    let signalStrengthThreshold: Double = 0.6
+    public let signalStrengthThreshold: Double = 0.6
 
     /// The object that acts as the delegate for the recorder.
     public weak var delegate: TestRecorderDelegate?
 
     /// The current state of the recorder.
-    public fileprivate(set) var state: State = .ready {
+    public fileprivate(set) var state: TestRecorderState = .ready {
         didSet {
             delegate?.recorderStateChanged(state)
         }
     }
 
+    /**
+     Indicates whether or not the recorded blow has passed the required signal strength threshold to be considered a valid, processable blow.
+     */
     public fileprivate(set) var signalStrengthThresholdPassed = false
 
     fileprivate var testTimer: Timer?
@@ -71,23 +81,7 @@ public class TestSessionRecorder {
     fileprivate var baselineBlowBackground = 0.5
     fileprivate let defaultBaselineBlow = 0.5
 
-    public var skipRecording = true
-
-    fileprivate var debugWavUrl: String? {
-
-        let podBundle = Bundle(for: TestSessionRecorder.self)
-        guard let debuggingBundleURL = podBundle.url(forResource: "WingKitDebugging", withExtension: "bundle") else {
-            return nil
-        }
-
-        return Bundle(url: debuggingBundleURL)?.path(forResource: "debuggingWav", ofType: "wav")
-    }
-
     public var recordingFilepath: String? {
-        if skipRecording {
-            return debugWavUrl
-        }
-
         if let soundFilePath = soundFilePath,
             let soundFileTrimmedPath = soundFileTrimmedPath,
             TrimmingWrapper.trim(withInputFileName: soundFilePath, outputFileName: soundFilePath) == 0 {
@@ -104,6 +98,7 @@ public class TestSessionRecorder {
     fileprivate var audioRecorder: AVAudioRecorder?
     fileprivate var blowRecorder: AVAudioRecorder?
 
+    /// Initializes an instance of the `TestSessionRecorder` class.
     public init() {}
 
     deinit {
@@ -122,7 +117,7 @@ public class TestSessionRecorder {
             try configureBlowRecorder()
             try configureAudioRecorder()
         } catch {
-            throw Error.configurationFailed
+            throw TestRecorderError.configurationFailed
         }
 
         startBlowRecorder()

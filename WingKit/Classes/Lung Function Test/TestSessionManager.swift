@@ -8,10 +8,6 @@
 
 import Foundation
 
-public protocol TestSessionManagerDelegate: class {
-
-}
-
 public enum LocalTestFailureReason {
     case sensorDisconnected
     case internetDisconnected
@@ -46,63 +42,43 @@ public enum LocalTestFailureReason {
     }
 }
 
-public enum TestSessionState: Equatable {
+/// The `TestSessionState` enum describes the various states a test session can be in.
+public enum TestSessionState {
+
+    /// Indicates that no tests have been performed during the session.
     case noTest
+
+    /// Indicates that the test session includes one successful test.
     case goodTestFirst
+
+    /// Indicates that the test session includes one test that wasn't able to be processed.
     case notProcessedTestFirst
+
+    /// Indicates that the test session includes two complete tests that aren't reproducible.
     case notReproducibleTestFirst
+
+    /// Indicates that the test session has concluded with non-reproducible results.
     case notReproducibleTestFinal
+
+    /// Indicates that the test session has concluded with reproducible results.
     case reproducibleTestFinal
+
+    /// Indiciates that the test session has concluded with at least two non-processable tests.
     case notProcessedTestFinal
+
+    /// Indicates that the most recent test failed due to a local failure reason.
     case testSessionInterrupted(reason: LocalTestFailureReason)
-
-    static func state(forCode code: Int) -> TestSessionState? {
-        switch code {
-        case 0: return .noTest
-        case 1: return .goodTestFirst
-        case 2: return .reproducibleTestFinal
-        case 100: return .notProcessedTestFirst
-        case 101: return .notReproducibleTestFirst
-        case 102: return .notReproducibleTestFinal
-        case 103: return .notProcessedTestFinal
-        case 200: return .testSessionInterrupted(reason: .internetDisconnected)
-        case 201: return .testSessionInterrupted(reason: .sensorDisconnected)
-        case 202: return .testSessionInterrupted(reason: .animationThresholdNotMet)
-        default: return nil
-        }
-    }
-
-    var code: Int {
-        switch self {
-        case .noTest: return 0
-        case .goodTestFirst: return 1
-        case .reproducibleTestFinal: return 2
-        case .notProcessedTestFirst: return 100
-        case .notReproducibleTestFirst: return 101
-        case .notReproducibleTestFinal: return 102
-        case .notProcessedTestFinal: return 103
-        case .testSessionInterrupted(let reason):
-            switch reason {
-            case .internetDisconnected: return 200
-            case .sensorDisconnected: return 201
-            case .animationThresholdNotMet: return 202
-            }
-        }
-    }
 }
 
-public func == (lhs: TestSessionState, rhs: TestSessionState) -> Bool {
-    return lhs.code == rhs.code
+/// The `TestSessionManagerError` enum describes domain specific errors for the `TestSessionManager` class.
+public enum TestSessionManagerError: Error {
+    case testSessionNotFound
+    case uploadTargetCreationFailed
+    case invalidUploadTarget
+    case invalidRecording
 }
 
 public class TestSessionManager {
-
-    public enum Error: Swift.Error {
-        case testSessionNotFound
-        case uploadTargetCreationFailed
-        case invalidUploadTarget
-        case invalidRecording
-    }
 
     /// The state of the test session.
     public fileprivate(set) var state: TestSessionState = .noTest
@@ -111,8 +87,8 @@ public class TestSessionManager {
 
     fileprivate var usedUploadTargetIds = [String]()
 
-    let failedTestsThreshold = 2
-    let localTestFailureThreshold = 2
+    public let failedTestsThreshold = 2
+    public let localTestFailureThreshold = 2
 
     /// The interval at which the server will be pinged to check if processing is complete.
 
@@ -143,7 +119,7 @@ public class TestSessionManager {
                 if let error = error {
                     completion(error)
                 } else {
-                    completion(Error.testSessionNotFound)
+                    completion(TestSessionManagerError.testSessionNotFound)
                 }
 
                 return
@@ -195,7 +171,7 @@ public class TestSessionManager {
                 if let error = error {
                     completion(nil, error)
                 } else {
-                    completion(nil, Error.uploadTargetCreationFailed)
+                    completion(nil, TestSessionManagerError.uploadTargetCreationFailed)
                 }
                 return
             }

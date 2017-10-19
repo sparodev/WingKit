@@ -39,6 +39,7 @@ public class ReachabilityMonitor {
 
     // MARK: - Init
 
+    /// Initializes an instance of the `ReachabilityMonitor` class.
     public init() {
         configure()
     }

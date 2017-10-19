@@ -8,6 +8,16 @@
 import Foundation
 import AVFoundation
 
+/// The `AmbientNoiseMonitorError` enum describes domain specific errors for the `AmbientNoiseMonitor` class.
+public enum AmbientNoiseMonitorError: Error {
+
+    /// Occurs when the user has denied
+    case microphonePermissionDenied
+
+    /// Indicates that an error occurred while configuring the recorder.
+    case recorderConfigurationError
+}
+
 /**
  The delegate of the AmbientNoiseMonitor object must adopt the `AmbientNoiseMonitorDelegate` protocol.  This allows
  the delegate to observe whenever `isBlowThreshold` state changes.
@@ -18,16 +28,11 @@ public protocol AmbientNoiseMonitorDelegate: class {
     func ambientNoiseMonitorDidChangeState(_ monitor: AmbientNoiseMonitor)
 }
 
+/**
+ The `AmbientNoiseMonitor` class is used to monitor the ambient noise in an environment to determine whether or not the
+ conditions are sufficient for a lung function measurement.
+ */
 public class AmbientNoiseMonitor {
-
-    public enum Error: Swift.Error {
-
-        /// Occurs when the user has denied
-        case microphonePermissionDenied
-
-        /// Indicates that an error occurred while configuring the recorder.
-        case recorderConfigurationError
-    }
 
     /// The object that acts as the delegate of the monitor.
     public weak var delegate: AmbientNoiseMonitorDelegate?
@@ -46,6 +51,7 @@ public class AmbientNoiseMonitor {
 
     fileprivate var noiseCheckTimer: Timer?
 
+    /// Initializes an instance of the `AmbientNoiseMonitor` class.
     public init() {}
 
     deinit {
@@ -55,7 +61,8 @@ public class AmbientNoiseMonitor {
     /**
      Starts measuring the amount of ambient noise.
 
-     - throws: `AmbientNoiseMonitor.Error.microphonePermissionDenied` if the user denys permission to access the microphone.
+     - throws: `AmbientNoiseMonitorError.microphonePermissionDenied` if the user denys permission to access the microphone.
+     - throws: `AmbientNoiseMonitorError.recorderConfigurationError` if any errors occur while configuring the audio session.
      */
     public func start(completion: @escaping (Error?) -> Void) {
 
@@ -92,7 +99,7 @@ public class AmbientNoiseMonitor {
             audioSession.requestRecordPermission({ (granted) in
 
                 guard granted else {
-                    completion(Error.microphonePermissionDenied)
+                    completion(AmbientNoiseMonitorError.microphonePermissionDenied)
                     return
                 }
 
@@ -102,12 +109,12 @@ public class AmbientNoiseMonitor {
                         with: .defaultToSpeaker)
                     try self.audioSession.setActive(true)
                 } catch {
-                    completion(Error.recorderConfigurationError)
+                    completion(AmbientNoiseMonitorError.recorderConfigurationError)
                 }
 
                 let manager = FileManager()
                 guard let cachesDirectoryURL = manager.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-                    completion(Error.recorderConfigurationError)
+                    completion(AmbientNoiseMonitorError.recorderConfigurationError)
                     return
                 }
 
@@ -124,7 +131,7 @@ public class AmbientNoiseMonitor {
                 do {
                     self.recorder = try AVAudioRecorder(url: recordingFileURL, settings: recordSettings)
                 } catch {
-                    completion(Error.recorderConfigurationError)
+                    completion(AmbientNoiseMonitorError.recorderConfigurationError)
                 }
 
                 completion(nil)
