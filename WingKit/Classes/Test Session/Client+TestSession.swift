@@ -31,13 +31,19 @@ enum TestSessionEndpoint: Endpoint {
     }
 }
 
-extension Client {
+public extension Client {
 
-    static func createTestSession(completion: @escaping (TestSession?, Error?) -> Void) {
+    public static func createTestSession(completion: @escaping (TestSession?, Error?) -> Void) {
+
+        guard let token = token else {
+            completion(nil, ClientError.unauthorized)
+            return
+        }
 
         var request: URLRequestConvertible
         do {
-            request = try self.request(for: TestSessionEndpoint.create)
+            request = try self.request(for: TestSessionEndpoint.create,
+                                       headers: ["Authorization": token])
         } catch {
             return completion(nil, error)
         }
@@ -58,11 +64,17 @@ extension Client {
         }
     }
 
-    static func retrieveTestSession(withId id: String, completion: @escaping (TestSession?, Error?) -> Void) {
+    public static func retrieveTestSession(withId id: String, completion: @escaping (TestSession?, Error?) -> Void) {
+
+        guard let token = token else {
+            completion(nil, ClientError.unauthorized)
+            return
+        }
 
         var request: URLRequestConvertible
         do {
-            request = try self.request(for: TestSessionEndpoint.retrieve(sessionId: id))
+            request = try self.request(for: TestSessionEndpoint.retrieve(sessionId: id),
+                                       headers: ["Authorization": token])
         } catch {
             return completion(nil, error)
         }
