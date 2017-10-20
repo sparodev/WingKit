@@ -10,6 +10,7 @@ target 'WingKit' do
   pod 'AWSS3'
   pod 'AWSCognito'
   pod 'AWSCognitoIdentityProvider'
+  pod 'ReachabilitySwift'
 
   target 'WingKitTests' do
     inherit! :search_paths
