@@ -62,7 +62,15 @@ public extension Client {
         }
     }
 
-    public static func retrieveTestSession(withId id: String, completion: @escaping (TestSession?, Error?) -> Void) {
+    /**
+     Sends a request to retrieve the details for the test session for the specified ID.
+
+     - parameter id: The identifier for the test session.
+     - parameter completion: The callback closure that will get invoked upon the request finishing.
+     - parameter testSession: The test session object that represents the retrieved test session. (Optional)
+     - parameter error: The error that occurred while performing the network request. (Optional)
+     */
+    public static func retrieveTestSession(withId id: String, completion: @escaping (_ testSession: TestSession?, _ error: Error?) -> Void) {
 
         guard let token = token else {
             completion(nil, ClientError.unauthorized)
