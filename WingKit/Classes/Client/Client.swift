@@ -39,11 +39,20 @@ enum AuthenticationEndpoint: Endpoint {
     }
 }
 
+/**
+ The 'Client' class acts as the interface for the Wing REST API. All Wing API Requests are routed through this class
+ to apply the necessary authentication to the requests.
+ */
+
 public class Client {
 
-    static let baseURLPath = "https://api.mywing.io/v2"
+    static let baseURLPath = "https://api-development.mywing.io/api/v2"
     static var oauth: OAuthCredentials? = nil
     static var token: String?
+
+    init() {
+        Client.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IktyNDJ5b2pHdzM4V3oiLCJ0eXBlIjoiYXV0aCIsImtleUdlbiI6IjEyRUJBYmxnTHJOSlAiLCJpYXQiOjE1MDc1NjQ0NDUsImV4cCI6MTUzOTEwMDQ0NX0.Tz1bn1dq0NQaHA-kEo9XQx8ueTTMFLc32j6p4eQy6z0"
+    }
 
     static func request(for endpoint: Endpoint,
                         parameters: [String: Any]? = nil,
@@ -63,6 +72,10 @@ public class Client {
             updatedHeaders["Content-Type"] = "application/json"
         }
 
+        if let token = token {
+            updatedHeaders["Authorization"] = token
+        }
+
         return NetworkRequest(url: url, method: endpoint.method, parameters: parameters, headers: updatedHeaders)
     }
 
@@ -70,6 +83,9 @@ public class Client {
         return URL(string: baseURLPath + endpoint.path)
     }
 
+    /**
+     Authenticates the application with the Wing API using the assigned Client ID/Secret.
+     */
     public static func authenticate(completion: @escaping (String?, Error?) -> Void) {
 
         guard let oauth = oauth else {

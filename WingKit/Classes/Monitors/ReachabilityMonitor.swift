@@ -13,16 +13,24 @@ enum ReachabilityMonitorError: Error {
     case monitorUnavailable
 }
 
+/**
+ The delegate of a ReachabilityMonitor object must adopt the `ReachabilityMonitorDelegate` protocol. Methods of the
+ protocol allow the delegate to observe network reachability state changes..
+ */
 public protocol ReachabilityMonitorDelegate: class {
+
+    /// Tells the delegate when the network reachability state has changed.
     func reachabilityMonitorDidChangeReachability(_ manager: ReachabilityMonitor)
 }
 
 public class ReachabilityMonitor {
 
+    /// The object that acts as the delegate for the monitor.
     public weak var delegate: ReachabilityMonitorDelegate?
 
     fileprivate(set) var isActive = false
 
+    /// Indicates whether or not the device is connected to the internet.
     public var isConnectedToInternet: Bool {
         return reachability?.isReachable ?? false
     }
@@ -31,16 +39,19 @@ public class ReachabilityMonitor {
 
     // MARK: - Init
 
+    /// Initializes an instance of the `ReachabilityMonitor` class.
     public init() {
         configure()
     }
 
     deinit {
+        stop()
         NotificationCenter.default.removeObserver(self)
     }
 
     // MARK: - Start/Stop
 
+    /// Starts monitoring the device's internet reachability.
     public func start() throws {
 
         guard !isActive else { return }
@@ -59,6 +70,7 @@ public class ReachabilityMonitor {
         }
     }
 
+    /// Stops monitoring the device's internet reachability.
     public func stop() {
         isActive = false
 

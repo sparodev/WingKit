@@ -18,7 +18,7 @@ class NetworkMock: NetworkProtocol {
 
     var uploadFileStub: ((_ filepath: String, _ bucket: String, _ key: String, _ completion: (Error?) -> Void) -> Void)?
     func uploadFile(atFilepath filepath: String, toBucket bucket: String,
-                    withKey key: String, completion: (Error?) -> Void) {
+                    withKey key: String, completion: @escaping (Error?) -> Void) {
         uploadFileStub?(filepath, bucket, key, completion)
     }
 }

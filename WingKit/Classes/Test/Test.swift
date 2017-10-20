@@ -8,36 +8,47 @@
 
 import Foundation
 
-struct Test: Decodable {
+/// The `TestStatus` enum describes the various states an individual lung function test can be in.
+public enum TestStatus: Int {
 
-    enum Status: Int {
-        case started = 0
-        case complete = 1
-        case uploaded = 2
-        case processing = 3
-        case error = 4
+    /// Indicates the has been initialized and started.
+    case started = 0
 
-        var string: String {
-            switch self {
-            case .started: return "Started"
-            case .complete: return "Complete"
-            case .uploaded: return "Uploaded"
-            case .processing: return "Processing"
-            case .error: return "Error"
-            }
-        }
+    /// Indicates the test has finished uploading and processing and without any errors.
+    case complete = 1
 
-        static func stringToEnum(_ string: String) -> Status? {
-            switch string {
-            case "Started": return started
-            case "Complete": return complete
-            case "Uploaded": return uploaded
-            case "Processing": return processing
-            case "Error": return error
-            default: return nil
-            }
+    /// Indicates the test has finished uploading the recording.
+    case uploaded = 2
+
+    /// Indicates the test is currently processing.
+    case processing = 3
+
+    /// Indicates that an error occurred while processing the test.
+    case error = 4
+
+    var string: String {
+        switch self {
+        case .started: return "Started"
+        case .complete: return "Complete"
+        case .uploaded: return "Uploaded"
+        case .processing: return "Processing"
+        case .error: return "Error"
         }
     }
+
+    static func stringToEnum(_ string: String) -> TestStatus? {
+        switch string {
+        case "Started": return started
+        case "Complete": return complete
+        case "Uploaded": return uploaded
+        case "Processing": return processing
+        case "Error": return error
+        default: return nil
+        }
+    }
+}
+
+public struct Test: Decodable {
 
     struct Keys {
         static let id = "id"
@@ -52,31 +63,31 @@ struct Test: Decodable {
     }
 
     /// The identifier for the test.
-    var id: String
+    public var id: String
 
     /// The status of processing for the test.
-    var status: Status = .started
+    public var status: TestStatus = .started
 
     /// The date/time for when the test was taken at.
-    var takenAt: Date?
+    public var takenAt: Date?
 
     /// The length of time that the patient breathed into the device.
-    var breathDuration: Double = 0
+    public var breathDuration: Double = 0
 
     /// The values for the exhale curve graph.
-    var exhaleCurve: [[Double]] = []
+    public var exhaleCurve: [[Double]] = []
 
     /// The total volume exhaled (in liters).
-    var totalVolume: Double = 0
+    public var totalVolume: Double = 0
 
     /// The PEF value for the test.
-    var pef: Double = 0
+    public var pef: Double = 0
 
     /// The FEV1 value for the test.
-    var fev1: Double = 0
+    public var fev1: Double = 0
 
     /// The id of the associated upload target.
-    var uploadTargetId: String?
+    public var uploadTargetId: String?
 
     init?(from decoder: JSONDecoder) {
 
@@ -89,7 +100,7 @@ struct Test: Decodable {
         takenAt = (json[Keys.takenAt] as? String)?.dateFromISO8601
 
         if let statusString = json[Keys.status] as? String,
-            let status = Status.stringToEnum(statusString) {
+            let status = TestStatus.stringToEnum(statusString) {
             self.status = status
         }
 

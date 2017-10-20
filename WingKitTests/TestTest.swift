@@ -15,7 +15,7 @@ extension Test {
         return [
             Test.Keys.id: UUID().uuidString,
             Test.Keys.takenAt: Date().iso8601,
-            Test.Keys.status: Test.Status.processing.string,
+            Test.Keys.status: TestStatus.processing.string,
             Test.Keys.breathDuration: 7.0,
             Test.Keys.exhaleCurve: [
                 [1.0, 2.0],
@@ -41,28 +41,28 @@ class TestTest: WingKitTestCase {
     }
 
     func testTestStatusStringValues() {
-        XCTAssertEqual(Test.Status.started.string, "Started")
-        XCTAssertEqual(Test.Status.complete.string, "Complete")
-        XCTAssertEqual(Test.Status.uploaded.string, "Uploaded")
-        XCTAssertEqual(Test.Status.processing.string, "Processing")
-        XCTAssertEqual(Test.Status.error.string, "Error")
+        XCTAssertEqual(TestStatus.started.string, "Started")
+        XCTAssertEqual(TestStatus.complete.string, "Complete")
+        XCTAssertEqual(TestStatus.uploaded.string, "Uploaded")
+        XCTAssertEqual(TestStatus.processing.string, "Processing")
+        XCTAssertEqual(TestStatus.error.string, "Error")
     }
 
     func testTestStatusStringToEnum() {
 
-        XCTAssertEqual(Test.Status.stringToEnum("Started"), Test.Status.started)
-        XCTAssertEqual(Test.Status.stringToEnum("Complete"), Test.Status.complete)
-        XCTAssertEqual(Test.Status.stringToEnum("Uploaded"), Test.Status.uploaded)
-        XCTAssertEqual(Test.Status.stringToEnum("Processing"), Test.Status.processing)
-        XCTAssertEqual(Test.Status.stringToEnum("Error"), Test.Status.error)
-        XCTAssertEqual(Test.Status.stringToEnum("Targaryen"), nil)
+        XCTAssertEqual(TestStatus.stringToEnum("Started"), TestStatus.started)
+        XCTAssertEqual(TestStatus.stringToEnum("Complete"), TestStatus.complete)
+        XCTAssertEqual(TestStatus.stringToEnum("Uploaded"), TestStatus.uploaded)
+        XCTAssertEqual(TestStatus.stringToEnum("Processing"), TestStatus.processing)
+        XCTAssertEqual(TestStatus.stringToEnum("Error"), TestStatus.error)
+        XCTAssertEqual(TestStatus.stringToEnum("Targaryen"), nil)
     }
 
     func testIsDecodableFromJSON() {
 
         let expectedId = UUID().uuidString
         let expectedTakenAt = Date()
-        let expectedStatus = Test.Status.processing
+        let expectedStatus = TestStatus.processing
         let expectedBreathDuration = 7.0
         let expectedExhaleCurve = [
             [1.0, 2.0],
@@ -119,7 +119,7 @@ class TestTest: WingKitTestCase {
     func testFailsDecodingWhenIdIsNil() {
 
         let expectedTakenAt = Date()
-        let expectedStatus = Test.Status.processing
+        let expectedStatus = TestStatus.processing
         let expectedBreathDuration = 7.0
         let expectedExhaleCurve = [
             [1.0, 2.0],

@@ -8,158 +8,40 @@
 
 import Foundation
 
-enum BestTestChoice: Int {
-    case reproducible = 1
-    case highestReference
+/// Represents the method used to determine the result (best test) of a test session.
+public enum BestTestChoice: String {
 
-    var string: String {
-        switch self {
-        case .reproducible: return "reproducible"
-        case .highestReference: return "highest reference"
-        }
-    }
+    /// Indicates that the test session had reproducible results to derive the best test from.
+    case reproducible = "reproducible"
 
-    static func stringToEnum(_ string: String) -> BestTestChoice? {
-        switch string {
-        case "reproducible": return reproducible
-        case "highest reference": return highestReference
-        default: return nil
-        }
-    }
+    /// Indicates that the test session did not have reproducible results, thus the test with highest reference value was used as the result.
+    case highestReference = "highest reference"
 }
 
-enum LungFunctionZone: Int {
-    case greenZone = 1
-    case yellowZone
-    case redZone
 
-    var string: String {
-        switch self {
-        case .greenZone: return "green zone"
-        case .yellowZone: return "yellow zone"
-        case .redZone: return "red zone"
-        }
-    }
+/// Represents the Peak Flow measurement zones that doctors use when developing an asthma management plan.
+public enum LungFunctionZone: String {
 
-    static func stringToEnum(_ string: String) -> LungFunctionZone? {
-        switch string {
-        case "green zone": return greenZone
-        case "yellow zone": return yellowZone
-        case "red zone": return redZone
-        default: return nil
-        }
-    }
+    /// Indicates that 80 to 100 percent of the usual or normal peak flow readings are clear.
+    case greenZone = "green zone"
+
+    /// Indicates that 50 to 79 percent of the usual or normal peak flow readings.
+    case yellowZone = "yellow zone"
+
+    /// Indicates that less than 50 percent of the usual or normal peak flow readings.
+    case redZone = "red zone"
 }
 
-enum RespiratoryState: Int {
-    case greenZone = 1
-    case yellowZone
-    case redZone
-    case criticalZone
-
-    var string: String {
-        switch self {
-        case .greenZone: return "green zone"
-        case .yellowZone: return "yellow zone"
-        case .redZone: return "red zone"
-        case .criticalZone: return "critical zone"
-        }
-    }
-
-    static func stringToEnum(_ string: String) -> RespiratoryState? {
-        switch string {
-        case "green zone": return greenZone
-        case "yellow zone": return yellowZone
-        case "red zone": return redZone
-        case "critical zone": return criticalZone
-        default: return nil
-        }
-    }
+public enum RespiratoryState: String {
+    case greenZone = "green zone"
+    case yellowZone = "yellow zone"
+    case redZone = "red zone"
+    case criticalZone = "critical zone"
 }
 
-enum LocalTestFailureReason {
-    case sensorDisconnected
-    case internetDisconnected
-    case animationThresholdNotMet
-
-    var title: String {
-        switch self {
-        case .sensorDisconnected: return "Sensor Error"
-        case .internetDisconnected: return "Internet Error"
-        case .animationThresholdNotMet: return "Processing Error"
-        }
-    }
-
-    var subtitle: String {
-        switch self {
-        case .sensorDisconnected: return "Where's the sensor?"
-        case .internetDisconnected: return "No Internet Connection"
-        case .animationThresholdNotMet: return "Something went wrong!"
-        }
-    }
-
-    var message: String {
-        switch self {
-        case .sensorDisconnected:
-            return "Be sure Wing is plugged in and be careful not to pull on the cord when blowing into Wing!"
-        case .internetDisconnected:
-            return "You must be connected to the internet in order to take a test. "
-                + "Please fix your connection and try again."
-        case .animationThresholdNotMet:
-            return "Let's try doing that test again!"
-        }
-    }
-}
-
-enum TestSessionState: Equatable {
-    case noTest
-    case goodTestFirst
-    case notProcessedTestFirst
-    case notReproducibleTestFirst
-    case notReproducibleTestFinal
-    case reproducibleTestFinal
-    case notProcessedTestFinal
-    case testSessionInterrupted(reason: LocalTestFailureReason)
-
-    static func state(forCode code: Int) -> TestSessionState? {
-        switch code {
-        case 0: return .noTest
-        case 1: return .goodTestFirst
-        case 2: return .reproducibleTestFinal
-        case 100: return .notProcessedTestFirst
-        case 101: return .notReproducibleTestFirst
-        case 102: return .notReproducibleTestFinal
-        case 103: return .notProcessedTestFinal
-        case 200: return .testSessionInterrupted(reason: .internetDisconnected)
-        case 201: return .testSessionInterrupted(reason: .sensorDisconnected)
-        case 202: return .testSessionInterrupted(reason: .animationThresholdNotMet)
-        default: return nil
-        }
-    }
-
-    var code: Int {
-        switch self {
-        case .noTest: return 0
-        case .goodTestFirst: return 1
-        case .reproducibleTestFinal: return 2
-        case .notProcessedTestFirst: return 100
-        case .notReproducibleTestFirst: return 101
-        case .notReproducibleTestFinal: return 102
-        case .notProcessedTestFinal: return 103
-        case .testSessionInterrupted(let reason):
-            switch reason {
-            case .internetDisconnected: return 200
-            case .sensorDisconnected: return 201
-            case .animationThresholdNotMet: return 202
-            }
-        }
-    }
-}
-
-func == (lhs: TestSessionState, rhs: TestSessionState) -> Bool {
-    return lhs.code == rhs.code
-}
-
+/**
+ The `TestSession` struct represents a session of multiple lung function tests.
+ */
 public struct TestSession: Decodable {
 
     struct Keys {
@@ -181,46 +63,43 @@ public struct TestSession: Decodable {
     }
 
     /// The identifier for the test session.
-    var id: String
+    public var id: String
 
     /// The date/time for when the test session started.
-    var startedAt: Date
-
-    /// The state of the test session.
-    var state: TestSessionState = .noTest
+    public var startedAt: Date
 
     /// The date/time for when the test session ended.
-    var endedAt: Date?
+    public var endedAt: Date?
 
     /// The lung function based on the result of the test.
-    var lungFunctionZone: LungFunctionZone?
+    public var lungFunctionZone: LungFunctionZone?
 
     /// The respiratory state based on the result of the test.
-    var respiratoryState: RespiratoryState?
+    public var respiratoryState: RespiratoryState?
 
     /// The latitude of the device at time of session start.
-    var latitude: Double?
+    public var latitude: Double?
 
     /// The longitude of the device at time of session start.
-    var longitude: Double?
+    public var longitude: Double?
 
     /// The altitude of the device at time of session start.
-    var altitude: Double?
+    public var altitude: Double?
 
     /// The estimated floor of the device at time of session start.
-    var floor: Double?
+    public var floor: Double?
 
     /// The test chosen as the best test candidate to derive results from.
-    var bestTest: Test?
+    public var bestTest: Test?
 
     /// The tests taken during the test session.
-    var tests: [Test] = []
+    public var tests: [Test] = []
 
     /// The upload targets used to upload lung function recordings to.
     var uploadTargets: [UploadTarget] = []
 
     /// How the best test was chosen
-    var bestTestChoice: BestTestChoice?
+    public var bestTestChoice: BestTestChoice?
 
     init?(from decoder: JSONDecoder) {
 
@@ -236,17 +115,17 @@ public struct TestSession: Decodable {
         endedAt = (json[Keys.endedAt] as? String)?.dateFromISO8601
 
         if let lungFunctionZoneString = json[Keys.lungFunctionZone] as? String,
-            let lungFunctionZone = LungFunctionZone.stringToEnum(lungFunctionZoneString) {
+            let lungFunctionZone = LungFunctionZone(rawValue: lungFunctionZoneString) {
             self.lungFunctionZone = lungFunctionZone
         }
 
         if let respiratoryStateString = json[Keys.respiratoryState] as? String,
-            let respiratoryState = RespiratoryState.stringToEnum(respiratoryStateString) {
+            let respiratoryState = RespiratoryState(rawValue: respiratoryStateString) {
             self.respiratoryState = respiratoryState
         }
 
         if let bestTestChoiceString = json[Keys.bestTestChoice] as? String,
-            let bestTestChoice = BestTestChoice.stringToEnum(bestTestChoiceString) {
+            let bestTestChoice = BestTestChoice(rawValue: bestTestChoiceString) {
             self.bestTestChoice = bestTestChoice
         }
 
@@ -312,6 +191,42 @@ public struct TestSession: Decodable {
             }
 
             self.uploadTargets = uploadTargets
+        }
+    }
+
+    mutating func merge(with testSession: TestSession) {
+
+        endedAt = testSession.endedAt
+        lungFunctionZone = testSession.lungFunctionZone
+        respiratoryState = testSession.respiratoryState
+        bestTestChoice = testSession.bestTestChoice
+
+        if let latitude = testSession.latitude {
+            self.latitude = latitude
+        }
+
+        if let longitude = testSession.longitude {
+            self.longitude = longitude
+        }
+
+        if let altitude = testSession.altitude {
+            self.altitude = altitude
+        }
+
+        if let floor = testSession.floor {
+            self.floor = floor
+        }
+
+        if let bestTest = testSession.bestTest {
+            self.bestTest = bestTest
+        }
+
+        if !testSession.tests.isEmpty {
+            self.tests = testSession.tests
+        }
+
+        if !testSession.uploadTargets.isEmpty {
+            self.uploadTargets = testSession.uploadTargets
         }
     }
 }

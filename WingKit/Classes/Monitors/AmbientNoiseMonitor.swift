@@ -8,33 +8,62 @@
 import Foundation
 import AVFoundation
 
+/// The `AmbientNoiseMonitorError` enum describes domain specific errors for the `AmbientNoiseMonitor` class.
+public enum AmbientNoiseMonitorError: Error {
+
+    /// Occurs when the user has denied
+    case microphonePermissionDenied
+
+    /// Indicates that an error occurred while configuring the recorder.
+    case recorderConfigurationError
+}
+
+/**
+ The delegate of the AmbientNoiseMonitor object must adopt the `AmbientNoiseMonitorDelegate` protocol.  This allows
+ the delegate to observe whenever `isBlowThreshold` state changes.
+ */
 public protocol AmbientNoiseMonitorDelegate: class {
+
+    /// Tells the delegate that the monitor state changed.
     func ambientNoiseMonitorDidChangeState(_ monitor: AmbientNoiseMonitor)
 }
 
+/**
+ The `AmbientNoiseMonitor` class is used to monitor the ambient noise in an environment to determine whether or not the
+ conditions are sufficient for a lung function measurement.
+ */
 public class AmbientNoiseMonitor {
 
-    public enum Error: Swift.Error {
-        case microphonePermissionDenied
-        case recorderConfigurationError
-    }
-
+    /// The object that acts as the delegate of the monitor.
     public weak var delegate: AmbientNoiseMonitorDelegate?
 
-    fileprivate(set) var isActive = false
+    /// Indicates whether the ambient noise level is below or above the allowed threshold.
+    public fileprivate(set) var isBelowThreshold: Bool = true
+
+    /// Indicates whether the monitor is active or not.
+    public fileprivate(set) var isActive = false
 
     fileprivate var recorder: AVAudioRecorder?
     fileprivate var audioSession = AVAudioSession.sharedInstance()
 
-    public fileprivate(set) var isBelowThreshold: Bool = true
-
-    public var noiseThreshold: Float = -10.0
-    public var noiseCheckInterval: TimeInterval = 0.25
+    fileprivate var noiseThreshold: Float = -10.0
+    fileprivate var noiseCheckInterval: TimeInterval = 0.25
 
     fileprivate var noiseCheckTimer: Timer?
 
+    /// Initializes an instance of the `AmbientNoiseMonitor` class.
     public init() {}
 
+    deinit {
+        stop()
+    }
+
+    /**
+     Starts measuring the amount of ambient noise.
+
+     - throws: `AmbientNoiseMonitorError.microphonePermissionDenied` if the user denys permission to access the microphone.
+     - throws: `AmbientNoiseMonitorError.recorderConfigurationError` if any errors occur while configuring the audio session.
+     */
     public func start(completion: @escaping (Error?) -> Void) {
 
         guard !isActive else { return }
@@ -55,6 +84,7 @@ public class AmbientNoiseMonitor {
         }
     }
 
+    /// Stops measuring the amount of ambient noise.
     public func stop() {
 
         isActive = false
@@ -69,7 +99,7 @@ public class AmbientNoiseMonitor {
             audioSession.requestRecordPermission({ (granted) in
 
                 guard granted else {
-                    completion(Error.microphonePermissionDenied)
+                    completion(AmbientNoiseMonitorError.microphonePermissionDenied)
                     return
                 }
 
@@ -79,12 +109,12 @@ public class AmbientNoiseMonitor {
                         with: .defaultToSpeaker)
                     try self.audioSession.setActive(true)
                 } catch {
-                    completion(Error.recorderConfigurationError)
+                    completion(AmbientNoiseMonitorError.recorderConfigurationError)
                 }
 
                 let manager = FileManager()
                 guard let cachesDirectoryURL = manager.urls(for: .cachesDirectory, in: .userDomainMask).first else {
-                    completion(Error.recorderConfigurationError)
+                    completion(AmbientNoiseMonitorError.recorderConfigurationError)
                     return
                 }
 
@@ -101,7 +131,7 @@ public class AmbientNoiseMonitor {
                 do {
                     self.recorder = try AVAudioRecorder(url: recordingFileURL, settings: recordSettings)
                 } catch {
-                    completion(Error.recorderConfigurationError)
+                    completion(AmbientNoiseMonitorError.recorderConfigurationError)
                 }
 
                 completion(nil)
@@ -138,7 +168,7 @@ public class AmbientNoiseMonitor {
     /**
      Checks whether the ambient noise is above a threshold
      */
-    @objc func checkAmbientNoise() {
+    @objc fileprivate func checkAmbientNoise() {
         recorder?.updateMeters()
 
         let previousState = isBelowThreshold

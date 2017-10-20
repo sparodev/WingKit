@@ -12,13 +12,11 @@ enum TestSessionEndpoint: Endpoint {
 
     case create
     case retrieve(sessionId: String)
-    case update(sessionId: String)
 
     var path: String {
         switch self {
-        case .create: return "/test-sessions"
-        case .retrieve(let sessionId): return "/test-sessions/\(sessionId)"
-        case .update(let sessionId): return "/test-sessions/\(sessionId)"
+        case .create: return "/patients/5yEwdO6MVR8ZA/test-sessions"
+        case .retrieve(let sessionId): return "/patients/5yEwdO6MVR8ZA/test-sessions/\(sessionId)"
         }
     }
 
@@ -26,7 +24,6 @@ enum TestSessionEndpoint: Endpoint {
         switch self {
         case .create: return .post
         case .retrieve: return .get
-        case .update: return .put
         }
     }
 }
@@ -43,6 +40,7 @@ public extension Client {
         var request: URLRequestConvertible
         do {
             request = try self.request(for: TestSessionEndpoint.create,
+                                       parameters: ["localTimezone": Date().iso8601],
                                        headers: ["Authorization": token])
         } catch {
             return completion(nil, error)
@@ -64,7 +62,15 @@ public extension Client {
         }
     }
 
-    public static func retrieveTestSession(withId id: String, completion: @escaping (TestSession?, Error?) -> Void) {
+    /**
+     Sends a request to retrieve the details for the test session for the specified ID.
+
+     - parameter id: The identifier for the test session.
+     - parameter completion: The callback closure that will get invoked upon the request finishing.
+     - parameter testSession: The test session object that represents the retrieved test session. (Optional)
+     - parameter error: The error that occurred while performing the network request. (Optional)
+     */
+    public static func retrieveTestSession(withId id: String, completion: @escaping (_ testSession: TestSession?, _ error: Error?) -> Void) {
 
         guard let token = token else {
             completion(nil, ClientError.unauthorized)
