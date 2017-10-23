@@ -39,11 +39,19 @@ class Client_TestSessionTest: WingKitTestCase {
 
     func testCreateTestSessionWhenTokenIsNil() {
 
+        let patientData = PatientData(
+            id: UUID().uuidString,
+            biologicalSex: .male,
+            ethnicity: .nativeAmerican,
+            height: 66,
+            age: 27
+        )
+
         Client.token = nil
 
         let errorExpectation = expectation(description: "wait for unauthorized error")
 
-        Client.createTestSession { (testSession, error) in
+        Client.createTestSession(with: patientData) { (testSession, error) in
 
             guard let error = error else {
                 XCTFail("Expected to catch unauthorized error!")
@@ -61,6 +69,14 @@ class Client_TestSessionTest: WingKitTestCase {
 
     func testCreateTestSessionWhenSuccessful() {
 
+        let patientData = PatientData(
+            id: UUID().uuidString,
+            biologicalSex: .male,
+            ethnicity: .nativeAmerican,
+            height: 66,
+            age: 27
+        )
+
         let expectedToken = UUID().uuidString
         let expectedTestSessionId = UUID().uuidString
         let expectedStartedAt = Date()
@@ -76,6 +92,8 @@ class Client_TestSessionTest: WingKitTestCase {
         let completionCallbackExpectation = expectation(description: "wait for callback")
         let sendRequestExpectation = expectation(description: "wait for send request to be called")
 
+
+
         Client.token = expectedToken
 
         mockNetwork.sendRequestStub = { request, completion in
@@ -86,6 +104,28 @@ class Client_TestSessionTest: WingKitTestCase {
                 XCTAssertEqual(urlRequest.url?.absoluteString, Client.baseURLPath + TestSessionEndpoint.create.path)
                 XCTAssertEqual(urlRequest.httpMethod, TestSessionEndpoint.create.method.rawValue)
                 XCTAssertEqual(urlRequest.allHTTPHeaderFields?["Authorization"], expectedToken)
+
+                guard let requestBody = urlRequest.httpBody,
+                    let requestJSON = try? JSONSerialization.jsonObject(with: requestBody, options: []) as? JSON,
+                    let patientJSON = requestJSON?["patient"] as? JSON else {
+                        XCTFail()
+                        return
+                }
+
+                XCTAssertEqual(patientJSON["id"] as? String, patientData.id)
+                XCTAssertEqual(patientJSON["ethnicity"] as? String, patientData.ethnicity.rawValue)
+                XCTAssertEqual(patientJSON["biologicalSex"] as? String, patientData.biologicalSex.rawValue)
+                XCTAssertEqual(patientJSON["height"] as? Int, patientData.height)
+
+                guard let expectedBirthdate = Calendar.current.date(byAdding: .year, value: -patientData.age, to: Date()),
+                    let actualBirthdate = (patientJSON["dob"] as? String)?.dateFromISO8601 else {
+                        XCTFail()
+                        return
+                }
+
+                XCTAssertEqual(actualBirthdate.timeIntervalSinceReferenceDate,
+                               expectedBirthdate.timeIntervalSinceReferenceDate, accuracy: 0.2)
+
 
             } catch {
                 XCTFail()
@@ -112,7 +152,7 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        Client.createTestSession { (testSession, error) in
+        Client.createTestSession(with: patientData) { (testSession, error) in
 
             guard let testSession = testSession else {
                 XCTFail()
@@ -140,6 +180,14 @@ class Client_TestSessionTest: WingKitTestCase {
 
     func testCreateTestSessionWhenDecodingFails() {
 
+        let patientData = PatientData(
+            id: UUID().uuidString,
+            biologicalSex: .male,
+            ethnicity: .nativeAmerican,
+            height: 66,
+            age: 27
+        )
+
         let expectedStartedAt = Date()
 
         let expectedUploadId1 = UUID().uuidString
@@ -177,7 +225,7 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        Client.createTestSession { (testSession, error) in
+        Client.createTestSession(with: patientData) { (testSession, error) in
 
             XCTAssertNil(testSession)
 
@@ -197,6 +245,14 @@ class Client_TestSessionTest: WingKitTestCase {
 
     func testCreateTestSessionWhenResponseIsInvalid() {
 
+        let patientData = PatientData(
+            id: UUID().uuidString,
+            biologicalSex: .male,
+            ethnicity: .nativeAmerican,
+            height: 66,
+            age: 27
+        )
+
         Client.token = UUID().uuidString
 
         let completionCallbackExpectation = expectation(description: "wait for callback")
@@ -210,7 +266,7 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        Client.createTestSession { (testSession, error) in
+        Client.createTestSession(with: patientData) { (testSession, error) in
 
             XCTAssertNil(testSession)
 
@@ -230,6 +286,14 @@ class Client_TestSessionTest: WingKitTestCase {
 
     func testCreateTestSessionWhenServerRespondsWithError() {
 
+        let patientData = PatientData(
+            id: UUID().uuidString,
+            biologicalSex: .male,
+            ethnicity: .nativeAmerican,
+            height: 66,
+            age: 27
+        )
+
         Client.token = UUID().uuidString
 
         let expectedStatusCode = 400
@@ -244,7 +308,7 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        Client.createTestSession { (testSession, error) in
+        Client.createTestSession(with: patientData) { (testSession, error) in
 
             XCTAssertNil(testSession)
 
