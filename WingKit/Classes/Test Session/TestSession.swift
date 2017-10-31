@@ -106,7 +106,7 @@ public struct TestSession: Decodable {
         guard let json = decoder.json,
             let id = json[Keys.id] as? String,
             let startedAt = (json[Keys.startedAt] as? String)?.dateFromISO8601 else {
-            return nil
+                return nil
         }
 
         self.id = id

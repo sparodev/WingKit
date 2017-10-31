@@ -9,45 +9,27 @@
 import Foundation
 
 /// The `TestStatus` enum describes the various states an individual lung function test can be in.
-public enum TestStatus: Int {
+public enum TestStatus: String {
 
     /// Indicates the has been initialized and started.
-    case started = 0
+    case started = "Started"
 
     /// Indicates the test has finished uploading and processing and without any errors.
-    case complete = 1
+    case complete = "Complete"
 
     /// Indicates the test has finished uploading the recording.
-    case uploaded = 2
+    case uploaded = "Uploaded"
 
     /// Indicates the test is currently processing.
-    case processing = 3
+    case processing = "Processing"
 
     /// Indicates that an error occurred while processing the test.
-    case error = 4
-
-    var string: String {
-        switch self {
-        case .started: return "Started"
-        case .complete: return "Complete"
-        case .uploaded: return "Uploaded"
-        case .processing: return "Processing"
-        case .error: return "Error"
-        }
-    }
-
-    static func stringToEnum(_ string: String) -> TestStatus? {
-        switch string {
-        case "Started": return started
-        case "Complete": return complete
-        case "Uploaded": return uploaded
-        case "Processing": return processing
-        case "Error": return error
-        default: return nil
-        }
-    }
+    case error = "Error"
 }
 
+/**
+ The `Test` struct represents a lung function test.
+ */
 public struct Test: Decodable {
 
     struct Keys {
@@ -100,7 +82,7 @@ public struct Test: Decodable {
         takenAt = (json[Keys.takenAt] as? String)?.dateFromISO8601
 
         if let statusString = json[Keys.status] as? String,
-            let status = TestStatus.stringToEnum(statusString) {
+            let status = TestStatus(rawValue: statusString) {
             self.status = status
         }
 

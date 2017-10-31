@@ -23,7 +23,14 @@ public protocol ReachabilityMonitorDelegate: class {
     func reachabilityMonitorDidChangeReachability(_ manager: ReachabilityMonitor)
 }
 
+
+/**
+ The `ReachabilityMonitor` class is used to monitor the network reachability. Any changes to the reachability causes a
+ message to be sent to the delegate, indicating a change in network reachability has occurred.
+ */
 public class ReachabilityMonitor {
+
+    // MARK: - Properties
 
     /// The object that acts as the delegate for the monitor.
     public weak var delegate: ReachabilityMonitorDelegate?
@@ -37,7 +44,7 @@ public class ReachabilityMonitor {
 
     fileprivate let reachability = Reachability()
 
-    // MARK: - Init
+    // MARK: - Initialization
 
     /// Initializes an instance of the `ReachabilityMonitor` class.
     public init() {
@@ -49,7 +56,7 @@ public class ReachabilityMonitor {
         NotificationCenter.default.removeObserver(self)
     }
 
-    // MARK: - Start/Stop
+    // MARK: - Start/Stop Monitor
 
     /// Starts monitoring the device's internet reachability.
     public func start() throws {

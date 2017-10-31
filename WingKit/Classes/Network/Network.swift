@@ -11,14 +11,15 @@ import AWSS3
 
 internal typealias JSON = [String: Any]
 
-struct NetworkRequest {
+internal struct NetworkRequest {
     var url: URL
+    var acceptableStatusCodes: [Int]
     var method: HTTPMethod
     var parameters: [String: Any]?
     var headers: [String: String]?
 }
 
-protocol URLRequestConvertible {
+internal protocol URLRequestConvertible {
     func asURLRequest() throws -> URLRequest
 }
 
@@ -38,12 +39,12 @@ extension NetworkRequest: URLRequestConvertible {
     }
 }
 
-enum NetworkError: Error {
+public enum NetworkError: Error {
     case invalidResponse
     case unacceptableStatusCode(code: Int)
 }
 
-protocol NetworkProtocol {
+internal protocol NetworkProtocol {
     func send(request: URLRequestConvertible, completion: @escaping (JSON?, Error?) -> Void)
     func uploadFile(atFilepath filepath: String, toBucket bucket: String,
                     withKey key: String, completion: @escaping (Error?) -> Void)
@@ -53,7 +54,7 @@ internal class Network: NetworkProtocol {
 
     static var shared: NetworkProtocol = Network()
 
-    fileprivate var acceptableStatusCodes: [Int] { return Array(200..<300) }
+    fileprivate var defaultAcceptableStatusCodes: [Int] { return Array(200..<300) }
     fileprivate let identityPoolId = "us-east-1:af3df912-5e61-40dc-9c5e-651f7e0b3789"
     fileprivate let cognitoRegion = AWSRegionType.USEast1
     fileprivate let bucketRegion = AWSRegionType.USEast1
@@ -91,8 +92,10 @@ internal class Network: NetworkProtocol {
                     return
                 }
 
+                let statusCodes = (request as? NetworkRequest)?.acceptableStatusCodes ?? self.defaultAcceptableStatusCodes
+
                 do {
-                    try self.validateResponse(response)
+                    try self.validateResponse(response, acceptableStatusCodes: statusCodes)
 
                     guard let data = data,
                         let json = try JSONSerialization.jsonObject(with: data, options: []) as? JSON else {
@@ -130,7 +133,7 @@ internal class Network: NetworkProtocol {
         }
     }
 
-    fileprivate func validateResponse(_ response: URLResponse) throws {
+    fileprivate func validateResponse(_ response: URLResponse, acceptableStatusCodes: [Int]) throws {
         guard let response = response as? HTTPURLResponse else {
             throw NetworkError.invalidResponse
         }

@@ -26,14 +26,21 @@ enum TestSessionEndpoint: Endpoint {
         case .retrieve: return .get
         }
     }
+
+    var acceptableStatusCodes: [Int] {
+        switch self {
+        case .create: return [200]
+        case .retrieve: return [200]
+        }
+    }
 }
 
-enum BiologlicalSex: String {
+public enum BiologlicalSex: String {
     case male
     case female
 }
 
-enum Ethnicity: String {
+public enum Ethnicity: String {
     case other
     case nativeAmerican = "american indian or alaskan native"
     case asian
@@ -46,19 +53,27 @@ enum Ethnicity: String {
 
 public struct PatientData {
     /// The unique ID for the patient.
-    var id: String
+    public var id: String
 
     /// The patient's biological sex.
-    var biologicalSex: BiologlicalSex
+    public var biologicalSex: BiologlicalSex
 
     /// The patient's ethnicity.
-    var ethnicity: Ethnicity
+    public var ethnicity: Ethnicity
 
     /// The patient's height (in inches).
-    var height: Int
+    public var height: Int
 
     /// The patient's age.
-    var age: Int
+    public var age: Int
+
+    public init(id: String, biologicalSex: BiologlicalSex, ethnicity: Ethnicity, height: Int, age: Int) {
+        self.id = id
+        self.biologicalSex = biologicalSex
+        self.ethnicity = ethnicity
+        self.height = height
+        self.age = age
+    }
 }
 
 public extension Client {
@@ -66,7 +81,7 @@ public extension Client {
     /**
      Sends a request to the Wing REST API to create a test session.
 
-     - parameter demographics: The demographics of the patient that the test session is being created for.
+     - parameter patientData: The demographics of the patient that the test session is being created for.
      - parameter completion: The callback closure  that will get invoked upon the request finishing.
      - parameter testSession: The test session object that represents the created test session. (Optional)
      - parameter error: The error that occurred while performing the network request. (Optional)

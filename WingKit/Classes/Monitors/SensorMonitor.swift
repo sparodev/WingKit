@@ -23,22 +23,28 @@ public protocol SensorMonitorDelegate: class {
  */
 public class SensorMonitor: NSObject {
 
-    fileprivate(set) var audioSession: AVAudioSession!
+    // MARK: - Properties
+
+    fileprivate var audioSession: AVAudioSession!
+
+    /// The object that acts as the delegate of the monitor.
     public weak var delegate: SensorMonitorDelegate?
 
+    /// Indicates whether the monitor is actively monitoring or not.
     fileprivate var isActive = false
+
+    /// Indicates whether the sensor is plugged in or not.
     public fileprivate(set) var isPluggedIn = true
 
-    init(audioSession: AVAudioSession) {
+    // MARK: - Initialization
+
+    /// Initializes an instance of the `SensorMonitor` class.
+    public override init() {
         super.init()
 
-        self.audioSession = audioSession
+        self.audioSession = AVAudioSession.sharedInstance()
 
         refreshState()
-    }
-
-    public convenience override init() {
-        self.init(audioSession: AVAudioSession.sharedInstance())
     }
 
     deinit {
@@ -46,6 +52,9 @@ public class SensorMonitor: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
 
+    // MARK: - Start/Stop Monitor
+
+    /// Starts monitoring the connection state of the Wing sensor.
     public func start() {
         guard !isActive else { return }
 
@@ -56,6 +65,7 @@ public class SensorMonitor: NSObject {
                                                object: audioSession)
     }
 
+    /// Stops monitoring the connection state of the Wing sensor.
     public func stop() {
         isActive = false
         NotificationCenter.default.removeObserver(self)
