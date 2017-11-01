@@ -55,7 +55,7 @@ public class Client {
 
     // MARK: - Properties
 
-    private static let baseURLPath = "https://api-development.mywing.io/v2"
+    private static let baseURLPath = "https://api-development.mywing.io/api/v2"
 
     /// The OAuth credentials required to authenticate with the Wing API.
     public static var oauth: OAuthCredentials? = nil
