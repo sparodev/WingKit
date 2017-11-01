@@ -54,6 +54,8 @@ public struct TestSession: Decodable {
         static let bestTest = "bestTest"
         static let tests = "tests"
         static let testSessionState = "testSessionState"
+        static let pefPredicted = "pefPredicted"
+        static let fev1Predicted = "fev1Predicted"
         static let metadata = "metadata"
         static let latitude = "latitude"
         static let longitude = "longitude"
@@ -76,6 +78,12 @@ public struct TestSession: Decodable {
 
     /// The respiratory state based on the result of the test.
     public var respiratoryState: RespiratoryState?
+
+    /// The predicted PEF value for the patient with the demographics given when creating the test session.
+    public var pefPredicted: Double?
+
+    /// The predicted FEV1 value for the patient with the demographics given when creating the test session.
+    public var fev1Predicted: Double?
 
     /// The latitude of the device at time of session start.
     public var latitude: Double?
@@ -127,6 +135,14 @@ public struct TestSession: Decodable {
         if let bestTestChoiceString = json[Keys.bestTestChoice] as? String,
             let bestTestChoice = BestTestChoice(rawValue: bestTestChoiceString) {
             self.bestTestChoice = bestTestChoice
+        }
+
+        if let pefPredicted = json[Keys.pefPredicted] as? Double {
+            self.pefPredicted = pefPredicted
+        }
+
+        if let fev1Predicted = json[Keys.fev1Predicted] as? Double {
+            self.fev1Predicted = fev1Predicted
         }
 
         if let metadata = json[Keys.metadata] as? JSON {
