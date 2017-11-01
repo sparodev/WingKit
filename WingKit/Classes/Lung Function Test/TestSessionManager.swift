@@ -86,7 +86,7 @@ public class TestSessionManager {
     /// The state of the test session.
     public fileprivate(set) var state: TestSessionState = .noTest
 
-    var testSession: TestSession
+    public fileprivate(set) var testSession: TestSession
 
     fileprivate var usedUploadTargetIds = [String]()
 
