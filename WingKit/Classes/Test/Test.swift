@@ -54,19 +54,19 @@ public struct Test: Decodable {
     public var takenAt: Date?
 
     /// The length of time that the patient breathed into the device.
-    public var breathDuration: Double = 0
+    public var breathDuration: Double?
 
     /// The values for the exhale curve graph.
-    public var exhaleCurve: [[Double]] = []
+    public var exhaleCurve: [[Double]]?
 
     /// The total volume exhaled (in liters).
-    public var totalVolume: Double = 0
+    public var totalVolume: Double?
 
     /// The PEF value for the test.
-    public var pef: Double = 0
+    public var pef: Double?
 
     /// The FEV1 value for the test.
-    public var fev1: Double = 0
+    public var fev1: Double?
 
     /// The id of the associated upload target.
     public var uploadTargetId: String?
