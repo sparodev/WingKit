@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum UploadTargetEndpoint: Endpoint {
+internal enum UploadTargetEndpoint: Endpoint {
 
     case create(sessionId: String)
 
@@ -23,11 +23,17 @@ enum UploadTargetEndpoint: Endpoint {
         case .create: return .get
         }
     }
+
+    var acceptableStatusCodes: [Int] {
+        switch self {
+        case .create: return [200]
+        }
+    }
 }
 
 extension Client {
 
-    static func createUploadTarget(forTestSessionId testSessionId: String,
+    internal static func createUploadTarget(forTestSessionId testSessionId: String,
                                    completion: @escaping (UploadTarget?, Error?) -> Void) {
 
         var request: URLRequestConvertible
@@ -59,7 +65,7 @@ extension Client {
         }
     }
 
-    static func uploadFile(atFilepath filepath: String, to uploadTarget: UploadTarget, completion: @escaping (Error?) -> Void) {
+    internal static func uploadFile(atFilepath filepath: String, to uploadTarget: UploadTarget, completion: @escaping (Error?) -> Void) {
 
         Network.shared.uploadFile(atFilepath: filepath, toBucket: uploadTarget.bucket,
                                   withKey: uploadTarget.key, completion: completion)

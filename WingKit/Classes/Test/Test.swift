@@ -9,45 +9,27 @@
 import Foundation
 
 /// The `TestStatus` enum describes the various states an individual lung function test can be in.
-public enum TestStatus: Int {
+public enum TestStatus: String {
 
     /// Indicates the has been initialized and started.
-    case started = 0
+    case started = "Started"
 
     /// Indicates the test has finished uploading and processing and without any errors.
-    case complete = 1
+    case complete = "Complete"
 
     /// Indicates the test has finished uploading the recording.
-    case uploaded = 2
+    case uploaded = "Uploaded"
 
     /// Indicates the test is currently processing.
-    case processing = 3
+    case processing = "Processing"
 
     /// Indicates that an error occurred while processing the test.
-    case error = 4
-
-    var string: String {
-        switch self {
-        case .started: return "Started"
-        case .complete: return "Complete"
-        case .uploaded: return "Uploaded"
-        case .processing: return "Processing"
-        case .error: return "Error"
-        }
-    }
-
-    static func stringToEnum(_ string: String) -> TestStatus? {
-        switch string {
-        case "Started": return started
-        case "Complete": return complete
-        case "Uploaded": return uploaded
-        case "Processing": return processing
-        case "Error": return error
-        default: return nil
-        }
-    }
+    case error = "Error"
 }
 
+/**
+ The `Test` struct represents a lung function test.
+ */
 public struct Test: Decodable {
 
     struct Keys {
@@ -72,19 +54,19 @@ public struct Test: Decodable {
     public var takenAt: Date?
 
     /// The length of time that the patient breathed into the device.
-    public var breathDuration: Double = 0
+    public var breathDuration: Double?
 
     /// The values for the exhale curve graph.
-    public var exhaleCurve: [[Double]] = []
+    public var exhaleCurve: [[Double]]?
 
     /// The total volume exhaled (in liters).
-    public var totalVolume: Double = 0
+    public var totalVolume: Double?
 
     /// The PEF value for the test.
-    public var pef: Double = 0
+    public var pef: Double?
 
     /// The FEV1 value for the test.
-    public var fev1: Double = 0
+    public var fev1: Double?
 
     /// The id of the associated upload target.
     public var uploadTargetId: String?
@@ -100,7 +82,7 @@ public struct Test: Decodable {
         takenAt = (json[Keys.takenAt] as? String)?.dateFromISO8601
 
         if let statusString = json[Keys.status] as? String,
-            let status = TestStatus.stringToEnum(statusString) {
+            let status = TestStatus(rawValue: statusString) {
             self.status = status
         }
 

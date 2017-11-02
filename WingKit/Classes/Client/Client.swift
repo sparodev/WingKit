@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct OAuthCredentials {
+public struct OAuthCredentials {
     var id: String
     var secret: String
 }
@@ -18,12 +18,13 @@ struct OAuthParameterKeys {
     static let secret = "secret"
 }
 
-enum ClientError: Error {
+public enum ClientError: Error {
     case invalidURL
     case unauthorized
+    case invalidPatientData
 }
 
-enum AuthenticationEndpoint: Endpoint {
+fileprivate enum AuthenticationEndpoint: Endpoint {
     case authenticate
 
     var path: String {
@@ -37,6 +38,12 @@ enum AuthenticationEndpoint: Endpoint {
         case .authenticate: return .post
         }
     }
+
+    var acceptableStatusCodes: [Int] {
+        switch self {
+        case .authenticate: return [200]
+        }
+    }
 }
 
 /**
@@ -46,19 +53,23 @@ enum AuthenticationEndpoint: Endpoint {
 
 public class Client {
 
-    static let baseURLPath = "https://api-development.mywing.io/api/v2"
-    static var oauth: OAuthCredentials? = nil
-    static var token: String?
+    // MARK: - Properties
 
-    init() {
-        Client.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IktyNDJ5b2pHdzM4V3oiLCJ0eXBlIjoiYXV0aCIsImtleUdlbiI6IjEyRUJBYmxnTHJOSlAiLCJpYXQiOjE1MDc1NjQ0NDUsImV4cCI6MTUzOTEwMDQ0NX0.Tz1bn1dq0NQaHA-kEo9XQx8ueTTMFLc32j6p4eQy6z0"
-    }
+    public static let baseURLPath = "https://api-development.mywing.io/api/v2"
 
-    static func request(for endpoint: Endpoint,
-                        parameters: [String: Any]? = nil,
-                        headers: [String: String]? = nil) throws -> NetworkRequest {
+    /// The OAuth credentials required to authenticate with the Wing API.
+    public static var oauth: OAuthCredentials? = nil
 
-        guard let url = url(for: endpoint) else {
+    /// The authorization token used to make authorized requests.
+    public static var token: String?
+
+    internal static func request(for endpoint: Endpoint,
+                                parameters: [String: Any]? = nil,
+                                headers: [String: String]? = nil) throws -> NetworkRequest {
+
+        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IktyNDJ5b2pHdzM4V3oiLCJ0eXBlIjoiYXV0aCIsImtleUdlbiI6IjEyRUJBYmxnTHJOSlAiLCJpYXQiOjE1MDk0NzU1ODcsImV4cCI6MTU0MTAxMTU4N30.PG6wEYDBwuZeWaUhIQGRPtH1UwiFqBXHs-zOqkuP3CI"
+
+        guard let url = URL(string: baseURLPath + endpoint.path) else {
             throw ClientError.invalidURL
         }
 
@@ -76,17 +87,27 @@ public class Client {
             updatedHeaders["Authorization"] = token
         }
 
-        return NetworkRequest(url: url, method: endpoint.method, parameters: parameters, headers: updatedHeaders)
+        return NetworkRequest(url: url, acceptableStatusCodes: endpoint.acceptableStatusCodes,
+                              method: endpoint.method, parameters: parameters, headers: updatedHeaders)
     }
 
-    fileprivate static func url(for endpoint: Endpoint) -> URL? {
-        return URL(string: baseURLPath + endpoint.path)
-    }
+    // MARK: - Authentication
 
     /**
-     Authenticates the application with the Wing API using the assigned Client ID/Secret.
+     Authenticates the client with the Wing API using the configured OAuth Client ID and Client Secret.
+
+     - Parameters:
+         - completion: The callback closure that will be invoked upon receiving the response of the network request.
+         - token: Optional. The token that is used to authenticate with the Wing API when performing
+     authorized requests.
+         - error: Optional. The error that occurred while performing the network request.
+
+     - Throws:
+         - `ClientError.unauthorized` if the OAuth Client ID and Client Secret aren't configured.
+         - `NetworkError.invalidResponse` if the token could not be parsed from the response.
+         - `NetworkError.unacceptableStatusCode` if an failure status code is received in the response.
      */
-    public static func authenticate(completion: @escaping (String?, Error?) -> Void) {
+    public static func authenticate(completion: @escaping (_ token: String?, _ error: Error?) -> Void) {
 
         guard let oauth = oauth else {
             completion(nil, ClientError.unauthorized)

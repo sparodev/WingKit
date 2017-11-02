@@ -8,14 +8,15 @@
 
 import Foundation
 
-enum HTTPMethod: String {
+internal enum HTTPMethod: String {
     case get = "GET"
     case post = "POST"
     case put = "PUT"
     case delete = "DELETE"
 }
 
-protocol Endpoint {
+internal protocol Endpoint {
     var path: String { get }
     var method: HTTPMethod { get }
+    var acceptableStatusCodes: [Int] { get }
 }

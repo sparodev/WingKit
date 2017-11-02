@@ -11,7 +11,7 @@ import AVFoundation
 /// The `AmbientNoiseMonitorError` enum describes domain specific errors for the `AmbientNoiseMonitor` class.
 public enum AmbientNoiseMonitorError: Error {
 
-    /// Occurs when the user has denied
+    /// Occurs when the user has denied the application access to the microphone.
     case microphonePermissionDenied
 
     /// Indicates that an error occurred while configuring the recorder.
@@ -20,7 +20,7 @@ public enum AmbientNoiseMonitorError: Error {
 
 /**
  The delegate of the AmbientNoiseMonitor object must adopt the `AmbientNoiseMonitorDelegate` protocol.  This allows
- the delegate to observe whenever `isBlowThreshold` state changes.
+ the delegate to observe whenever `isBelowThreshold` state changes.
  */
 public protocol AmbientNoiseMonitorDelegate: class {
 
@@ -33,6 +33,8 @@ public protocol AmbientNoiseMonitorDelegate: class {
  conditions are sufficient for a lung function measurement.
  */
 public class AmbientNoiseMonitor {
+
+    // MARK: - Properties
 
     /// The object that acts as the delegate of the monitor.
     public weak var delegate: AmbientNoiseMonitorDelegate?
@@ -51,12 +53,16 @@ public class AmbientNoiseMonitor {
 
     fileprivate var noiseCheckTimer: Timer?
 
+    // MARK: - Initialization
+
     /// Initializes an instance of the `AmbientNoiseMonitor` class.
     public init() {}
 
     deinit {
         stop()
     }
+
+    // MARK: - Start/Stop Monitor
 
     /**
      Starts measuring the amount of ambient noise.

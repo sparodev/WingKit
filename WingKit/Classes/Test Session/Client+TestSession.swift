@@ -26,21 +26,94 @@ enum TestSessionEndpoint: Endpoint {
         case .retrieve: return .get
         }
     }
+
+    var acceptableStatusCodes: [Int] {
+        switch self {
+        case .create: return [200]
+        case .retrieve: return [200]
+        }
+    }
+}
+
+public enum BiologlicalSex: String {
+    case male
+    case female
+}
+
+public enum Ethnicity: String {
+    case other
+    case nativeAmerican = "american indian or alaskan native"
+    case asian
+    case black = "black or african american"
+    case pacificIslander = "native hawaiian or pacific islander"
+    case whiteNonHispanic = "white (non-hispanic)"
+    case whiteHispanic = "white (hispanic)"
+    case twoOrMore = "two or more"
+}
+
+public struct PatientData {
+    /// The unique ID for the patient.
+    public var id: String
+
+    /// The patient's biological sex.
+    public var biologicalSex: BiologlicalSex
+
+    /// The patient's ethnicity.
+    public var ethnicity: Ethnicity
+
+    /// The patient's height (in inches).
+    public var height: Int
+
+    /// The patient's age.
+    public var age: Int
+
+    public init(id: String, biologicalSex: BiologlicalSex, ethnicity: Ethnicity, height: Int, age: Int) {
+        self.id = id
+        self.biologicalSex = biologicalSex
+        self.ethnicity = ethnicity
+        self.height = height
+        self.age = age
+    }
 }
 
 public extension Client {
 
-    public static func createTestSession(completion: @escaping (TestSession?, Error?) -> Void) {
+    /**
+     Sends a request to the Wing REST API to create a test session.
+
+     - parameter patientData: The data for the patient that the test session is being created for.
+     - parameter completion: The callback closure  that will get invoked upon the request finishing.
+     - parameter testSession: The test session object that represents the created test session. (Optional)
+     - parameter error: The error that occurred while performing the network request. (Optional)
+     */
+    public static func createTestSession(with patientData: PatientData,
+                                         completion: @escaping (_ testSession: TestSession?, _ error: Error?) -> Void) {
 
         guard let token = token else {
             completion(nil, ClientError.unauthorized)
             return
         }
 
+        guard let birthdate = Calendar.current.date(byAdding: .year, value: -patientData.age, to: Date()) else {
+            completion(nil, ClientError.invalidPatientData)
+            return
+        }
+
+        let parameters: JSON = [
+            "patient": [
+                "id": patientData.id,
+                "biologicalSex": patientData.biologicalSex.rawValue,
+                "ethnicity": patientData.ethnicity.rawValue,
+                "dob": birthdate.iso8601,
+                "height": patientData.height
+            ],
+            "localTimezone": Date().iso8601
+        ]
+
         var request: URLRequestConvertible
         do {
             request = try self.request(for: TestSessionEndpoint.create,
-                                       parameters: ["localTimezone": Date().iso8601],
+                                       parameters: parameters,
                                        headers: ["Authorization": token])
         } catch {
             return completion(nil, error)

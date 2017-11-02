@@ -33,6 +33,10 @@ class ClientTest: WingKitTestCase {
             var path: String {
                 return "/testpath"
             }
+
+            var acceptableStatusCodes: [Int] {
+                return [200]
+            }
         }
 
         var request: NetworkRequest?
@@ -49,6 +53,8 @@ class ClientTest: WingKitTestCase {
 
         XCTAssertEqual(createdRequest.url.absoluteString, Client.baseURLPath + TestEndpoint.test.path)
         XCTAssertEqual(createdRequest.method, TestEndpoint.test.method)
+        XCTAssertEqual(createdRequest.acceptableStatusCodes.count, 1)
+        XCTAssertEqual(createdRequest.acceptableStatusCodes.first, 200)
     }
 
     func testRequestCreationWithInvalidURL() {
@@ -62,6 +68,10 @@ class ClientTest: WingKitTestCase {
 
             var path: String {
                 return ":?1/%^!invalidPath"
+            }
+
+            var acceptableStatusCodes: [Int] {
+                return [200]
             }
         }
 
@@ -92,6 +102,10 @@ class ClientTest: WingKitTestCase {
 
             var path: String {
                 return "/testpath"
+            }
+
+            var acceptableStatusCodes: [Int] {
+                return [200]
             }
         }
 
@@ -137,6 +151,10 @@ class ClientTest: WingKitTestCase {
 
             var path: String {
                 return "/testpath"
+            }
+
+            var acceptableStatusCodes: [Int] {
+                return [200]
             }
         }
 
@@ -200,6 +218,10 @@ class ClientTest: WingKitTestCase {
 
             var path: String {
                 return "/testpath"
+            }
+
+            var acceptableStatusCodes: [Int] {
+                return [200]
             }
         }
 
