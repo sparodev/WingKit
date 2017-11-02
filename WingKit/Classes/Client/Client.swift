@@ -55,19 +55,19 @@ public class Client {
 
     // MARK: - Properties
 
-    private static let baseURLPath = "https://api-development.mywing.io/api/v2"
+    public static let baseURLPath = "https://api-development.mywing.io/api/v2"
 
     /// The OAuth credentials required to authenticate with the Wing API.
     public static var oauth: OAuthCredentials? = nil
 
     /// The authorization token used to make authorized requests.
-    public static var token: String? {
-        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IktyNDJ5b2pHdzM4V3oiLCJ0eXBlIjoiYXV0aCIsImtleUdlbiI6IjEyRUJBYmxnTHJOSlAiLCJpYXQiOjE1MDk0NzU1ODcsImV4cCI6MTU0MTAxMTU4N30.PG6wEYDBwuZeWaUhIQGRPtH1UwiFqBXHs-zOqkuP3CI"
-    }
+    public static var token: String?
 
     internal static func request(for endpoint: Endpoint,
                                 parameters: [String: Any]? = nil,
                                 headers: [String: String]? = nil) throws -> NetworkRequest {
+
+        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IktyNDJ5b2pHdzM4V3oiLCJ0eXBlIjoiYXV0aCIsImtleUdlbiI6IjEyRUJBYmxnTHJOSlAiLCJpYXQiOjE1MDk0NzU1ODcsImV4cCI6MTU0MTAxMTU4N30.PG6wEYDBwuZeWaUhIQGRPtH1UwiFqBXHs-zOqkuP3CI"
 
         guard let url = URL(string: baseURLPath + endpoint.path) else {
             throw ClientError.invalidURL

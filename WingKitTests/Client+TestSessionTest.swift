@@ -370,7 +370,7 @@ class Client_TestSessionTest: WingKitTestCase {
         let expectedPef1 = 1234.0
         let expectedFev11 = 2345.0
         let expectedTestTakenAt1 = Date().addingTimeInterval(-500)
-        let expectedTestStatus1 = TestStatus.complete.string
+        let expectedTestStatus1 = TestStatus.complete.rawValue
         let expectedTestBreathDuration1 = 2351.0
         let expectedTestTotalVolume1 = 3591.0
         let expectedTestExhaleCurve1 = [
@@ -382,7 +382,7 @@ class Client_TestSessionTest: WingKitTestCase {
         let expectedPef2 = 612.0
         let expectedFev12 = 829.0
         let expectedTestTakenAt2 = Date().addingTimeInterval(-20)
-        let expectedTestStatus2 = TestStatus.complete.string
+        let expectedTestStatus2 = TestStatus.complete.rawValue
         let expectedTestBreathDuration2 = 4810.0
         let expectedTestTotalVolume2 = 8108.0
 
@@ -499,13 +499,16 @@ class Client_TestSessionTest: WingKitTestCase {
             XCTAssertEqual(bestTest.id, expectedTestId1)
             XCTAssertEqual(bestTest.breathDuration, expectedTestBreathDuration1)
 
-            for (index, point) in bestTest.exhaleCurve.enumerated() {
-                XCTAssertEqual(point[0], expectedTestExhaleCurve1[index][0])
-                XCTAssertEqual(point[1], expectedTestExhaleCurve1[index][1])
+            if let exhaleCurve = bestTest.exhaleCurve {
+                for (index, point) in exhaleCurve.enumerated() {
+                    XCTAssertEqual(point[0], expectedTestExhaleCurve1[index][0])
+                    XCTAssertEqual(point[1], expectedTestExhaleCurve1[index][1])
+                }
             }
+
             XCTAssertEqual(bestTest.fev1, expectedFev11)
             XCTAssertEqual(bestTest.pef, expectedPef1)
-            XCTAssertEqual(bestTest.status.string, expectedTestStatus1)
+            XCTAssertEqual(bestTest.status.rawValue, expectedTestStatus1)
             XCTAssertEqual(bestTest.takenAt!.timeIntervalSinceReferenceDate,
                            expectedTestTakenAt1.timeIntervalSinceReferenceDate,
                            accuracy: 0.02)
@@ -521,7 +524,7 @@ class Client_TestSessionTest: WingKitTestCase {
 
             XCTAssertEqual(testSession.tests[0].fev1, expectedFev11)
             XCTAssertEqual(testSession.tests[0].pef, expectedPef1)
-            XCTAssertEqual(testSession.tests[0].status.string, expectedTestStatus1)
+            XCTAssertEqual(testSession.tests[0].status.rawValue, expectedTestStatus1)
             XCTAssertEqual(testSession.tests[0].takenAt!.timeIntervalSinceReferenceDate,
                            expectedTestTakenAt1.timeIntervalSinceReferenceDate,
                            accuracy: 0.02)
@@ -534,7 +537,7 @@ class Client_TestSessionTest: WingKitTestCase {
 
             XCTAssertEqual(testSession.tests[1].fev1, expectedFev12)
             XCTAssertEqual(testSession.tests[1].pef, expectedPef2)
-            XCTAssertEqual(testSession.tests[1].status.string, expectedTestStatus2)
+            XCTAssertEqual(testSession.tests[1].status.rawValue, expectedTestStatus2)
             XCTAssertEqual(testSession.tests[1].takenAt!.timeIntervalSinceReferenceDate,
                            expectedTestTakenAt2.timeIntervalSinceReferenceDate,
                            accuracy: 0.02)

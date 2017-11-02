@@ -8,7 +8,7 @@
 
 import Foundation
 
-private enum UploadTargetEndpoint: Endpoint {
+internal enum UploadTargetEndpoint: Endpoint {
 
     case create(sessionId: String)
 

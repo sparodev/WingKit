@@ -15,7 +15,7 @@ extension Test {
         return [
             Test.Keys.id: UUID().uuidString,
             Test.Keys.takenAt: Date().iso8601,
-            Test.Keys.status: TestStatus.processing.string,
+            Test.Keys.status: TestStatus.processing.rawValue,
             Test.Keys.breathDuration: 7.0,
             Test.Keys.exhaleCurve: [
                 [1.0, 2.0],
@@ -40,22 +40,12 @@ class TestTest: WingKitTestCase {
         super.tearDown()
     }
 
-    func testTestStatusStringValues() {
-        XCTAssertEqual(TestStatus.started.string, "Started")
-        XCTAssertEqual(TestStatus.complete.string, "Complete")
-        XCTAssertEqual(TestStatus.uploaded.string, "Uploaded")
-        XCTAssertEqual(TestStatus.processing.string, "Processing")
-        XCTAssertEqual(TestStatus.error.string, "Error")
-    }
-
-    func testTestStatusStringToEnum() {
-
-        XCTAssertEqual(TestStatus.stringToEnum("Started"), TestStatus.started)
-        XCTAssertEqual(TestStatus.stringToEnum("Complete"), TestStatus.complete)
-        XCTAssertEqual(TestStatus.stringToEnum("Uploaded"), TestStatus.uploaded)
-        XCTAssertEqual(TestStatus.stringToEnum("Processing"), TestStatus.processing)
-        XCTAssertEqual(TestStatus.stringToEnum("Error"), TestStatus.error)
-        XCTAssertEqual(TestStatus.stringToEnum("Targaryen"), nil)
+    func testTestStatusRawValues() {
+        XCTAssertEqual(TestStatus.started.rawValue, "Started")
+        XCTAssertEqual(TestStatus.complete.rawValue, "Complete")
+        XCTAssertEqual(TestStatus.uploaded.rawValue, "Uploaded")
+        XCTAssertEqual(TestStatus.processing.rawValue, "Processing")
+        XCTAssertEqual(TestStatus.error.rawValue, "Error")
     }
 
     func testIsDecodableFromJSON() {
@@ -76,7 +66,7 @@ class TestTest: WingKitTestCase {
         let json: JSON = [
             Test.Keys.id: expectedId,
             Test.Keys.takenAt: expectedTakenAt.iso8601,
-            Test.Keys.status: expectedStatus.string,
+            Test.Keys.status: expectedStatus.rawValue,
             Test.Keys.breathDuration: expectedBreathDuration,
             Test.Keys.exhaleCurve: expectedExhaleCurve,
             Test.Keys.totalVolume: expectedTotalVolume,
@@ -105,9 +95,11 @@ class TestTest: WingKitTestCase {
         XCTAssertEqual(testObject.status, expectedStatus)
         XCTAssertEqual(testObject.breathDuration, expectedBreathDuration)
 
-        for (index, point) in testObject.exhaleCurve.enumerated() {
-            XCTAssertEqual(point[0], expectedExhaleCurve[index][0])
-            XCTAssertEqual(point[1], expectedExhaleCurve[index][1])
+        if let exhaleCurve = testObject.exhaleCurve {
+            for (index, point) in exhaleCurve.enumerated() {
+                XCTAssertEqual(point[0], expectedExhaleCurve[index][0])
+                XCTAssertEqual(point[1], expectedExhaleCurve[index][1])
+            }
         }
 
         XCTAssertEqual(testObject.totalVolume, expectedTotalVolume)
@@ -131,7 +123,7 @@ class TestTest: WingKitTestCase {
 
         let json: JSON = [
             Test.Keys.takenAt: expectedTakenAt.iso8601,
-            Test.Keys.status: expectedStatus.string,
+            Test.Keys.status: expectedStatus.rawValue,
             Test.Keys.breathDuration: expectedBreathDuration,
             Test.Keys.exhaleCurve: expectedExhaleCurve,
             Test.Keys.totalVolume: expectedTotalVolume,
