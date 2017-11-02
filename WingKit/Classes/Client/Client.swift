@@ -21,7 +21,7 @@ struct OAuthParameterKeys {
 public enum ClientError: Error {
     case invalidURL
     case unauthorized
-    case invalidDemographics
+    case invalidPatientData
 }
 
 fileprivate enum AuthenticationEndpoint: Endpoint {

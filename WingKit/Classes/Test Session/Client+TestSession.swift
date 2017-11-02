@@ -81,7 +81,7 @@ public extension Client {
     /**
      Sends a request to the Wing REST API to create a test session.
 
-     - parameter patientData: The demographics of the patient that the test session is being created for.
+     - parameter patientData: The data for the patient that the test session is being created for.
      - parameter completion: The callback closure  that will get invoked upon the request finishing.
      - parameter testSession: The test session object that represents the created test session. (Optional)
      - parameter error: The error that occurred while performing the network request. (Optional)
@@ -95,7 +95,7 @@ public extension Client {
         }
 
         guard let birthdate = Calendar.current.date(byAdding: .year, value: -patientData.age, to: Date()) else {
-            completion(nil, ClientError.invalidDemographics)
+            completion(nil, ClientError.invalidPatientData)
             return
         }
 
