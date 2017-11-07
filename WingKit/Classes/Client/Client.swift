@@ -52,7 +52,7 @@ fileprivate enum AuthenticationEndpoint: Endpoint {
 }
 
 /**
- The 'Client' class acts as the interface for the Wing REST API. All Wing API Requests are routed through this class
+ The `Client` class acts as the interface for the Wing REST API. All Wing API Requests are routed through this class
  to apply the necessary authentication to the requests.
  */
 
@@ -60,7 +60,7 @@ public class Client {
 
     // MARK: - Properties
 
-    public static let baseURLPath = "https://api-development.mywing.io/api/v2"
+    static let baseURLPath = "https://api-development.mywing.io/api/v2"
 
     /// The OAuth credentials required to authenticate with the Wing API.
     public static var oauth: OAuthCredentials? = nil

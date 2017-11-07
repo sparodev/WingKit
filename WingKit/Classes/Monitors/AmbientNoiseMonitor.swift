@@ -29,8 +29,8 @@ public protocol AmbientNoiseMonitorDelegate: class {
 }
 
 /**
- The `AmbientNoiseMonitor` class is used to monitor the ambient noise in an environment to determine whether or not the
- conditions are sufficient for a lung function measurement.
+ The `AmbientNoiseMonitor` class is used to monitor the ambient noise level in an environment to determine whether
+ or not the conditions are sufficient for a lung function measurement.
  */
 public class AmbientNoiseMonitor {
 
@@ -65,7 +65,7 @@ public class AmbientNoiseMonitor {
     // MARK: - Start/Stop Monitor
 
     /**
-     Starts measuring the amount of ambient noise.
+     Starts measuring the ambient noise level.
 
      - throws: `AmbientNoiseMonitorError.microphonePermissionDenied` if the user denys permission to access the microphone.
      - throws: `AmbientNoiseMonitorError.recorderConfigurationError` if any errors occur while configuring the audio session.
@@ -90,7 +90,7 @@ public class AmbientNoiseMonitor {
         }
     }
 
-    /// Stops measuring the amount of ambient noise.
+    /// Stops measuring the ambient noise level.
     public func stop() {
 
         isActive = false

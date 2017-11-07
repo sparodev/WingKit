@@ -72,15 +72,22 @@ public enum TestSessionState {
 
 /// The `TestSessionManagerError` enum describes domain specific errors for the `TestSessionManager` class.
 public enum TestSessionManagerError: Error {
+
+    /// Indicates the request test session could not be found.
     case testSessionNotFound
+
+    /// Indicates the processing request has timed out.
     case processingTimeout
+
+    /// Indicates that an upload target could not be created to upload a test recording to.
     case uploadTargetCreationFailed
-    case invalidUploadTarget
+
     case invalidRecording
 }
 
 /**
- The `TestSessionManager` keeps track of a test session's state and also is the mediator for all the necessary network requests that occur during a test session.
+ The `TestSessionManager` class is responsible for keeping track of a test session's state and provides an inteface to
+ the necessary Wing API endpoints to perform a lung function test.
  */
 public class TestSessionManager {
 

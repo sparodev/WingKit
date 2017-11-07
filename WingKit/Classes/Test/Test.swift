@@ -62,10 +62,10 @@ public struct Test: Decodable {
     /// The total volume exhaled (in liters).
     public var totalVolume: Double?
 
-    /// The PEF value for the test.
+    /// The PEF value for the test (in liters per second).
     public var pef: Double?
 
-    /// The FEV1 value for the test.
+    /// The FEV1 value for the test (in liters).
     public var fev1: Double?
 
     /// The id of the associated upload target.

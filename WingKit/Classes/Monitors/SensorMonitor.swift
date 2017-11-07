@@ -9,7 +9,7 @@ import Foundation
 import AVFoundation
 
 /**
- The delegate of a SensorMonitor object must adopt the `SensorMonitorDelegate` protocol. Methods of the protocol
+ The delegate of a `SensorMonitor` object must adopt the `SensorMonitorDelegate` protocol. Methods of the protocol
  allow the delegate to observe sensor plugged in state changes.
  */
 public protocol SensorMonitorDelegate: class {
@@ -19,7 +19,7 @@ public protocol SensorMonitorDelegate: class {
 }
 
 /**
- Monitors the plugged in state of the sensor. Notifies to it's delegate whenever the state of the sensor changes.
+ The `SensorMonitor` class is used to monitor the connection state of the sensor. Notifies to it's delegate whenever the sensor is connected/disconnected.
  */
 public class SensorMonitor: NSObject {
 
@@ -30,7 +30,7 @@ public class SensorMonitor: NSObject {
     /// The object that acts as the delegate of the monitor.
     public weak var delegate: SensorMonitorDelegate?
 
-    /// Indicates whether the monitor is actively monitoring or not.
+    /// Indicates whether the monitor is active or not.
     fileprivate var isActive = false
 
     /// Indicates whether the sensor is plugged in or not.
@@ -71,7 +71,7 @@ public class SensorMonitor: NSObject {
         NotificationCenter.default.removeObserver(self)
     }
 
-    @objc func routeChanged(_ notification: Notification) {
+    @objc fileprivate func routeChanged(_ notification: Notification) {
         let updatedIsPluggedIn = verifySensorIsPluggedIn(forSession: audioSession)
 
         if isPluggedIn != updatedIsPluggedIn {
