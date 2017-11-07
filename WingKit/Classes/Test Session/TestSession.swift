@@ -39,6 +39,41 @@ public enum RespiratoryState: String {
     case criticalZone = "critical zone"
 }
 
+public enum ReferenceMetric: String {
+    case pef = "PEF"
+    case fev1 = "FEV1"
+
+    public var unit: String {
+        switch self {
+        case .fev1: return "L"
+        case .pef: return "L/min"
+        }
+    }
+
+    public func formattedString(forValue value: Double, includeUnit: Bool) -> String {
+
+        var string = ""
+
+        switch self {
+        case .fev1: string = "\(formatValue(value))"
+        case .pef: string = "\(Int(formatValue(value)))"
+        }
+
+        if includeUnit {
+            string += " \(unit)"
+        }
+
+        return string
+    }
+
+    fileprivate func formatValue(_ value: Double) -> Double {
+        switch self {
+        case .fev1: return Double(round(100 * value) / 100)
+        case .pef: return (value * 60).rounded(.toNearestOrAwayFromZero)
+        }
+    }
+}
+
 /**
  The `TestSession` struct represents a session of multiple lung function tests.
  */
@@ -50,6 +85,7 @@ public struct TestSession: Decodable {
         static let endedAt = "endedAt"
         static let lungFunctionZone = "lungFunctionZone"
         static let respiratoryState = "respiratoryState"
+        static let referenceMetric = "referenceMetric"
         static let bestTestChoice = "bestTestChoice"
         static let bestTest = "bestTest"
         static let tests = "tests"
@@ -78,6 +114,9 @@ public struct TestSession: Decodable {
 
     /// The respiratory state based on the result of the test.
     public var respiratoryState: RespiratoryState?
+
+    /// The metric used to determine the best test candidate.
+    public var referenceMetric: ReferenceMetric
 
     /// The predicted PEF value for the patient with the demographics given when creating the test session.
     public var pefPredicted: Double?
@@ -113,12 +152,15 @@ public struct TestSession: Decodable {
 
         guard let json = decoder.json,
             let id = json[Keys.id] as? String,
-            let startedAt = (json[Keys.startedAt] as? String)?.dateFromISO8601 else {
+            let startedAt = (json[Keys.startedAt] as? String)?.dateFromISO8601,
+            let referenceMetricString = json[Keys.referenceMetric] as? String,
+            let referenceMetric = ReferenceMetric(rawValue: referenceMetricString) else {
                 return nil
         }
 
         self.id = id
         self.startedAt = startedAt
+        self.referenceMetric = referenceMetric
 
         endedAt = (json[Keys.endedAt] as? String)?.dateFromISO8601
 
