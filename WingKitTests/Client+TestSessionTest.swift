@@ -365,6 +365,7 @@ class Client_TestSessionTest: WingKitTestCase {
         let expectedBestTestChoice = BestTestChoice.reproducible
         let expectedLungFunctionZone = LungFunctionZone.yellowZone
         let expectedRespiratoryState = RespiratoryState.yellowZone
+        let expectedReferenceMetric = ReferenceMetric.fev1
 
         let expectedTestId1 = UUID().uuidString
         let expectedPef1 = 1234.0
@@ -418,6 +419,7 @@ class Client_TestSessionTest: WingKitTestCase {
                 TestSession.Keys.bestTestChoice: expectedBestTestChoice.rawValue,
                 TestSession.Keys.lungFunctionZone: expectedLungFunctionZone.rawValue,
                 TestSession.Keys.respiratoryState: expectedRespiratoryState.rawValue,
+                TestSession.Keys.referenceMetric: expectedReferenceMetric.rawValue,
                 TestSession.Keys.bestTest: [
                     Test.Keys.id: expectedTestId1,
                     Test.Keys.breathDuration: expectedTestBreathDuration1,
@@ -488,6 +490,7 @@ class Client_TestSessionTest: WingKitTestCase {
             XCTAssertEqual(testSession.bestTestChoice, expectedBestTestChoice)
             XCTAssertEqual(testSession.lungFunctionZone, expectedLungFunctionZone)
             XCTAssertEqual(testSession.respiratoryState, expectedRespiratoryState)
+            XCTAssertEqual(testSession.referenceMetric, expectedReferenceMetric)
 
             // Assert best test values
 

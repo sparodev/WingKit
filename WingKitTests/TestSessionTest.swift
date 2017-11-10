@@ -28,6 +28,7 @@ class TestSessionTest: WingKitTestCase {
         let expectedEndedAt = Date().addingTimeInterval(30)
         let expectedLungFunctionZone = LungFunctionZone.yellowZone
         let expectedRespiratoryState = RespiratoryState.greenZone
+        let expectedReferenceMetric = ReferenceMetric.fev1
         let expectedLatitude = 3.0
         let expectedLongitude = 4.0
         let expectedAltitude = 5.0
@@ -41,6 +42,7 @@ class TestSessionTest: WingKitTestCase {
             TestSession.Keys.endedAt: expectedEndedAt.iso8601,
             TestSession.Keys.lungFunctionZone: expectedLungFunctionZone.rawValue,
             TestSession.Keys.respiratoryState: expectedRespiratoryState.rawValue,
+            TestSession.Keys.referenceMetric: expectedReferenceMetric.rawValue,
             TestSession.Keys.metadata: [
                 TestSession.Keys.latitude: expectedLatitude,
                 TestSession.Keys.longitude: expectedLongitude,
@@ -74,6 +76,7 @@ class TestSessionTest: WingKitTestCase {
         XCTAssertEqual(testObject.endedAt!.timeIntervalSinceReferenceDate, expectedEndedAt.timeIntervalSinceReferenceDate, accuracy: 0.02)
         XCTAssertEqual(testObject.lungFunctionZone, expectedLungFunctionZone)
         XCTAssertEqual(testObject.respiratoryState, expectedRespiratoryState)
+        XCTAssertEqual(testObject.referenceMetric, expectedReferenceMetric)
         XCTAssertEqual(testObject.latitude, expectedLatitude)
         XCTAssertEqual(testObject.longitude, expectedLongitude)
         XCTAssertEqual(testObject.altitude, expectedAltitude)
