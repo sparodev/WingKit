@@ -49,6 +49,7 @@ public enum TestRecorderError: Error {
     /// Indicates the recorder failed to configure the underlying audio session used for recording.
     case configurationFailed
 
+    /// The user-presentable message for the error.
     public var localizedDescription: String {
         switch self {
         case .configurationFailed: return "An error occurred while configuring the audio recorder."
@@ -60,6 +61,8 @@ public enum TestRecorderError: Error {
  The `TestSessionRecorder` class is used to detect and record when a user blows into the Wing sensor.
  */
 public class TestSessionRecorder {
+
+    // MARK: - Properties
 
     /// The object that acts as the delegate for the recorder.
     public weak var delegate: TestRecorderDelegate?
@@ -116,6 +119,8 @@ public class TestSessionRecorder {
     fileprivate var audioRecorder: AVAudioRecorder?
     fileprivate var blowRecorder: AVAudioRecorder?
 
+    // MARK: - Initialization
+
     /// Initializes an instance of the `TestSessionRecorder` class.
     public init() {}
 
@@ -124,6 +129,8 @@ public class TestSessionRecorder {
         signalStrengthUpdateTimer?.invalidate()
         stopRecorders()
     }
+
+    // MARK: - Configuration
 
     /**
      Configures the blow detection and audio recorders. Starts the blow detection recorder.
@@ -183,10 +190,12 @@ public class TestSessionRecorder {
         audioRecorder?.prepareToRecord()
     }
 
+    // MARK: - Start/Stop Recorder
+
     /**
      Starts the recording for a lung function test.
      */
-    public func startRecording() {
+    public func start() {
 
         guard state == .ready else { return }
 
@@ -199,7 +208,7 @@ public class TestSessionRecorder {
     }
 
     /// Ends the recording session.
-    public func stopRecording() {
+    public func stop() {
         stopTimers()
         stopRecorders()
     }

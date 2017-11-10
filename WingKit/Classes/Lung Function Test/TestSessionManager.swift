@@ -44,8 +44,6 @@ public enum TestSessionManagerError: Error {
 
     /// Indicates that an upload target could not be created to upload a test recording to.
     case uploadTargetCreationFailed
-
-    case invalidRecording
 }
 
 /**
@@ -54,11 +52,15 @@ public enum TestSessionManagerError: Error {
  */
 public class TestSessionManager {
 
+    // MARK: - Properties
+
+    /// The Wing client used to interface with the Wing REST API.
     public fileprivate(set) var client: Client!
 
     /// The state of the test session.
     public fileprivate(set) var state: TestSessionState = .noTest
 
+    /// The active test session.
     public fileprivate(set) var testSession: TestSession
 
     fileprivate var usedUploadTargetIds = [String]()
@@ -78,6 +80,8 @@ public class TestSessionManager {
     /// The number of attempts the test session has been refreshed in effort to determine the processing state.
     public fileprivate(set) var numberOfProcessingAttempts = 0
 
+    // MARK: - Initialization
+
     /// Initializes the `TestSessionManager` with the test session passed in as an argument.
     public init(client: Client, testSession: TestSession) {
         self.client = client
@@ -88,10 +92,14 @@ public class TestSessionManager {
         numberOfProcessingAttempts = 0
     }
 
+    // MARK: - Process Test
+
     /**
      Retrieves and applies the updated details of the associated test session.
 
-     - throws: TestSessionManagerError.refreshTestSessionTimeout if number of processing attempts exceeds the timeout threshold.
+     - Throws:
+        - `TestSessionManagerError.processingTimeout` if number of processing attempts exceeds the timeout threshold.
+        - `TestSessionManagerError.testSessionNotFound` if the response doesn't contain the test session.
      */
     public func processTestSession(completion: @escaping (Swift.Error?) -> Void) {
 
@@ -141,7 +149,18 @@ public class TestSessionManager {
         }
     }
 
-    public func uploadRecording(atFilepath filepath: String, completion: @escaping (Swift.Error?) -> Void) {
+
+    // MARK: - Upload Recording
+
+    /**
+     Uploads the recording at the specified filepath to Amazon S3 to initiate processing.
+
+     - Parameters:
+        - filepath: The filepath for the lung function test recording file.
+        - completion: A callback closure that gets invoked after receiving the response from the upload request.
+            - error: The error that occurred while uploading the recording (Optional).
+     */
+    public func uploadRecording(atFilepath filepath: String, completion: @escaping (_ error: Swift.Error?) -> Void) {
         getUploadTarget { (uploadTarget, error) in
             guard let uploadTarget = uploadTarget else {
                 completion(error)

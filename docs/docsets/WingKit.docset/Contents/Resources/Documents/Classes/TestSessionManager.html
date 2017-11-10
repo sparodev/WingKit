@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           WingKit Docs
         </a>
-         (95% documented)
+         (100% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -176,6 +176,13 @@ the necessary Wing API endpoints to perform a lung function test.</p>
         <section class="section">
           <div class="section-content">
             <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Properties"></a>
+                <a name="//apple_ref/swift/Section/Properties" class="dashAnchor"></a>
+                <a href="#/Properties">
+                  <h3 class="section-name">Properties</h3>
+                </a>
+              </div>
               <ul class="item-container">
                 <li class="item">
                   <div>
@@ -190,14 +197,14 @@ the necessary Wing API endpoints to perform a lung function test.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The Wing client used to interface with the Wing REST API.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TestSessionManager</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">client</span><span class="p">:</span> <span class="kt"><a href="../Classes/Client.html">Client</a></span><span class="o">!</span></code></pre>
 
                         </div>
                       </div>
@@ -244,14 +251,14 @@ the necessary Wing API endpoints to perform a lung function test.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>The active test session.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TestSessionManager</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">testSession</span><span class="p">:</span> <span class="kt"><a href="../Structs/TestSession.html">TestSession</a></span></code></pre>
 
                         </div>
                       </div>
@@ -393,6 +400,17 @@ the necessary Wing API endpoints to perform a lung function test.</p>
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Initialization"></a>
+                <a name="//apple_ref/swift/Section/Initialization" class="dashAnchor"></a>
+                <a href="#/Initialization">
+                  <h3 class="section-name">Initialization</h3>
+                </a>
+              </div>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -420,6 +438,17 @@ the necessary Wing API endpoints to perform a lung function test.</p>
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Process%20Test"></a>
+                <a name="//apple_ref/swift/Section/Process Test" class="dashAnchor"></a>
+                <a href="#/Process%20Test">
+                  <h3 class="section-name">Process Test</h3>
+                </a>
+              </div>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -436,7 +465,10 @@ the necessary Wing API endpoints to perform a lung function test.</p>
                         <p>Retrieves and applies the updated details of the associated test session.</p>
 <div class="aside aside-throws">
     <p class="aside-title">Throws</p>
-    TestSessionManagerError.refreshTestSessionTimeout if number of processing attempts exceeds the timeout threshold.
+    <ul>
+<li><code><a href="../Enums/TestSessionManagerError.html#/s:7WingKit23TestSessionManagerErrorO17processingTimeoutA2CmF">TestSessionManagerError.processingTimeout</a></code> if number of processing attempts exceeds the timeout threshold.</li>
+<li><code><a href="../Enums/TestSessionManagerError.html#/s:7WingKit23TestSessionManagerErrorO04testD8NotFoundA2CmF">TestSessionManagerError.testSessionNotFound</a></code> if the response doesn&rsquo;t contain the test session.</li>
+</ul>
 
 </div>
 
@@ -452,6 +484,17 @@ the necessary Wing API endpoints to perform a lung function test.</p>
                     </section>
                   </div>
                 </li>
+              </ul>
+            </div>
+            <div class="task-group">
+              <div class="task-name-container">
+                <a name="/Upload%20Recording"></a>
+                <a name="//apple_ref/swift/Section/Upload Recording" class="dashAnchor"></a>
+                <a href="#/Upload%20Recording">
+                  <h3 class="section-name">Upload Recording</h3>
+                </a>
+              </div>
+              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
@@ -465,16 +508,51 @@ the necessary Wing API endpoints to perform a lung function test.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Uploads the recording at the specified filepath to Amazon S3 to initiate processing.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TestSessionManager</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">uploadRecording</span><span class="p">(</span><span class="n">atFilepath</span> <span class="nv">filepath</span><span class="p">:</span> <span class="kt">String</span><span class="p">,</span> <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
 
                         </div>
+                      </div>
+                      <div>
+                        <h4>Parameters</h4>
+                        <table class="graybox">
+                          <tbody>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>filepath</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>The filepath for the lung function test recording file.</p>
+                                </div>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td>
+                                <code>
+                                <em>completion</em>
+                                </code>
+                              </td>
+                              <td>
+                                <div>
+                                  <p>A callback closure that gets invoked after receiving the response from the upload request.
+
+<ul>
+<li>error: The error that occurred while uploading the recording (Optional).</li>
+</ul></p>
+                                </div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
                       </div>
                     </section>
                   </div>
@@ -487,7 +565,7 @@ the necessary Wing API endpoints to perform a lung function test.</p>
       </article>
     </div>
     <section class="footer">
-      <p>&copy; 2017 <a class="link" href="https://sparohealth.com" target="_blank" rel="external">Sparo</a>. All rights reserved. (Last updated: 2017-11-09)</p>
+      <p>&copy; 2017 <a class="link" href="https://sparohealth.com" target="_blank" rel="external">Sparo</a>. All rights reserved. (Last updated: 2017-11-10)</p>
       <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.4</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
     </section>
   </body>

@@ -86,6 +86,8 @@ public class Client {
     /// The authorization token used to make authorized requests.
     public var token: String?
 
+    // MARK: - Initialization
+
     /// Initializes an instance of the `Client` class.
     public init() {}
 

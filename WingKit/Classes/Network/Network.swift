@@ -39,8 +39,13 @@ extension NetworkRequest: URLRequestConvertible {
     }
 }
 
+/// The `NetworkError` enum describes domain specific errors for the `Network` class.
 public enum NetworkError: Error {
+
+    /// Indicates the response json could not be parsed.
     case invalidResponse
+
+    /// Indicates the response's status code wasn't included in the endpoint's acceptable status codes.
     case unacceptableStatusCode(code: Int)
 }
 

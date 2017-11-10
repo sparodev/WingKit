@@ -1,61 +1,6 @@
 {
   "warnings": [
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionManager.swift",
-      "line": 48,
-      "symbol": "TestSessionManagerError.invalidRecording",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionManager.swift",
-      "line": 57,
-      "symbol": "TestSessionManager.client",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionManager.swift",
-      "line": 62,
-      "symbol": "TestSessionManager.testSession",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionManager.swift",
-      "line": 144,
-      "symbol": "TestSessionManager.uploadRecording(atFilepath:completion:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionRecorder.swift",
-      "line": 52,
-      "symbol": "TestRecorderError.localizedDescription",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Network/Network.swift",
-      "line": 42,
-      "symbol": "NetworkError",
-      "symbol_kind": "source.lang.swift.decl.enum",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Network/Network.swift",
-      "line": 43,
-      "symbol": "NetworkError.invalidResponse",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Network/Network.swift",
-      "line": 44,
-      "symbol": "NetworkError.unacceptableStatusCode",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    }
+
   ],
   "source_directory": "/Users/mwahlig/Projects/SparoLabs/WingKit"
 }

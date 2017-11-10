@@ -129,6 +129,8 @@ public struct PatientData {
 
 public extension Client {
 
+    // MARK: - Test Sessions
+
     /**
      Creates a test session for a person with the specified patient data.
 
@@ -146,7 +148,6 @@ public extension Client {
         - `NetworkError.invalidResponse` if an invalid response was recieved.
         - `NetworkError.unacceptableStatusCode` if an failure status code is received in the response.
         - `DecodingError.decodingFailed` if the response json could not be decoded.
-        -
      */
     public func createTestSession(with patientData: PatientData,
                                   completion: @escaping (_ testSession: TestSession?, _ error: Error?) -> Void) {
@@ -197,6 +198,12 @@ public extension Client {
      - parameter completion: The callback closure that will get invoked upon the request finishing.
      - parameter testSession: The test session object that represents the retrieved test session. (Optional)
      - parameter error: The error that occurred while performing the network request. (Optional)
+
+     - Throws:
+         - `ClientError.unauthorized` if the `token` hasn't been set on the client.
+         - `NetworkError.invalidResponse` if an invalid response was recieved.
+         - `NetworkError.unacceptableStatusCode` if an failure status code is received in the response.
+         - `DecodingError.decodingFailed` if the response json could not be decoded.
      */
     public func retrieveTestSession(withId id: String, completion: @escaping (_ testSession: TestSession?, _ error: Error?) -> Void) {
 
