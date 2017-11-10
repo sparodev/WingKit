@@ -65,9 +65,6 @@ public enum TestSessionState {
 
     /// Indiciates that the test session has concluded with at least two non-processable tests.
     case notProcessedTestFinal
-
-    /// Indicates that the most recent test failed due to a local failure reason.
-    case testSessionInterrupted(reason: LocalTestFailureReason)
 }
 
 /// The `TestSessionManagerError` enum describes domain specific errors for the `TestSessionManager` class.
@@ -91,6 +88,8 @@ public enum TestSessionManagerError: Error {
  */
 public class TestSessionManager {
 
+    public fileprivate(set) var client: Client!
+
     /// The state of the test session.
     public fileprivate(set) var state: TestSessionState = .noTest
 
@@ -104,7 +103,7 @@ public class TestSessionManager {
     /// The number of tests that are allowed to fail due to local failure reasons before the test session is considered invalid.s
     public let localTestFailureThreshold = 2
 
-    /// The interval at which the server will be pinged to check if processing is complete.s
+    /// The interval at which the server will be pinged to check if processing is complete.
     public let processingPollingInterval: Double = 0.8
 
     /// The threshold that represents the number of times the app should attempt to refresh the test session.
@@ -114,7 +113,8 @@ public class TestSessionManager {
     public fileprivate(set) var numberOfProcessingAttempts = 0
 
     /// Initializes the `TestSessionManager` with the test session passed in as an argument.
-    public init(testSession: TestSession) {
+    public init(client: Client, testSession: TestSession) {
+        self.client = client
         self.testSession = testSession
     }
 
@@ -135,9 +135,12 @@ public class TestSessionManager {
             return
         }
 
-        Client.retrieveTestSession(withId: testSession.id) { (testSession, error) in
+        client.retrieveTestSession(withId: testSession.id) { (testSession, error) in
 
             guard let testSession = testSession else {
+
+                self.resetProcessingAttemptsCount()
+
                 if let error = error {
                     completion(error)
                 } else {
@@ -180,8 +183,7 @@ public class TestSessionManager {
             }
 
             self.usedUploadTargetIds.append(uploadTarget.id)
-
-            Client.uploadFile(atFilepath: filepath, to: uploadTarget, completion: completion)
+            self.client.uploadFile(atFilepath: filepath, to: uploadTarget, completion: completion)
         }
     }
 
@@ -191,7 +193,7 @@ public class TestSessionManager {
             return
         }
 
-        Client.createUploadTarget(forTestSessionId: testSession.id) { (uploadTarget, error) in
+        self.client.createUploadTarget(forTestSessionId: testSession.id) { (uploadTarget, error) in
             guard let uploadTarget = uploadTarget else {
                 if let error = error {
                     completion(nil, error)

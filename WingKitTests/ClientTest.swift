@@ -10,15 +10,40 @@
 import XCTest
 
 class ClientTest: WingKitTestCase {
+
+    var testObject: Client!
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+
+        testObject = Client()
     }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+    }
+
+    func testOAuthCredentialsInit() {
+        let expectedId = UUID().uuidString
+        let expectedSecret = UUID().uuidString
+
+        let testObject = OAuthCredentials(id: expectedId, secret: expectedSecret)
+
+        XCTAssertEqual(testObject.id, expectedId)
+        XCTAssertEqual(testObject.secret, expectedSecret)
+    }
+
+    func testAuthenticationEndpointPath() {
+        XCTAssertEqual(AuthenticationEndpoint.authenticate.path, "/authenticate")
+    }
+
+    func testAuthenticationEndpointMethod() {
+        XCTAssertEqual(AuthenticationEndpoint.authenticate.method, .post)
+    }
+
+    func testAuthenticationEndpointAcceptableStatusCodes() {
+        XCTAssertEqual(AuthenticationEndpoint.authenticate.acceptableStatusCodes, [200])
     }
     
     func testRequestCreationWithValidURL() {
@@ -41,7 +66,7 @@ class ClientTest: WingKitTestCase {
 
         var request: NetworkRequest?
         do {
-            request = try Client.request(for: TestEndpoint.test)
+            request = try testObject.request(for: TestEndpoint.test)
         } catch {
             XCTFail()
         }
@@ -51,7 +76,7 @@ class ClientTest: WingKitTestCase {
             return
         }
 
-        XCTAssertEqual(createdRequest.url.absoluteString, Client.baseURLPath + TestEndpoint.test.path)
+        XCTAssertEqual(createdRequest.url.absoluteString, testObject.baseURLPath + TestEndpoint.test.path)
         XCTAssertEqual(createdRequest.method, TestEndpoint.test.method)
         XCTAssertEqual(createdRequest.acceptableStatusCodes.count, 1)
         XCTAssertEqual(createdRequest.acceptableStatusCodes.first, 200)
@@ -79,7 +104,7 @@ class ClientTest: WingKitTestCase {
 
         var request: NetworkRequest?
         do {
-            request = try Client.request(for: TestEndpoint.test)
+            request = try testObject.request(for: TestEndpoint.test)
         } catch ClientError.invalidURL {
             errorExpectation.fulfill()
         } catch {
@@ -111,7 +136,7 @@ class ClientTest: WingKitTestCase {
 
         var request: NetworkRequest?
         do {
-            request = try Client.request(for: TestEndpoint.test)
+            request = try testObject.request(for: TestEndpoint.test)
         } catch {
             XCTFail()
         }
@@ -165,7 +190,7 @@ class ClientTest: WingKitTestCase {
 
         var request: NetworkRequest?
         do {
-            request = try Client.request(
+            request = try testObject.request(
                 for: TestEndpoint.test,
                 headers: [
                     "Accept": expectedAcceptValue,
@@ -233,7 +258,7 @@ class ClientTest: WingKitTestCase {
 
         var request: NetworkRequest?
         do {
-            request = try Client.request(
+            request = try testObject.request(
                 for: TestEndpoint.test,
                 parameters: [
                     intValueKey: expectedIntValue,

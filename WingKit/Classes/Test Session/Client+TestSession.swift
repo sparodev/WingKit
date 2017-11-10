@@ -86,7 +86,7 @@ public extension Client {
      - parameter testSession: The test session object that represents the created test session. (Optional)
      - parameter error: The error that occurred while performing the network request. (Optional)
      */
-    public static func createTestSession(with patientData: PatientData,
+    public func createTestSession(with patientData: PatientData,
                                          completion: @escaping (_ testSession: TestSession?, _ error: Error?) -> Void) {
 
         guard let token = token else {
@@ -101,7 +101,7 @@ public extension Client {
 
         let parameters: JSON = [
             "patient": [
-                "id": patientData.id,
+                "externalId": patientData.id,
                 "biologicalSex": patientData.biologicalSex.rawValue,
                 "ethnicity": patientData.ethnicity.rawValue,
                 "dob": birthdate.iso8601,
@@ -131,7 +131,7 @@ public extension Client {
                 return
             }
 
-            parseTestSession(fromJSON: json, completion: completion)
+            self.parseTestSession(fromJSON: json, completion: completion)
         }
     }
 
@@ -143,7 +143,7 @@ public extension Client {
      - parameter testSession: The test session object that represents the retrieved test session. (Optional)
      - parameter error: The error that occurred while performing the network request. (Optional)
      */
-    public static func retrieveTestSession(withId id: String, completion: @escaping (_ testSession: TestSession?, _ error: Error?) -> Void) {
+    public func retrieveTestSession(withId id: String, completion: @escaping (_ testSession: TestSession?, _ error: Error?) -> Void) {
 
         guard let token = token else {
             completion(nil, ClientError.unauthorized)
@@ -168,11 +168,11 @@ public extension Client {
                 return completion(nil, NetworkError.invalidResponse)
             }
 
-            parseTestSession(fromJSON: json, completion: completion)
+            self.parseTestSession(fromJSON: json, completion: completion)
         }
     }
 
-    static fileprivate func parseTestSession(fromJSON json: JSON, completion: (TestSession?, Error?) -> Void) {
+    fileprivate func parseTestSession(fromJSON json: JSON, completion: (TestSession?, Error?) -> Void) {
         let decoder = JSONDecoder()
         do {
             let testSession = try decoder.decode(TestSession.self, from: json)

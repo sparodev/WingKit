@@ -29,7 +29,7 @@ public enum ClientError: Error {
     case invalidPatientData
 }
 
-fileprivate enum AuthenticationEndpoint: Endpoint {
+internal enum AuthenticationEndpoint: Endpoint {
     case authenticate
 
     var path: String {
@@ -60,19 +60,19 @@ public class Client {
 
     // MARK: - Properties
 
-    static let baseURLPath = "https://api-development.mywing.io/api/v2"
+    let baseURLPath = "https://api-development.mywing.io/api/v2"
 
     /// The OAuth credentials required to authenticate with the Wing API.
-    public static var oauth: OAuthCredentials? = nil
+    public var oauth: OAuthCredentials? = nil
 
     /// The authorization token used to make authorized requests.
-    public static var token: String? {
-        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IktyNDJ5b2pHdzM4V3oiLCJ0eXBlIjoiYXV0aCIsImtleUdlbiI6IjEyRUJBYmxnTHJOSlAiLCJpYXQiOjE1MDk0NzU1ODcsImV4cCI6MTU0MTAxMTU4N30.PG6wEYDBwuZeWaUhIQGRPtH1UwiFqBXHs-zOqkuP3CI"
-    }
+    public var token: String?
 
-    internal static func request(for endpoint: Endpoint,
-                                parameters: [String: Any]? = nil,
-                                headers: [String: String]? = nil) throws -> NetworkRequest {
+    public init() {}
+
+    internal func request(for endpoint: Endpoint,
+                          parameters: [String: Any]? = nil,
+                          headers: [String: String]? = nil) throws -> NetworkRequest {
 
         guard let url = URL(string: baseURLPath + endpoint.path) else {
             throw ClientError.invalidURL
@@ -112,7 +112,7 @@ public class Client {
          - `NetworkError.invalidResponse` if the token could not be parsed from the response.
          - `NetworkError.unacceptableStatusCode` if an failure status code is received in the response.
      */
-    public static func authenticate(completion: @escaping (_ token: String?, _ error: Error?) -> Void) {
+    public func authenticate(completion: @escaping (_ token: String?, _ error: Error?) -> Void) {
 
         guard let oauth = oauth else {
             completion(nil, ClientError.unauthorized)

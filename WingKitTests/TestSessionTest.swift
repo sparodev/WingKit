@@ -157,4 +157,24 @@ class TestSessionTest: WingKitTestCase {
             "Let's try doing that test again!"
         )
     }
+
+    func testReferenceMetricStringValues() {
+        XCTAssertEqual(ReferenceMetric.pef.rawValue, "PEF")
+        XCTAssertEqual(ReferenceMetric.fev1.rawValue, "FEV1")
+    }
+
+    func testReferenceMetricStringToEnum() {
+        XCTAssertEqual(ReferenceMetric(rawValue: "PEF"), ReferenceMetric.pef)
+        XCTAssertEqual(ReferenceMetric(rawValue: "FEV1"), ReferenceMetric.fev1)
+    }
+
+    func testReferenceMetricUnit() {
+        XCTAssertEqual(ReferenceMetric.pef.unit, "L/min")
+        XCTAssertEqual(ReferenceMetric.fev1.unit, "L")
+    }
+
+    func testReferenceMetricFormattedString() {
+        XCTAssertEqual(ReferenceMetric.pef.formattedString(forValue: 3.5135, includeUnit: true), "211 L/min")
+        XCTAssertEqual(ReferenceMetric.fev1.formattedString(forValue: 3.5182, includeUnit: true), "3.52 L")
+    }
 }

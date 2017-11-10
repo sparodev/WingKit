@@ -10,10 +10,13 @@
 import XCTest
 
 class Client_UploadTargetTest: WingKitTestCase {
+
+    var testObject: Client!
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+
+        testObject = Client()
     }
     
     override func tearDown() {
@@ -38,7 +41,7 @@ class Client_UploadTargetTest: WingKitTestCase {
                 let urlRequest = try request.asURLRequest()
 
                 XCTAssertEqual(urlRequest.url?.absoluteString,
-                               Client.baseURLPath + UploadTargetEndpoint.create(sessionId: sessionId).path)
+                               self.testObject.baseURLPath + UploadTargetEndpoint.create(sessionId: sessionId).path)
                 XCTAssertEqual(urlRequest.httpMethod,
                                UploadTargetEndpoint.create(sessionId: sessionId).method.rawValue)
             } catch {
@@ -54,7 +57,7 @@ class Client_UploadTargetTest: WingKitTestCase {
             sendRequestExpectation.fulfill()
         }
 
-        Client.createUploadTarget(forTestSessionId: sessionId) { target, error in
+        testObject.createUploadTarget(forTestSessionId: sessionId) { target, error in
 
             guard let target = target else {
                 XCTFail()
@@ -91,7 +94,7 @@ class Client_UploadTargetTest: WingKitTestCase {
             sendRequestExpectation.fulfill()
         }
 
-        Client.createUploadTarget(forTestSessionId: sessionId) { target, error in
+        testObject.createUploadTarget(forTestSessionId: sessionId) { target, error in
 
             XCTAssertNil(target)
 
@@ -123,7 +126,7 @@ class Client_UploadTargetTest: WingKitTestCase {
             sendRequestExpectation.fulfill()
         }
 
-        Client.createUploadTarget(forTestSessionId: sessionId) { target, error in
+        testObject.createUploadTarget(forTestSessionId: sessionId) { target, error in
 
             XCTAssertNil(target)
 
@@ -156,7 +159,7 @@ class Client_UploadTargetTest: WingKitTestCase {
             sendRequestExpectation.fulfill()
         }
 
-        Client.createUploadTarget(forTestSessionId: sessionId) { target, error in
+        testObject.createUploadTarget(forTestSessionId: sessionId) { target, error in
 
             XCTAssertNil(target)
 
