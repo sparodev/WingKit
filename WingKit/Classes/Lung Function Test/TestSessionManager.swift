@@ -73,6 +73,7 @@ public enum TestSessionState {
 /// The `TestSessionManagerError` enum describes domain specific errors for the `TestSessionManager` class.
 public enum TestSessionManagerError: Error {
     case testSessionNotFound
+    case processingTimeout
     case uploadTargetCreationFailed
     case invalidUploadTarget
     case invalidRecording
@@ -97,26 +98,35 @@ public class TestSessionManager {
     public let localTestFailureThreshold = 2
 
     /// The interval at which the server will be pinged to check if processing is complete.s
-    let processingPollingInterval: Double = 0.8
+    public let processingPollingInterval: Double = 0.8
 
     /// The threshold that represents the number of times the app should attempt to refresh the test session.
-    let processingTimeoutThreshold = 10
+    public let processingTimeoutThreshold = 10
 
     /// The number of attempts the test session has been refreshed in effort to determine the processing state.
-    var numberOfProcessingAttempts = 0
-
+    public fileprivate(set) var numberOfProcessingAttempts = 0
 
     /// Initializes the `TestSessionManager` with the test session passed in as an argument.
     public init(testSession: TestSession) {
         self.testSession = testSession
     }
 
+    fileprivate func resetProcessingAttemptsCount() {
+        numberOfProcessingAttempts = 0
+    }
+
     /**
      Retrieves and applies the updated details of the associated test session.
 
-     - throws:
+     - throws: TestSessionManagerError.refreshTestSessionTimeout if number of processing attempts exceeds the timeout threshold.
      */
-    public func refreshTestSession(completion: @escaping (Swift.Error?) -> Void) {
+    public func processTestSession(completion: @escaping (Swift.Error?) -> Void) {
+
+        guard numberOfProcessingAttempts < processingTimeoutThreshold else {
+            self.resetProcessingAttemptsCount()
+            completion(TestSessionManagerError.processingTimeout)
+            return
+        }
 
         Client.retrieveTestSession(withId: testSession.id) { (testSession, error) in
 
@@ -132,21 +142,24 @@ public class TestSessionManager {
 
             self.testSession.merge(with: testSession)
 
-            let completedTests = testSession.tests.filter {
+            let processedTestsCount = testSession.tests.filter({
                 return $0.status == .complete || $0.status == .error
-            }
+            }).count
 
-            if completedTests.count == self.usedUploadTargetIds.count
-                && completedTests.count == testSession.tests.count {
+            if processedTestsCount == self.usedUploadTargetIds.count
+                && processedTestsCount == testSession.tests.count {
 
                 self.updateState()
+                self.resetProcessingAttemptsCount()
 
                 completion(nil)
 
             } else {
 
+                self.numberOfProcessingAttempts += 1
+
                 Timer.after(self.processingPollingInterval, {
-                    self.refreshTestSession(completion: completion)
+                    self.processTestSession(completion: completion)
                 })
             }
         }

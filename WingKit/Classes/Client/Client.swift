@@ -9,8 +9,13 @@
 import Foundation
 
 public struct OAuthCredentials {
-    var id: String
-    var secret: String
+    public var id: String
+    public var secret: String
+
+    public init(id: String, secret: String) {
+        self.id = id
+        self.secret = secret
+    }
 }
 
 struct OAuthParameterKeys {
@@ -61,13 +66,13 @@ public class Client {
     public static var oauth: OAuthCredentials? = nil
 
     /// The authorization token used to make authorized requests.
-    public static var token: String?
+    public static var token: String? {
+        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IktyNDJ5b2pHdzM4V3oiLCJ0eXBlIjoiYXV0aCIsImtleUdlbiI6IjEyRUJBYmxnTHJOSlAiLCJpYXQiOjE1MDk0NzU1ODcsImV4cCI6MTU0MTAxMTU4N30.PG6wEYDBwuZeWaUhIQGRPtH1UwiFqBXHs-zOqkuP3CI"
+    }
 
     internal static func request(for endpoint: Endpoint,
                                 parameters: [String: Any]? = nil,
                                 headers: [String: String]? = nil) throws -> NetworkRequest {
-
-        token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IktyNDJ5b2pHdzM4V3oiLCJ0eXBlIjoiYXV0aCIsImtleUdlbiI6IjEyRUJBYmxnTHJOSlAiLCJpYXQiOjE1MDk0NzU1ODcsImV4cCI6MTU0MTAxMTU4N30.PG6wEYDBwuZeWaUhIQGRPtH1UwiFqBXHs-zOqkuP3CI"
 
         guard let url = URL(string: baseURLPath + endpoint.path) else {
             throw ClientError.invalidURL
