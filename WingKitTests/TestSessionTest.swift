@@ -124,40 +124,6 @@ class TestSessionTest: WingKitTestCase {
         XCTAssertEqual(RespiratoryState(rawValue: "stark"), nil)
     }
 
-    func testLocalTestFailureReasonTitleValues() {
-
-        XCTAssertEqual(LocalTestFailureReason.sensorDisconnected.title, "Sensor Error")
-        XCTAssertEqual(LocalTestFailureReason.internetDisconnected.title, "Internet Error")
-        XCTAssertEqual(LocalTestFailureReason.animationThresholdNotMet.title, "Processing Error")
-    }
-
-    func testLocalTestFailureReasonSubtitleValues() {
-
-        XCTAssertEqual(LocalTestFailureReason.sensorDisconnected.subtitle, "Where's the sensor?")
-        XCTAssertEqual(LocalTestFailureReason.internetDisconnected.subtitle, "No Internet Connection")
-        XCTAssertEqual(LocalTestFailureReason.animationThresholdNotMet.subtitle, "Something went wrong!")
-    }
-
-    func testLocalTestFailureReasonMessageValues() {
-
-        XCTAssertEqual(
-            LocalTestFailureReason.sensorDisconnected.message,
-            "Be sure Wing is plugged in and be careful not to pull on the cord "
-                + "when blowing into Wing!"
-        )
-
-        XCTAssertEqual(
-            LocalTestFailureReason.internetDisconnected.message,
-            "You must be connected to the internet in order to take a test. "
-                + "Please fix your connection and try again."
-        )
-
-        XCTAssertEqual(
-            LocalTestFailureReason.animationThresholdNotMet.message,
-            "Let's try doing that test again!"
-        )
-    }
-
     func testReferenceMetricStringValues() {
         XCTAssertEqual(ReferenceMetric.pef.rawValue, "PEF")
         XCTAssertEqual(ReferenceMetric.fev1.rawValue, "FEV1")

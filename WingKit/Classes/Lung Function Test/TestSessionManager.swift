@@ -8,40 +8,6 @@
 
 import Foundation
 
-public enum LocalTestFailureReason {
-    case sensorDisconnected
-    case internetDisconnected
-    case animationThresholdNotMet
-
-    var title: String {
-        switch self {
-        case .sensorDisconnected: return "Sensor Error"
-        case .internetDisconnected: return "Internet Error"
-        case .animationThresholdNotMet: return "Processing Error"
-        }
-    }
-
-    var subtitle: String {
-        switch self {
-        case .sensorDisconnected: return "Where's the sensor?"
-        case .internetDisconnected: return "No Internet Connection"
-        case .animationThresholdNotMet: return "Something went wrong!"
-        }
-    }
-
-    var message: String {
-        switch self {
-        case .sensorDisconnected:
-            return "Be sure Wing is plugged in and be careful not to pull on the cord when blowing into Wing!"
-        case .internetDisconnected:
-            return "You must be connected to the internet in order to take a test. "
-                + "Please fix your connection and try again."
-        case .animationThresholdNotMet:
-            return "Let's try doing that test again!"
-        }
-    }
-}
-
 /// The `TestSessionState` enum describes the various states a test session can be in.
 public enum TestSessionState {
 

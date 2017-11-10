@@ -1,149 +1,37 @@
 {
   "warnings": [
     {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Client/Client.swift",
-      "line": 11,
-      "symbol": "OAuthCredentials",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Client/Client.swift",
-      "line": 12,
-      "symbol": "OAuthCredentials.id",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Client/Client.swift",
-      "line": 13,
-      "symbol": "OAuthCredentials.secret",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Client/Client.swift",
-      "line": 15,
-      "symbol": "OAuthCredentials.init(id:secret:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Client/Client.swift",
-      "line": 26,
-      "symbol": "ClientError",
-      "symbol_kind": "source.lang.swift.decl.enum",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Client/Client.swift",
-      "line": 27,
-      "symbol": "ClientError.invalidURL",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Client/Client.swift",
-      "line": 28,
-      "symbol": "ClientError.unauthorized",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Client/Client.swift",
-      "line": 29,
-      "symbol": "ClientError.invalidPatientData",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Client/Client.swift",
-      "line": 71,
-      "symbol": "Client.init()",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
       "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionManager.swift",
-      "line": 11,
-      "symbol": "LocalTestFailureReason",
-      "symbol_kind": "source.lang.swift.decl.enum",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionManager.swift",
-      "line": 12,
-      "symbol": "LocalTestFailureReason.sensorDisconnected",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionManager.swift",
-      "line": 13,
-      "symbol": "LocalTestFailureReason.internetDisconnected",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionManager.swift",
-      "line": 14,
-      "symbol": "LocalTestFailureReason.animationThresholdNotMet",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionManager.swift",
-      "line": 82,
+      "line": 48,
       "symbol": "TestSessionManagerError.invalidRecording",
       "symbol_kind": "source.lang.swift.decl.enumelement",
       "warning": "undocumented"
     },
     {
       "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionManager.swift",
-      "line": 91,
+      "line": 57,
       "symbol": "TestSessionManager.client",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionManager.swift",
-      "line": 96,
+      "line": 62,
       "symbol": "TestSessionManager.testSession",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionManager.swift",
-      "line": 178,
+      "line": 144,
       "symbol": "TestSessionManager.uploadRecording(atFilepath:completion:)",
       "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     },
     {
       "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionRecorder.swift",
-      "line": 17,
-      "symbol": "TestRecorderDelegate.recorderStateChanged(_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionRecorder.swift",
-      "line": 18,
-      "symbol": "TestRecorderDelegate.signalStrengthChanged(_:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionRecorder.swift",
-      "line": 40,
+      "line": 52,
       "symbol": "TestRecorderError.localizedDescription",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Lung Function Test/TestSessionRecorder.swift",
-      "line": 90,
-      "symbol": "TestSessionRecorder.recordingFilepath",
       "symbol_kind": "source.lang.swift.decl.var.instance",
       "warning": "undocumented"
     },
@@ -166,174 +54,6 @@
       "line": 44,
       "symbol": "NetworkError.unacceptableStatusCode",
       "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/Client+TestSession.swift",
-      "line": 38,
-      "symbol": "BiologlicalSex",
-      "symbol_kind": "source.lang.swift.decl.enum",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/Client+TestSession.swift",
-      "line": 39,
-      "symbol": "BiologlicalSex.male",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/Client+TestSession.swift",
-      "line": 40,
-      "symbol": "BiologlicalSex.female",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/Client+TestSession.swift",
-      "line": 43,
-      "symbol": "Ethnicity",
-      "symbol_kind": "source.lang.swift.decl.enum",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/Client+TestSession.swift",
-      "line": 44,
-      "symbol": "Ethnicity.other",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/Client+TestSession.swift",
-      "line": 45,
-      "symbol": "Ethnicity.nativeAmerican",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/Client+TestSession.swift",
-      "line": 46,
-      "symbol": "Ethnicity.asian",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/Client+TestSession.swift",
-      "line": 47,
-      "symbol": "Ethnicity.black",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/Client+TestSession.swift",
-      "line": 48,
-      "symbol": "Ethnicity.pacificIslander",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/Client+TestSession.swift",
-      "line": 49,
-      "symbol": "Ethnicity.whiteNonHispanic",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/Client+TestSession.swift",
-      "line": 50,
-      "symbol": "Ethnicity.whiteHispanic",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/Client+TestSession.swift",
-      "line": 51,
-      "symbol": "Ethnicity.twoOrMore",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/Client+TestSession.swift",
-      "line": 54,
-      "symbol": "PatientData",
-      "symbol_kind": "source.lang.swift.decl.struct",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/Client+TestSession.swift",
-      "line": 70,
-      "symbol": "PatientData.init(id:biologicalSex:ethnicity:height:age:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/TestSession.swift",
-      "line": 35,
-      "symbol": "RespiratoryState",
-      "symbol_kind": "source.lang.swift.decl.enum",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/TestSession.swift",
-      "line": 36,
-      "symbol": "RespiratoryState.greenZone",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/TestSession.swift",
-      "line": 37,
-      "symbol": "RespiratoryState.yellowZone",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/TestSession.swift",
-      "line": 38,
-      "symbol": "RespiratoryState.redZone",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/TestSession.swift",
-      "line": 39,
-      "symbol": "RespiratoryState.criticalZone",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/TestSession.swift",
-      "line": 42,
-      "symbol": "ReferenceMetric",
-      "symbol_kind": "source.lang.swift.decl.enum",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/TestSession.swift",
-      "line": 43,
-      "symbol": "ReferenceMetric.pef",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/TestSession.swift",
-      "line": 44,
-      "symbol": "ReferenceMetric.fev1",
-      "symbol_kind": "source.lang.swift.decl.enumelement",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/TestSession.swift",
-      "line": 46,
-      "symbol": "ReferenceMetric.unit",
-      "symbol_kind": "source.lang.swift.decl.var.instance",
-      "warning": "undocumented"
-    },
-    {
-      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/TestSession.swift",
-      "line": 53,
-      "symbol": "ReferenceMetric.formattedString(forValue:includeUnit:)",
-      "symbol_kind": "source.lang.swift.decl.function.method.instance",
       "warning": "undocumented"
     }
   ],

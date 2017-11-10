@@ -8,25 +8,40 @@
 
 import Foundation
 
+/// Represents the OAuth credentials used to authenticate an application with the Wing API.
 public struct OAuthCredentials {
+
+    /// The client id.
     public var id: String
+
+    /// The client secret.
     public var secret: String
 
+    /**
+     Initializes a `OAuthCredentials` structure.
+
+     - parameter id: The client id of your application.
+     - parameter secret: The client secret of your application.
+     */
     public init(id: String, secret: String) {
         self.id = id
         self.secret = secret
     }
 }
 
-struct OAuthParameterKeys {
+internal struct OAuthParameterKeys {
     static let id = "id"
     static let secret = "secret"
 }
 
+/// The `ClientError` enum describes domain specific errors for the `Client` class.
 public enum ClientError: Error {
+
+    /// Indicates the url of the request is invalid.
     case invalidURL
+
+    /// Indicates the request failed due to authentcataion failing.
     case unauthorized
-    case invalidPatientData
 }
 
 internal enum AuthenticationEndpoint: Endpoint {
@@ -60,14 +75,18 @@ public class Client {
 
     // MARK: - Properties
 
-    let baseURLPath = "https://api-development.mywing.io/api/v2"
+    internal let baseURLPath = "https://api-development.mywing.io/api/v2"
 
-    /// The OAuth credentials required to authenticate with the Wing API.
+    /**
+     The OAuth credentials assigned to your application to access the Wing API. Used to authenticate with the Wing API
+     in order to receive a token to use for subsequent authorized requests.
+     */
     public var oauth: OAuthCredentials? = nil
 
     /// The authorization token used to make authorized requests.
     public var token: String?
 
+    /// Initializes an instance of the `Client` class.
     public init() {}
 
     internal func request(for endpoint: Endpoint,

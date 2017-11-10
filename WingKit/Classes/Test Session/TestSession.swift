@@ -32,17 +32,32 @@ public enum LungFunctionZone: String {
     case redZone = "red zone"
 }
 
+/// Represents the various zones of a patient's respiratory state.
 public enum RespiratoryState: String {
+
+    /// Green zone
     case greenZone = "green zone"
+
+    /// Yellow zone
     case yellowZone = "yellow zone"
+
+    /// Red zone
     case redZone = "red zone"
+
+    /// Critical zone
     case criticalZone = "critical zone"
 }
 
+/// Represents the metrics that can be used to determine the best test of a test session.
 public enum ReferenceMetric: String {
+
+    /// Peak flow.
     case pef = "PEF"
+
+    /// Forced expiratory volume during first second
     case fev1 = "FEV1"
 
+    /// The display unit for the respective metric.
     public var unit: String {
         switch self {
         case .fev1: return "L"
@@ -50,6 +65,7 @@ public enum ReferenceMetric: String {
         }
     }
 
+    /// Formats the value for display purposes.
     public func formattedString(forValue value: Double, includeUnit: Bool) -> String {
 
         var string = ""

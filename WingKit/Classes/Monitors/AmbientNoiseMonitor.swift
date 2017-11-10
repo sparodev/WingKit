@@ -11,7 +11,7 @@ import AVFoundation
 /// The `AmbientNoiseMonitorError` enum describes domain specific errors for the `AmbientNoiseMonitor` class.
 public enum AmbientNoiseMonitorError: Error {
 
-    /// Occurs when the user has denied the application access to the microphone.
+    /// Indicates that the user has denied the application access to the microphone.
     case microphonePermissionDenied
 
     /// Indicates that an error occurred while configuring the recorder.

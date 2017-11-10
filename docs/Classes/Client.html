@@ -23,7 +23,7 @@
         <a class="header-link" href="../index.html">
           WingKit Docs
         </a>
-         (71% documented)
+         (95% documented)
       </p>
     
       <p class="header-col--secondary">
@@ -90,9 +90,6 @@
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/Ethnicity.html">Ethnicity</a>
-              </li>
-              <li class="nav-group-task">
-                <a class="nav-group-task-link" href="../Enums/LocalTestFailureReason.html">LocalTestFailureReason</a>
               </li>
               <li class="nav-group-task">
                 <a class="nav-group-task-link" href="../Enums/LungFunctionZone.html">LungFunctionZone</a>
@@ -200,7 +197,8 @@ to apply the necessary authentication to the requests.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The OAuth credentials required to authenticate with the Wing API.</p>
+                        <p>The OAuth credentials assigned to your application to access the Wing API. Used to authenticate with the Wing API
+in order to receive a token to use for subsequent authorized requests.</p>
 
                       </div>
                       <div class="declaration">
@@ -254,14 +252,14 @@ to apply the necessary authentication to the requests.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Undocumented</p>
+                        <p>Initializes an instance of the <code>Client</code> class.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Client</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span></code></pre>
 
                         </div>
                       </div>
@@ -378,7 +376,9 @@ authorized requests.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Sends a request to the Wing REST API to create a test session.</p>
+                        <p>Creates a test session for a person with the specified patient data.</p>
+
+<p><strong>Note: Requires token authentication to be configured.</strong></p>
 
                       </div>
                       <div class="declaration">
@@ -386,7 +386,7 @@ authorized requests.</p>
                         <div class="language">
                           <p class="aside-title">Swift</p>
                           <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">createTestSession</span><span class="p">(</span><span class="n">with</span> <span class="nv">patientData</span><span class="p">:</span> <span class="kt"><a href="../Structs/PatientData.html">PatientData</a></span><span class="p">,</span>
-                                         <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">testSession</span><span class="p">:</span> <span class="kt"><a href="../Structs/TestSession.html">TestSession</a></span><span class="p">?,</span> <span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+                                  <span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="n">_</span> <span class="nv">testSession</span><span class="p">:</span> <span class="kt"><a href="../Structs/TestSession.html">TestSession</a></span><span class="p">?,</span> <span class="n">_</span> <span class="nv">error</span><span class="p">:</span> <span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
 
                         </div>
                       </div>
@@ -461,7 +461,9 @@ authorized requests.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Sends a request to retrieve the details for the test session for the specified ID.</p>
+                        <p>Retrieves the details of the test session with the specified ID.</p>
+
+<p><strong>Note: Requires token authentication to be configured.</strong></p>
 
                       </div>
                       <div class="declaration">

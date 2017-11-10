@@ -14,7 +14,19 @@ import AVFoundation
  allow the delegate to observe recorder state changes and signal strength changes.
  */
 public protocol TestRecorderDelegate: class {
+
+    /**
+     Indicates the recorder state has changed.
+
+     - parameter state: The updated state of the recorder.
+     */
     func recorderStateChanged(_ state: TestRecorderState)
+
+    /**
+     Indicates the sensor's strength has changed.
+
+     - parameter strength: The strength of the signal sensor (normalized betwen 0.0 and 1.0)
+     */
     func signalStrengthChanged(_ strength: Double)
 }
 
@@ -49,18 +61,22 @@ public enum TestRecorderError: Error {
  */
 public class TestSessionRecorder {
 
-    /**
-     The duration of the recording session.
-     */
-    public let testDuration: TimeInterval = 6.0
-
-    /**
-     The threshold that the sensor recording strength must surpass to be considered a valid test.
-     */
-    public let signalStrengthThreshold: Double = 0.6
-
     /// The object that acts as the delegate for the recorder.
     public weak var delegate: TestRecorderDelegate?
+
+
+    /// The duration of the recording session.
+    public let testDuration: TimeInterval = 6.0
+
+
+    /// The threshold that the sensor recording strength must surpass to be considered a valid test.
+    public let signalStrengthThreshold: Double = 0.6
+
+    /**
+     Indicates whether or not the recorded blow has passed the required signal strength threshold to be considered
+     a valid, processable blow.
+     */
+    public fileprivate(set) var signalStrengthThresholdPassed = false
 
     /// The current state of the recorder.
     public fileprivate(set) var state: TestRecorderState = .ready {
@@ -68,11 +84,6 @@ public class TestSessionRecorder {
             delegate?.recorderStateChanged(state)
         }
     }
-
-    /**
-     Indicates whether or not the recorded blow has passed the required signal strength threshold to be considered a valid, processable blow.
-     */
-    public fileprivate(set) var signalStrengthThresholdPassed = false
 
     fileprivate var testTimer: Timer?
     fileprivate var signalStrengthUpdateTimer: Timer?
@@ -87,6 +98,7 @@ public class TestSessionRecorder {
     fileprivate var baselineBlowBackground = 0.5
     fileprivate let defaultBaselineBlow = 0.5
 
+    /// The filepath where the recording is saved to.
     public var recordingFilepath: String? {
         if let soundFilePath = soundFilePath,
             let soundFileTrimmedPath = soundFileTrimmedPath,
@@ -273,7 +285,7 @@ public class TestSessionRecorder {
 
     /**
      Helper function that takes in strength and applies a mathematical transform
-     to return an adjusted strength
+     to return an adjusted, normalized strength (between 0.0 and 1.0).
 
      - parameter strength: The signal strength to transform.
      - returns: The transformed signal strength.
