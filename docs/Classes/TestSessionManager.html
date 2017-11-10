@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>TestSessionManager Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/TestSessionManager" class="dashAnchor"></a>
+
+    <a title="TestSessionManager Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          WingKit Docs
+        </a>
+         (71% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/sparodev/WingKit">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">WingKit Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      TestSessionManager Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/AmbientNoiseMonitor.html">AmbientNoiseMonitor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Client.html">Client</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/ReachabilityMonitor.html">ReachabilityMonitor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/SensorMonitor.html">SensorMonitor</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TestSessionManager.html">TestSessionManager</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/TestSessionRecorder.html">TestSessionRecorder</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Enums.html">Enumerations</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/AmbientNoiseMonitorError.html">AmbientNoiseMonitorError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BestTestChoice.html">BestTestChoice</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/BiologlicalSex.html">BiologlicalSex</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ClientError.html">ClientError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/Ethnicity.html">Ethnicity</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/LocalTestFailureReason.html">LocalTestFailureReason</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/LungFunctionZone.html">LungFunctionZone</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/NetworkError.html">NetworkError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/ReferenceMetric.html">ReferenceMetric</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/RespiratoryState.html">RespiratoryState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/TestRecorderError.html">TestRecorderError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/TestRecorderState.html">TestRecorderState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/TestSessionManagerError.html">TestSessionManagerError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/TestSessionState.html">TestSessionState</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Enums/TestStatus.html">TestStatus</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/AmbientNoiseMonitorDelegate.html">AmbientNoiseMonitorDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/ReachabilityMonitorDelegate.html">ReachabilityMonitorDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/SensorMonitorDelegate.html">SensorMonitorDelegate</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/TestRecorderDelegate.html">TestRecorderDelegate</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Structs.html">Structures</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/OAuthCredentials.html">OAuthCredentials</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/PatientData.html">PatientData</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/Test.html">Test</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Structs/TestSession.html">TestSession</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>TestSessionManager</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TestSessionManager</span></code></pre>
+
+                </div>
+              </div>
+            <p>The <code>TestSessionManager</code> class is responsible for keeping track of a test session&rsquo;s state and provides an inteface to
+the necessary Wing API endpoints to perform a lung function test.</p>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit18TestSessionManagerC6clientSQyAA6ClientCGv"></a>
+                    <a name="//apple_ref/swift/Property/client" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit18TestSessionManagerC6clientSQyAA6ClientCGv">client</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TestSessionManager</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit18TestSessionManagerC5stateAA0cD5StateOv"></a>
+                    <a name="//apple_ref/swift/Property/state" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit18TestSessionManagerC5stateAA0cD5StateOv">state</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The state of the test session.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">state</span><span class="p">:</span> <span class="kt"><a href="../Enums/TestSessionState.html">TestSessionState</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">noTest</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit18TestSessionManagerC04testD0AA0cD0Vv"></a>
+                    <a name="//apple_ref/swift/Property/testSession" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit18TestSessionManagerC04testD0AA0cD0Vv">testSession</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TestSessionManager</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit18TestSessionManagerC20failedTestsThresholdSiv"></a>
+                    <a name="//apple_ref/swift/Property/failedTestsThreshold" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit18TestSessionManagerC20failedTestsThresholdSiv">failedTestsThreshold</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The number of tests that are allowed to fail processing before the test session is considered invalid.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">failedTestsThreshold</span> <span class="o">=</span> <span class="mi">2</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit18TestSessionManagerC05localC16FailureThresholdSiv"></a>
+                    <a name="//apple_ref/swift/Property/localTestFailureThreshold" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit18TestSessionManagerC05localC16FailureThresholdSiv">localTestFailureThreshold</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The number of tests that are allowed to fail due to local failure reasons before the test session is considered invalid.s</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">localTestFailureThreshold</span> <span class="o">=</span> <span class="mi">2</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit18TestSessionManagerC25processingPollingIntervalSdv"></a>
+                    <a name="//apple_ref/swift/Property/processingPollingInterval" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit18TestSessionManagerC25processingPollingIntervalSdv">processingPollingInterval</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The interval at which the server will be pinged to check if processing is complete.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">processingPollingInterval</span><span class="p">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="mf">0.8</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit18TestSessionManagerC26processingTimeoutThresholdSiv"></a>
+                    <a name="//apple_ref/swift/Property/processingTimeoutThreshold" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit18TestSessionManagerC26processingTimeoutThresholdSiv">processingTimeoutThreshold</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The threshold that represents the number of times the app should attempt to refresh the test session.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">processingTimeoutThreshold</span> <span class="o">=</span> <span class="mi">10</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit18TestSessionManagerC26numberOfProcessingAttemptsSiv"></a>
+                    <a name="//apple_ref/swift/Property/numberOfProcessingAttempts" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit18TestSessionManagerC26numberOfProcessingAttemptsSiv">numberOfProcessingAttempts</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The number of attempts the test session has been refreshed in effort to determine the processing state.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">numberOfProcessingAttempts</span> <span class="o">=</span> <span class="mi">0</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit18TestSessionManagerCAcA6ClientC6client_AA0cD0V04testD0tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(client:testSession:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit18TestSessionManagerCAcA6ClientC6client_AA0cD0V04testD0tcfc">init(client:testSession:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Initializes the <code>TestSessionManager</code> with the test session passed in as an argument.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">client</span><span class="p">:</span> <span class="kt"><a href="../Classes/Client.html">Client</a></span><span class="p">,</span> <span class="nv">testSession</span><span class="p">:</span> <span class="kt"><a href="../Structs/TestSession.html">TestSession</a></span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit18TestSessionManagerC07processcD0yys5Error_pSgc10completion_tF"></a>
+                    <a name="//apple_ref/swift/Method/processTestSession(completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit18TestSessionManagerC07processcD0yys5Error_pSgc10completion_tF">processTestSession(completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Retrieves and applies the updated details of the associated test session.</p>
+<div class="aside aside-throws">
+    <p class="aside-title">Throws</p>
+    TestSessionManagerError.refreshTestSessionTimeout if number of processing attempts exceeds the timeout threshold.
+
+</div>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">processTestSession</span><span class="p">(</span><span class="nv">completion</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Swift</span><span class="o">.</span><span class="kt">Error</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="kt">Void</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit18TestSessionManagerC15uploadRecordingySS10atFilepath_ys5Error_pSgc10completiontF"></a>
+                    <a name="//apple_ref/swift/Method/uploadRecording(atFilepath:completion:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit18TestSessionManagerC15uploadRecordingySS10atFilepath_ys5Error_pSgc10completiontF">uploadRecording(atFilepath:completion:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TestSessionManager</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2017 <a class="link" href="https://sparohealth.com" target="_blank" rel="external">Sparo</a>. All rights reserved. (Last updated: 2017-11-09)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.8.4</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>
