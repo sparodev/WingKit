@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>AmbientNoiseMonitorDelegate Protocol Reference</title>
+    <title>DecodingError Enumeration Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Protocol/AmbientNoiseMonitorDelegate" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Enum/DecodingError" class="dashAnchor"></a>
 
-    <a title="AmbientNoiseMonitorDelegate Protocol Reference"></a>
+    <a title="DecodingError Enumeration Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">WingKit Reference</a>
       <img class="carat" src="../img/carat.png" />
-      AmbientNoiseMonitorDelegate Protocol Reference
+      DecodingError Enumeration Reference
     </p>
 
     <div class="content-wrapper">
@@ -163,15 +163,14 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>AmbientNoiseMonitorDelegate</h1>
+            <h1>DecodingError</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">protocol</span> <span class="kt">AmbientNoiseMonitorDelegate</span><span class="p">:</span> <span class="kd">class</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">DecodingError</span><span class="p">:</span> <span class="kt">Error</span></code></pre>
 
                 </div>
               </div>
-            <p>The delegate of the AmbientNoiseMonitor object must adopt the <code>AmbientNoiseMonitorDelegate</code> protocol.  This allows
-the delegate to observe whenever <code>isBelowThreshold</code> state changes.</p>
+            <p>The <code>DecodingError</code> enum describes the types of errors that can occur while decoding.</p>
 
           </div>
         </section>
@@ -183,9 +182,9 @@ the delegate to observe whenever <code>isBelowThreshold</code> state changes.</p
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7WingKit27AmbientNoiseMonitorDelegateP07ambientdE14DidChangeStateyAA0cdE0CF"></a>
-                    <a name="//apple_ref/swift/Method/ambientNoiseMonitorDidChangeState(_:)" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit27AmbientNoiseMonitorDelegateP07ambientdE14DidChangeStateyAA0cdE0CF">ambientNoiseMonitorDidChangeState(_:)</a>
+                    <a name="/s:7WingKit13DecodingErrorO14decodingFailedA2CmF"></a>
+                    <a name="//apple_ref/swift/Element/decodingFailed" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit13DecodingErrorO14decodingFailedA2CmF">decodingFailed</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -193,14 +192,14 @@ the delegate to observe whenever <code>isBelowThreshold</code> state changes.</p
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Tells the delegate that the monitor state changed.</p>
+                        <p>Indicates that the json was unable to be decoded into the specified type.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">func</span> <span class="nf">ambientNoiseMonitorDidChangeState</span><span class="p">(</span><span class="n">_</span> <span class="nv">monitor</span><span class="p">:</span> <span class="kt"><a href="../Classes/AmbientNoiseMonitor.html">AmbientNoiseMonitor</a></span><span class="p">)</span></code></pre>
+                          <pre class="highlight"><code><span class="k">case</span> <span class="n">decodingFailed</span></code></pre>
 
                         </div>
                       </div>
