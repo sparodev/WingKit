@@ -10,7 +10,7 @@ import Foundation
 import AVFoundation
 
 /**
- The delegate of a TestSessionRecorder object must adopt the `TestRecorderDelegate` protocol. Methods of the protocol
+ The delegate of a `TestSessionRecorder` object must adopt the `TestRecorderDelegate` protocol. Methods of the protocol
  allow the delegate to observe recorder state changes and signal strength changes.
  */
 public protocol TestRecorderDelegate: class {
@@ -25,7 +25,7 @@ public protocol TestRecorderDelegate: class {
     /**
      Indicates the sensor's strength has changed.
 
-     - parameter strength: The strength of the signal sensor (normalized betwen 0.0 and 1.0)
+     - parameter strength: The strength of the sensor's signal (normalized betwen 0.0 and 1.0).
      */
     func signalStrengthChanged(_ strength: Double)
 }
@@ -195,7 +195,7 @@ public class TestSessionRecorder {
     /**
      Starts the recording for a lung function test.
      */
-    public func start() {
+    public func startRecording() {
 
         guard state == .ready else { return }
 
@@ -208,7 +208,7 @@ public class TestSessionRecorder {
     }
 
     /// Ends the recording session.
-    public func stop() {
+    public func stopRecording() {
         stopTimers()
         stopRecorders()
     }

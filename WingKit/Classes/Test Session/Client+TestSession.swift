@@ -152,7 +152,7 @@ public extension Client {
     public func createTestSession(with patientData: PatientData,
                                   completion: @escaping (_ testSession: TestSession?, _ error: Error?) -> Void) {
 
-        guard let token = token else {
+        guard token != nil else {
             completion(nil, ClientError.unauthorized)
             return
         }
@@ -164,9 +164,6 @@ public extension Client {
                 parameters: [
                     "localTimezone": Date().iso8601,
                     "patient": patientData.json()
-                ],
-                headers: [
-                    "Authorization": token
                 ]
             )
         } catch {
@@ -207,15 +204,14 @@ public extension Client {
      */
     public func retrieveTestSession(withId id: String, completion: @escaping (_ testSession: TestSession?, _ error: Error?) -> Void) {
 
-        guard let token = token else {
+        guard token != nil else {
             completion(nil, ClientError.unauthorized)
             return
         }
 
         var request: URLRequestConvertible
         do {
-            request = try self.request(for: TestSessionEndpoint.retrieve(sessionId: id),
-                                       headers: ["Authorization": token])
+            request = try self.request(for: TestSessionEndpoint.retrieve(sessionId: id))
         } catch {
             return completion(nil, error)
         }

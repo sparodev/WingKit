@@ -36,6 +36,11 @@ extension Client {
     internal func createUploadTarget(forTestSessionId testSessionId: String,
                                    completion: @escaping (UploadTarget?, Error?) -> Void) {
 
+        guard token != nil else {
+            completion(nil, ClientError.unauthorized)
+            return
+        }
+
         var request: URLRequestConvertible
         do {
             request = try self.request(for: UploadTargetEndpoint.create(sessionId: testSessionId))

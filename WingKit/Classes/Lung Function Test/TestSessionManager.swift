@@ -36,14 +36,20 @@ public enum TestSessionState {
 /// The `TestSessionManagerError` enum describes domain specific errors for the `TestSessionManager` class.
 public enum TestSessionManagerError: Error {
 
-    /// Indicates the request test session could not be found.
-    case testSessionNotFound
+    /// Indicates the specified test session could not be loaded.
+    case retrieveTestSessionFailed
+
+    /// Indicates a upload target could not be created.
+    case createUploadTargetFailed
 
     /// Indicates the processing request has timed out.
     case processingTimeout
 
     /// Indicates that an upload target could not be created to upload a test recording to.
     case uploadTargetCreationFailed
+
+    /// Indicates the test recording failed to upload to S3.
+    case testUploadFailed
 }
 
 /**
@@ -98,8 +104,10 @@ public class TestSessionManager {
      Retrieves and applies the updated details of the associated test session.
 
      - Throws:
-        - `TestSessionManagerError.processingTimeout` if number of processing attempts exceeds the timeout threshold.
-        - `TestSessionManagerError.testSessionNotFound` if the response doesn't contain the test session.
+         - `ClientError.unauthorized` if the `token` hasn't been set on the client.
+         - `TestSessionManagerError.processingTimeout` if number of processing attempts exceeds the timeout threshold.
+         - `TestSessionManagerError.retrieveTestSessionFailed` if the response doesn't contain the test session.
+         - `NetworkError.unacceptableStatusCode` if an failure status code is received in the response.
      */
     public func processTestSession(completion: @escaping (Swift.Error?) -> Void) {
 
@@ -115,10 +123,15 @@ public class TestSessionManager {
 
                 self.resetProcessingAttemptsCount()
 
-                if let error = error {
-                    completion(error)
-                } else {
-                    completion(TestSessionManagerError.testSessionNotFound)
+                guard let error = error else {
+                    completion(TestSessionManagerError.retrieveTestSessionFailed)
+                    return
+                }
+
+                switch error {
+                case NetworkError.invalidResponse, DecodingError.decodingFailed:
+                    completion(TestSessionManagerError.retrieveTestSessionFailed)
+                default: completion(error)
                 }
 
                 return
@@ -159,6 +172,13 @@ public class TestSessionManager {
         - filepath: The filepath for the lung function test recording file.
         - completion: A callback closure that gets invoked after receiving the response from the upload request.
             - error: The error that occurred while uploading the recording (Optional).
+
+     - Throws:
+        - `ClientError.unauthorized` if the `token` hasn't been set on the client.
+        - `NetworkError.unacceptableStatusCode` if an failure status code is received in the response.
+        - `TestSessionManagerError.uploadTargetCreationFailed` if the request to create a upload target failed.
+        - `TestSessionmanagerError.testUploadFailed` if uploading the test recording failed.
+
      */
     public func uploadRecording(atFilepath filepath: String, completion: @escaping (_ error: Swift.Error?) -> Void) {
         getUploadTarget { (uploadTarget, error) in
@@ -168,7 +188,17 @@ public class TestSessionManager {
             }
 
             self.usedUploadTargetIds.append(uploadTarget.id)
-            self.client.uploadFile(atFilepath: filepath, to: uploadTarget, completion: completion)
+            self.client.uploadFile(atFilepath: filepath, to: uploadTarget, completion: { error in
+
+                if let error = error {
+
+                    print("Test upload failed with error: \(error)")
+                    completion(TestSessionManagerError.testUploadFailed)
+                    return
+                }
+
+                completion(nil)
+            })
         }
     }
 
@@ -180,11 +210,18 @@ public class TestSessionManager {
 
         self.client.createUploadTarget(forTestSessionId: testSession.id) { (uploadTarget, error) in
             guard let uploadTarget = uploadTarget else {
-                if let error = error {
-                    completion(nil, error)
-                } else {
+
+                guard let error = error else {
                     completion(nil, TestSessionManagerError.uploadTargetCreationFailed)
+                    return
                 }
+
+                switch error {
+                case NetworkError.invalidResponse, DecodingError.decodingFailed:
+                    completion(nil, TestSessionManagerError.uploadTargetCreationFailed)
+                default: completion(nil, error)
+                }
+
                 return
             }
 

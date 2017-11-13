@@ -26,6 +26,8 @@ class Client_UploadTargetTest: WingKitTestCase {
     
     func testCreateUploadTargetWhenSuccessful() {
 
+        testObject.token = "token"
+
         let sessionId = UUID().uuidString
 
         let expectedTargetId = UUID().uuidString
@@ -75,6 +77,8 @@ class Client_UploadTargetTest: WingKitTestCase {
     }
 
     func testCreateUploadTargetWhenDecodingFails() {
+
+        testObject.token = "token"
 
         let sessionId = UUID().uuidString
 

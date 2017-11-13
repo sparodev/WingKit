@@ -64,7 +64,7 @@ internal class Network: NetworkProtocol {
     fileprivate let cognitoRegion = AWSRegionType.USEast1
     fileprivate let bucketRegion = AWSRegionType.USEast1
 
-    init() {
+    internal init() {
 
         AWSServiceManager.default().defaultServiceConfiguration = AWSServiceConfiguration(
             region: bucketRegion,
@@ -75,7 +75,7 @@ internal class Network: NetworkProtocol {
         )
     }
 
-    func send(request: URLRequestConvertible, completion: @escaping (JSON?, Error?) -> Void) {
+    internal func send(request: URLRequestConvertible, completion: @escaping (JSON?, Error?) -> Void) {
 
             var urlRequest: URLRequest
             do {
@@ -118,7 +118,7 @@ internal class Network: NetworkProtocol {
         task.resume()
     }
 
-    func uploadFile(atFilepath filepath: String, toBucket bucket: String,
+    internal func uploadFile(atFilepath filepath: String, toBucket bucket: String,
                     withKey key: String, completion: @escaping (Error?) -> Void) {
 
         let expression = AWSS3TransferUtilityUploadExpression()

@@ -12,7 +12,10 @@ protocol Decodable {
     init?(from decoder: JSONDecoder)
 }
 
-enum DecodingError: Error {
+/// The `DecodingError` enum describes the types of errors that can occur while decoding.
+public enum DecodingError: Error {
+
+    /// Indicates that the json was unable to be decoded into the specified type.
     case decodingFailed
 }
 

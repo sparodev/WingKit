@@ -117,11 +117,12 @@ class Client_TestSessionTest: WingKitTestCase {
                 }
 
                 XCTAssertEqual(patientJSON["externalId"] as? String, patientData.id)
-                XCTAssertEqual(patientJSON["ethnicity"] as? String, patientData.ethnicity.rawValue)
-                XCTAssertEqual(patientJSON["biologicalSex"] as? String, patientData.biologicalSex.rawValue)
+                XCTAssertEqual(patientJSON["ethnicity"] as? String, patientData.ethnicity?.rawValue)
+                XCTAssertEqual(patientJSON["biologicalSex"] as? String, patientData.biologicalSex?.rawValue)
                 XCTAssertEqual(patientJSON["height"] as? Int, patientData.height)
 
-                guard let expectedBirthdate = Calendar.current.date(byAdding: .year, value: -patientData.age, to: Date()),
+                guard let age = patientData.age,
+                    let expectedBirthdate = Calendar.current.date(byAdding: .year, value: -age, to: Date()),
                     let actualBirthdate = (patientJSON["dob"] as? String)?.dateFromISO8601 else {
                         XCTFail()
                         return
