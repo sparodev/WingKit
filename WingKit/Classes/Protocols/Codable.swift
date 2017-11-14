@@ -19,7 +19,7 @@ public enum DecodingError: Error {
     case decodingFailed
 }
 
-class JSONDecoder {
+public class JSONDecoder {
 
     var json: JSON?
 

@@ -93,7 +93,7 @@ public enum ReferenceMetric: String {
 /**
  The `TestSession` struct represents a session of multiple lung function tests.
  */
-public struct TestSession: Decodable {
+public class TestSession: Decodable {
 
     struct Keys {
         static let id = "id"
@@ -164,7 +164,7 @@ public struct TestSession: Decodable {
     /// How the best test was chosen
     public var bestTestChoice: BestTestChoice?
 
-    init?(from decoder: JSONDecoder) {
+     public required init?(from decoder: JSONDecoder) {
 
         guard let json = decoder.json,
             let id = json[Keys.id] as? String,
@@ -268,7 +268,7 @@ public struct TestSession: Decodable {
         }
     }
 
-    mutating func merge(with testSession: TestSession) {
+    func merge(with testSession: TestSession) {
 
         endedAt = testSession.endedAt
         lungFunctionZone = testSession.lungFunctionZone

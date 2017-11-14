@@ -162,7 +162,7 @@ public class Client {
 
             guard let json = json,
                 let token = json["token"] as? String else {
-                completion(nil, NetworkError.invalidResponse)
+                completion(nil, ClientError.unauthorized)
                 return
             }
 

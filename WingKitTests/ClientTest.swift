@@ -291,4 +291,95 @@ class ClientTest: WingKitTestCase {
         XCTAssertEqual(intValue, expectedIntValue)
         XCTAssertEqual(stringValue, expectedStringValue)
     }
+
+    func testAuthenticateReturnsTokenFromResponse() {
+
+        let expectedToken = UUID().uuidString
+        let expectedClientID = UUID().uuidString
+        let expectedClientSecret = UUID().uuidString
+
+        mockNetwork.sendRequestStub = { request, completion in
+
+            guard let networkRequest = request as? NetworkRequest else {
+                XCTFail("Found unexpected request: \(request)")
+                return
+            }
+
+            XCTAssertEqual(networkRequest.parameters![OAuthParameterKeys.id] as! String, expectedClientID)
+            XCTAssertEqual(networkRequest.parameters![OAuthParameterKeys.secret] as! String, expectedClientSecret)
+            XCTAssertEqual(networkRequest.url.absoluteString,
+                           self.testObject.baseURLPath + AuthenticationEndpoint.authenticate.path)
+
+            completion(["token": expectedToken], nil)
+        }
+
+        let callbackExpectation = expectation(description: "wait for callback")
+
+        testObject.oauth = OAuthCredentials(id: expectedClientID, secret: expectedClientSecret)
+
+        testObject.authenticate { (token, error) in
+
+            if let error = error {
+                XCTFail("Caught unexpected error: \(error)")
+                return
+            }
+
+            guard let token = token else {
+                XCTFail("Expected to find a valid token.")
+                return
+            }
+
+            XCTAssertEqual(token, expectedToken)
+
+            callbackExpectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
+    func testAuthenticateWhenNoTokenFoundInResponse() {
+
+        mockNetwork.sendRequestStub = { request, completion in
+            completion([:], nil)
+        }
+
+        let callbackExpectation = expectation(description: "wait for callback")
+
+        testObject.oauth = OAuthCredentials(id: UUID().uuidString, secret: UUID().uuidString)
+
+        testObject.authenticate { (token, error) in
+
+            guard let error = error else {
+                XCTFail("Expected to catch an error.")
+                return
+            }
+
+            switch error {
+            case ClientError.unauthorized: callbackExpectation.fulfill()
+            default: XCTFail("Caught unexpected error: \(error)")
+            }
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
+    func testAuthenticateRequiresOAuthToBeConfigured() {
+
+        let callbackExpectation = expectation(description: "wait for callback")
+
+        testObject.authenticate { (token, error) in
+
+            guard let error = error else {
+                XCTFail("Expected to catch an error.")
+                return
+            }
+
+            switch error {
+            case ClientError.unauthorized: callbackExpectation.fulfill()
+            default: XCTFail("Caught unexpected error: \(error)")
+            }
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
 }

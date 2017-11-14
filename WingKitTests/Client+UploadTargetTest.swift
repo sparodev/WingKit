@@ -123,6 +123,8 @@ class Client_UploadTargetTest: WingKitTestCase {
         let completionCallbackExpectation = expectation(description: "wait for callback")
         let sendRequestExpectation = expectation(description: "wait for send request to be called")
 
+        testObject.token = "token"
+
         mockNetwork.sendRequestStub = { request, completion in
 
             completion(nil, nil)
@@ -155,6 +157,8 @@ class Client_UploadTargetTest: WingKitTestCase {
 
         let completionCallbackExpectation = expectation(description: "wait for callback")
         let sendRequestExpectation = expectation(description: "wait for send request to be called")
+
+        testObject.token = "token"
 
         mockNetwork.sendRequestStub = { request, completion in
 

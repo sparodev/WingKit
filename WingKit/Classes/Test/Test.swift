@@ -30,7 +30,7 @@ public enum TestStatus: String {
 /**
  The `Test` struct represents a lung function test.
  */
-public struct Test: Decodable {
+public class Test: Decodable {
 
     struct Keys {
         static let id = "id"
@@ -71,7 +71,7 @@ public struct Test: Decodable {
     /// The id of the associated upload target.
     public var uploadTargetId: String?
 
-    init?(from decoder: JSONDecoder) {
+    public required init?(from decoder: JSONDecoder) {
 
         guard let json = decoder.json,
             let id = json[Keys.id] as? String else {

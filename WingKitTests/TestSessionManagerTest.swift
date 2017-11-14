@@ -637,6 +637,213 @@ class TestSessionManagerTest: WingKitTestCase {
         }
     }
 
+    func testProcessTestSessionWhenTestSessionDecodingFails() {
+
+        client.token = "token"
+
+        mockNetwork.sendRequestStub = { request, completion in
+            completion([:], nil)
+        }
+
+        let callbackExpectation = expectation(description: "wait for callback")
+
+        testObject.processTestSession { (error) in
+
+            guard let error = error else {
+                XCTFail("Expected to catch an error.")
+                return
+            }
+
+            switch error {
+            case TestSessionManagerError.retrieveTestSessionFailed: callbackExpectation.fulfill()
+            default: XCTFail("Caught unexpected error: \(error)")
+            }
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
+    func testProcessTestSessionWhenResponseContainsNoJSON() {
+
+        client.token = "token"
+
+        mockNetwork.sendRequestStub = { request, completion in
+            completion(nil, nil)
+        }
+
+        let callbackExpectation = expectation(description: "wait for callback")
+
+        testObject.processTestSession { (error) in
+
+            guard let error = error else {
+                XCTFail("Expected to catch an error.")
+                return
+            }
+
+            switch error {
+            case TestSessionManagerError.retrieveTestSessionFailed: callbackExpectation.fulfill()
+            default: XCTFail("Caught unexpected error: \(error)")
+            }
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
+    func testUploadRecordingWhenNoUnusedUploadTargetsAreAvailable() {
+
+        let json: JSON = [
+            TestSession.Keys.id: "testId",
+            TestSession.Keys.startedAt: Date().addingTimeInterval(-8000).iso8601,
+            TestSession.Keys.endedAt: Date().iso8601,
+            TestSession.Keys.lungFunctionZone: LungFunctionZone.greenZone.rawValue,
+            TestSession.Keys.respiratoryState: RespiratoryState.greenZone.rawValue,
+            TestSession.Keys.referenceMetric: ReferenceMetric.pef.rawValue,
+            TestSession.Keys.bestTest: [
+                Test.Keys.id: "testid1",
+                Test.Keys.breathDuration: 1234.0,
+                Test.Keys.pef: 2345.0,
+                Test.Keys.fev1: 3456.0,
+                Test.Keys.takenAt: Date().addingTimeInterval(-7000).iso8601,
+                Test.Keys.exhaleCurve: [],
+                Test.Keys.status: TestStatus.complete.rawValue,
+                Test.Keys.totalVolume: 5614.0,
+                Test.Keys.upload: "uploadId1"
+            ],
+            TestSession.Keys.tests: []
+        ]
+
+        let expectedFilepath = "testpath"
+        let expectedUploadTargetId = "uploadTargetId"
+        let expectedUploadTargetKey = "uploadTargetKey"
+        let expectedUploadTargetBucket = "uploadTargetBucket"
+
+        testSession = createTestSession(with: json)
+        testObject = TestSessionManager(client: client, testSession: testSession)
+
+        client.token = "token"
+
+        mockNetwork.sendRequestStub = { request, completion in
+
+            guard let networkRequest = request as? NetworkRequest else {
+                XCTFail()
+                return
+            }
+
+            switch networkRequest.url.absoluteString {
+            case self.client.baseURLPath + UploadTargetEndpoint.create(sessionId: self.testSession.id).path:
+
+                completion([
+                    UploadTarget.Keys.id: expectedUploadTargetId,
+                    UploadTarget.Keys.key: expectedUploadTargetKey,
+                    UploadTarget.Keys.bucket: expectedUploadTargetBucket
+                    ], nil)
+            default: XCTFail()
+            }
+        }
+
+        mockNetwork.uploadFileStub = { filepath, bucket, key, completion in
+
+            XCTAssertEqual(filepath, expectedFilepath)
+            XCTAssertEqual(bucket, expectedUploadTargetBucket)
+            XCTAssertEqual(key, expectedUploadTargetKey)
+
+            completion(nil)
+        }
+
+        let callbackExpectation = expectation(description: "wait for callback")
+
+        XCTAssertEqual(testSession.uploadTargets.count, 0)
+
+        testObject.uploadRecording(atFilepath: expectedFilepath) { (error) in
+
+            if let error = error {
+                XCTFail("Caught unexpected error: \(error)")
+                return
+            }
+
+            callbackExpectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+
+        XCTAssertEqual(testSession.uploadTargets.count, 1)
+
+        let uploadTarget = testSession.uploadTargets.first!
+
+        XCTAssertEqual(uploadTarget.id, expectedUploadTargetId)
+        XCTAssertEqual(uploadTarget.key, expectedUploadTargetKey)
+        XCTAssertEqual(uploadTarget.bucket, expectedUploadTargetBucket)
+    }
+
+    func testUploadTargetWhenUploadTargetJSONIsUndecodable() {
+
+        let json: JSON = [
+            TestSession.Keys.id: "testId",
+            TestSession.Keys.startedAt: Date().addingTimeInterval(-8000).iso8601,
+            TestSession.Keys.endedAt: Date().iso8601,
+            TestSession.Keys.lungFunctionZone: LungFunctionZone.greenZone.rawValue,
+            TestSession.Keys.respiratoryState: RespiratoryState.greenZone.rawValue,
+            TestSession.Keys.referenceMetric: ReferenceMetric.pef.rawValue,
+            TestSession.Keys.bestTest: [
+                Test.Keys.id: "testid1",
+                Test.Keys.breathDuration: 1234.0,
+                Test.Keys.pef: 2345.0,
+                Test.Keys.fev1: 3456.0,
+                Test.Keys.takenAt: Date().addingTimeInterval(-7000).iso8601,
+                Test.Keys.exhaleCurve: [],
+                Test.Keys.status: TestStatus.complete.rawValue,
+                Test.Keys.totalVolume: 5614.0,
+                Test.Keys.upload: "uploadId1"
+            ],
+            TestSession.Keys.tests: []
+        ]
+
+        let expectedFilepath = "testpath"
+        let expectedUploadTargetId = "uploadTargetId"
+
+        testSession = createTestSession(with: json)
+        testObject = TestSessionManager(client: client, testSession: testSession)
+
+        client.token = "token"
+
+        mockNetwork.sendRequestStub = { request, completion in
+
+            guard let networkRequest = request as? NetworkRequest else {
+                XCTFail()
+                return
+            }
+
+            switch networkRequest.url.absoluteString {
+            case self.client.baseURLPath + UploadTargetEndpoint.create(sessionId: self.testSession.id).path:
+
+                completion([
+                    UploadTarget.Keys.id: expectedUploadTargetId,
+                    ], nil)
+            default: XCTFail()
+            }
+        }
+
+        let callbackExpectation = expectation(description: "wait for callback")
+
+        XCTAssertEqual(testSession.uploadTargets.count, 0)
+
+        testObject.uploadRecording(atFilepath: expectedFilepath) { (error) in
+
+            guard let error = error else {
+                XCTFail("Expected to catch an error.")
+                return
+            }
+
+            switch error {
+            case TestSessionManagerError.uploadTargetCreationFailed: callbackExpectation.fulfill()
+            default: XCTFail("Caught unexpected error: \(error)")
+            }
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+
+        XCTAssertEqual(testSession.uploadTargets.count, 0)
+    }
 
     // MARK: - Helper Methods
 
@@ -703,9 +910,9 @@ class TestSessionManagerTest: WingKitTestCase {
         return json
     }
 
-    func createTestSession() -> TestSession {
+    func createTestSession(with json: JSON? = nil) -> TestSession {
         let decoder = WingKit.JSONDecoder()
-        return try! decoder.decode(TestSession.self, from: testSessionJSON())
+        return try! decoder.decode(TestSession.self, from: json ?? testSessionJSON())
     }
 
     func simulateTestUploads(numberOfUploads: Int) {

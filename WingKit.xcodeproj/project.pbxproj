@@ -34,6 +34,7 @@
 		6CA9A0191F7442ED0085E247 /* Client+TestSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA9A0181F7442ED0085E247 /* Client+TestSession.swift */; };
 		6CA9A01C1F7443950085E247 /* Network.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA9A01B1F7443950085E247 /* Network.swift */; };
 		6CA9A01E1F7446D20085E247 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CA9A01D1F7446D20085E247 /* Endpoint.swift */; };
+		6CAD06B21FBA8628009D1262 /* TestSessionRecorderTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CAD06B11FBA8628009D1262 /* TestSessionRecorderTest.swift */; };
 		6CAF8DEA1F7971B600BD1BCB /* ClientTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CAF8DE91F7971B600BD1BCB /* ClientTest.swift */; };
 		6CBBB57F1F799A4E00295FFD /* Client+TestSessionTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBBB57E1F799A4E00295FFD /* Client+TestSessionTest.swift */; };
 		6CBBB5811F79A62600295FFD /* NetworkMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CBBB5801F79A62600295FFD /* NetworkMock.swift */; };
@@ -77,6 +78,7 @@
 		6CA9A0181F7442ED0085E247 /* Client+TestSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Client+TestSession.swift"; sourceTree = "<group>"; };
 		6CA9A01B1F7443950085E247 /* Network.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Network.swift; sourceTree = "<group>"; };
 		6CA9A01D1F7446D20085E247 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		6CAD06B11FBA8628009D1262 /* TestSessionRecorderTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestSessionRecorderTest.swift; sourceTree = "<group>"; };
 		6CAF8DE91F7971B600BD1BCB /* ClientTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClientTest.swift; sourceTree = "<group>"; };
 		6CBBB57E1F799A4E00295FFD /* Client+TestSessionTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Client+TestSessionTest.swift"; sourceTree = "<group>"; };
 		6CBBB5801F79A62600295FFD /* NetworkMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMock.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				6C71FD4A1F7AD14C00465F32 /* UploadTargetTest.swift */,
 				6C64DD4B1F7C1EE1005ED5AA /* Client+UploadTargetTest.swift */,
 				6C48EE121FABB2F60016BF4F /* TestSessionManagerTest.swift */,
+				6CAD06B11FBA8628009D1262 /* TestSessionRecorderTest.swift */,
 			);
 			path = WingKitTests;
 			sourceTree = "<group>";
@@ -551,6 +554,7 @@
 				6CE17A7A1F75966D00789D00 /* TestTest.swift in Sources */,
 				6CAF8DEA1F7971B600BD1BCB /* ClientTest.swift in Sources */,
 				6C64DD4C1F7C1EE1005ED5AA /* Client+UploadTargetTest.swift in Sources */,
+				6CAD06B21FBA8628009D1262 /* TestSessionRecorderTest.swift in Sources */,
 				6C71FD4B1F7AD14C00465F32 /* UploadTargetTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
