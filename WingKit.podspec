@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.name         = "WingKit"
   s.version      = "0.0.1"
-  s.summary      = "WingKit is a library written in Swift that allows third parties to interface with the Wing REST API in order to perform lung function tests."
+  s.summary      = "WingKit is a library that allows third parties to integrate with the Wing REST API to perform lung function tests."
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?
@@ -25,7 +25,7 @@ Pod::Spec.new do |s|
   #   * Write the description between the DESC delimiters below.
   #   * Finally, don't worry about the indent, CocoaPods strips it!
   s.description  = <<-DESC
-  An SDK that allows third parties to interface with Wing API and perform lung function tests.
+  A Swift library that allows third parties to interface with Wing REST API to perform lung function tests.
                    DESC
 
   s.homepage     = "https://github.com/sparodev/WingKit"
