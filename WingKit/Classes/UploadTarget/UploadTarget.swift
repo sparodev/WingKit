@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct UploadTarget: Decodable {
+public class UploadTarget: Decodable {
 
     struct Keys {
         static let id = "id"
@@ -20,7 +20,7 @@ struct UploadTarget: Decodable {
     var key: String
     var bucket: String
 
-    init?(from decoder: JSONDecoder) {
+    public required init?(from decoder: JSONDecoder) {
 
         guard let json = decoder.json else {
             return nil

@@ -8,40 +8,6 @@
 
 import Foundation
 
-public enum LocalTestFailureReason {
-    case sensorDisconnected
-    case internetDisconnected
-    case animationThresholdNotMet
-
-    var title: String {
-        switch self {
-        case .sensorDisconnected: return "Sensor Error"
-        case .internetDisconnected: return "Internet Error"
-        case .animationThresholdNotMet: return "Processing Error"
-        }
-    }
-
-    var subtitle: String {
-        switch self {
-        case .sensorDisconnected: return "Where's the sensor?"
-        case .internetDisconnected: return "No Internet Connection"
-        case .animationThresholdNotMet: return "Something went wrong!"
-        }
-    }
-
-    var message: String {
-        switch self {
-        case .sensorDisconnected:
-            return "Be sure Wing is plugged in and be careful not to pull on the cord when blowing into Wing!"
-        case .internetDisconnected:
-            return "You must be connected to the internet in order to take a test. "
-                + "Please fix your connection and try again."
-        case .animationThresholdNotMet:
-            return "Let's try doing that test again!"
-        }
-    }
-}
-
 /// The `TestSessionState` enum describes the various states a test session can be in.
 public enum TestSessionState {
 
@@ -65,28 +31,42 @@ public enum TestSessionState {
 
     /// Indiciates that the test session has concluded with at least two non-processable tests.
     case notProcessedTestFinal
-
-    /// Indicates that the most recent test failed due to a local failure reason.
-    case testSessionInterrupted(reason: LocalTestFailureReason)
 }
 
 /// The `TestSessionManagerError` enum describes domain specific errors for the `TestSessionManager` class.
 public enum TestSessionManagerError: Error {
-    case testSessionNotFound
+
+    /// Indicates the specified test session could not be loaded.
+    case retrieveTestSessionFailed
+
+    /// Indicates a upload target could not be created.
+    case createUploadTargetFailed
+
+    /// Indicates the processing request has timed out.
     case processingTimeout
+
+    /// Indicates that an upload target could not be created to upload a test recording to.
     case uploadTargetCreationFailed
-    case invalidUploadTarget
-    case invalidRecording
+
+    /// Indicates the test recording failed to upload to S3.
+    case testUploadFailed
 }
 
 /**
- The `TestSessionManager` keeps track of a test session's state and also is the mediator for all the necessary network requests that occur during a test session.
+ The `TestSessionManager` class is responsible for keeping track of a test session's state and provides an inteface to
+ the necessary Wing API endpoints to perform a lung function test.
  */
 public class TestSessionManager {
+
+    // MARK: - Properties
+
+    /// The Wing client used to interface with the Wing REST API.
+    public fileprivate(set) var client: Client!
 
     /// The state of the test session.
     public fileprivate(set) var state: TestSessionState = .noTest
 
+    /// The active test session.
     public fileprivate(set) var testSession: TestSession
 
     fileprivate var usedUploadTargetIds = [String]()
@@ -97,7 +77,7 @@ public class TestSessionManager {
     /// The number of tests that are allowed to fail due to local failure reasons before the test session is considered invalid.s
     public let localTestFailureThreshold = 2
 
-    /// The interval at which the server will be pinged to check if processing is complete.s
+    /// The interval at which the server will be pinged to check if processing is complete.
     public let processingPollingInterval: Double = 0.8
 
     /// The threshold that represents the number of times the app should attempt to refresh the test session.
@@ -106,8 +86,11 @@ public class TestSessionManager {
     /// The number of attempts the test session has been refreshed in effort to determine the processing state.
     public fileprivate(set) var numberOfProcessingAttempts = 0
 
+    // MARK: - Initialization
+
     /// Initializes the `TestSessionManager` with the test session passed in as an argument.
-    public init(testSession: TestSession) {
+    public init(client: Client, testSession: TestSession) {
+        self.client = client
         self.testSession = testSession
     }
 
@@ -115,10 +98,16 @@ public class TestSessionManager {
         numberOfProcessingAttempts = 0
     }
 
+    // MARK: - Process Test
+
     /**
      Retrieves and applies the updated details of the associated test session.
 
-     - throws: TestSessionManagerError.refreshTestSessionTimeout if number of processing attempts exceeds the timeout threshold.
+     - Throws:
+         - `ClientError.unauthorized` if the `token` hasn't been set on the client.
+         - `TestSessionManagerError.processingTimeout` if number of processing attempts exceeds the timeout threshold.
+         - `TestSessionManagerError.retrieveTestSessionFailed` if the response doesn't contain the test session.
+         - `NetworkError.unacceptableStatusCode` if an failure status code is received in the response.
      */
     public func processTestSession(completion: @escaping (Swift.Error?) -> Void) {
 
@@ -128,13 +117,21 @@ public class TestSessionManager {
             return
         }
 
-        Client.retrieveTestSession(withId: testSession.id) { (testSession, error) in
+        client.retrieveTestSession(withId: testSession.id) { (testSession, error) in
 
             guard let testSession = testSession else {
-                if let error = error {
-                    completion(error)
-                } else {
-                    completion(TestSessionManagerError.testSessionNotFound)
+
+                self.resetProcessingAttemptsCount()
+
+                guard let error = error else {
+                    completion(TestSessionManagerError.retrieveTestSessionFailed)
+                    return
+                }
+
+                switch error {
+                case NetworkError.invalidResponse, DecodingError.decodingFailed:
+                    completion(TestSessionManagerError.retrieveTestSessionFailed)
+                default: completion(error)
                 }
 
                 return
@@ -165,7 +162,25 @@ public class TestSessionManager {
         }
     }
 
-    public func uploadRecording(atFilepath filepath: String, completion: @escaping (Swift.Error?) -> Void) {
+
+    // MARK: - Upload Recording
+
+    /**
+     Uploads the recording at the specified filepath to Amazon S3 to initiate processing.
+
+     - Parameters:
+        - filepath: The filepath for the lung function test recording file.
+        - completion: A callback closure that gets invoked after receiving the response from the upload request.
+            - error: The error that occurred while uploading the recording (Optional).
+
+     - Throws:
+        - `ClientError.unauthorized` if the `token` hasn't been set on the client.
+        - `NetworkError.unacceptableStatusCode` if an failure status code is received in the response.
+        - `TestSessionManagerError.uploadTargetCreationFailed` if the request to create a upload target failed.
+        - `TestSessionmanagerError.testUploadFailed` if uploading the test recording failed.
+
+     */
+    public func uploadRecording(atFilepath filepath: String, completion: @escaping (_ error: Swift.Error?) -> Void) {
         getUploadTarget { (uploadTarget, error) in
             guard let uploadTarget = uploadTarget else {
                 completion(error)
@@ -173,8 +188,17 @@ public class TestSessionManager {
             }
 
             self.usedUploadTargetIds.append(uploadTarget.id)
+            self.client.uploadFile(atFilepath: filepath, to: uploadTarget, completion: { error in
 
-            Client.uploadFile(atFilepath: filepath, to: uploadTarget, completion: completion)
+                if let error = error {
+
+                    print("Test upload failed with error: \(error)")
+                    completion(TestSessionManagerError.testUploadFailed)
+                    return
+                }
+
+                completion(nil)
+            })
         }
     }
 
@@ -184,13 +208,20 @@ public class TestSessionManager {
             return
         }
 
-        Client.createUploadTarget(forTestSessionId: testSession.id) { (uploadTarget, error) in
+        self.client.createUploadTarget(forTestSessionId: testSession.id) { (uploadTarget, error) in
             guard let uploadTarget = uploadTarget else {
-                if let error = error {
-                    completion(nil, error)
-                } else {
+
+                guard let error = error else {
                     completion(nil, TestSessionManagerError.uploadTargetCreationFailed)
+                    return
                 }
+
+                switch error {
+                case NetworkError.invalidResponse, DecodingError.decodingFailed:
+                    completion(nil, TestSessionManagerError.uploadTargetCreationFailed)
+                default: completion(nil, error)
+                }
+
                 return
             }
 

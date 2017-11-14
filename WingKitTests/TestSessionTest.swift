@@ -124,37 +124,23 @@ class TestSessionTest: WingKitTestCase {
         XCTAssertEqual(RespiratoryState(rawValue: "stark"), nil)
     }
 
-    func testLocalTestFailureReasonTitleValues() {
-
-        XCTAssertEqual(LocalTestFailureReason.sensorDisconnected.title, "Sensor Error")
-        XCTAssertEqual(LocalTestFailureReason.internetDisconnected.title, "Internet Error")
-        XCTAssertEqual(LocalTestFailureReason.animationThresholdNotMet.title, "Processing Error")
+    func testReferenceMetricStringValues() {
+        XCTAssertEqual(ReferenceMetric.pef.rawValue, "PEF")
+        XCTAssertEqual(ReferenceMetric.fev1.rawValue, "FEV1")
     }
 
-    func testLocalTestFailureReasonSubtitleValues() {
-
-        XCTAssertEqual(LocalTestFailureReason.sensorDisconnected.subtitle, "Where's the sensor?")
-        XCTAssertEqual(LocalTestFailureReason.internetDisconnected.subtitle, "No Internet Connection")
-        XCTAssertEqual(LocalTestFailureReason.animationThresholdNotMet.subtitle, "Something went wrong!")
+    func testReferenceMetricStringToEnum() {
+        XCTAssertEqual(ReferenceMetric(rawValue: "PEF"), ReferenceMetric.pef)
+        XCTAssertEqual(ReferenceMetric(rawValue: "FEV1"), ReferenceMetric.fev1)
     }
 
-    func testLocalTestFailureReasonMessageValues() {
+    func testReferenceMetricUnit() {
+        XCTAssertEqual(ReferenceMetric.pef.unit, "L/min")
+        XCTAssertEqual(ReferenceMetric.fev1.unit, "L")
+    }
 
-        XCTAssertEqual(
-            LocalTestFailureReason.sensorDisconnected.message,
-            "Be sure Wing is plugged in and be careful not to pull on the cord "
-                + "when blowing into Wing!"
-        )
-
-        XCTAssertEqual(
-            LocalTestFailureReason.internetDisconnected.message,
-            "You must be connected to the internet in order to take a test. "
-                + "Please fix your connection and try again."
-        )
-
-        XCTAssertEqual(
-            LocalTestFailureReason.animationThresholdNotMet.message,
-            "Let's try doing that test again!"
-        )
+    func testReferenceMetricFormattedString() {
+        XCTAssertEqual(ReferenceMetric.pef.formattedString(forValue: 3.5135, includeUnit: true), "211 L/min")
+        XCTAssertEqual(ReferenceMetric.fev1.formattedString(forValue: 3.5182, includeUnit: true), "3.52 L")
     }
 }

@@ -33,8 +33,13 @@ internal enum UploadTargetEndpoint: Endpoint {
 
 extension Client {
 
-    internal static func createUploadTarget(forTestSessionId testSessionId: String,
+    internal func createUploadTarget(forTestSessionId testSessionId: String,
                                    completion: @escaping (UploadTarget?, Error?) -> Void) {
+
+        guard token != nil else {
+            completion(nil, ClientError.unauthorized)
+            return
+        }
 
         var request: URLRequestConvertible
         do {
@@ -65,7 +70,8 @@ extension Client {
         }
     }
 
-    internal static func uploadFile(atFilepath filepath: String, to uploadTarget: UploadTarget, completion: @escaping (Error?) -> Void) {
+    internal func uploadFile(atFilepath filepath: String,
+                             to uploadTarget: UploadTarget, completion: @escaping (Error?) -> Void) {
 
         Network.shared.uploadFile(atFilepath: filepath, toBucket: uploadTarget.bucket,
                                   withKey: uploadTarget.key, completion: completion)

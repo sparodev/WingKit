@@ -10,10 +10,13 @@
 import XCTest
 
 class Client_TestSessionTest: WingKitTestCase {
+
+    var testObject: Client!
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+
+        testObject = Client()
     }
     
     override func tearDown() {
@@ -47,11 +50,11 @@ class Client_TestSessionTest: WingKitTestCase {
             age: 27
         )
 
-        Client.token = nil
+        testObject.token = nil
 
         let errorExpectation = expectation(description: "wait for unauthorized error")
 
-        Client.createTestSession(with: patientData) { (testSession, error) in
+        testObject.createTestSession(with: patientData) { (testSession, error) in
 
             guard let error = error else {
                 XCTFail("Expected to catch unauthorized error!")
@@ -80,6 +83,7 @@ class Client_TestSessionTest: WingKitTestCase {
         let expectedToken = UUID().uuidString
         let expectedTestSessionId = UUID().uuidString
         let expectedStartedAt = Date()
+        let expectedReferenceMetric = ReferenceMetric.fev1
 
         let expectedUploadId1 = UUID().uuidString
         let expectedUploadId2 = UUID().uuidString
@@ -94,14 +98,14 @@ class Client_TestSessionTest: WingKitTestCase {
 
 
 
-        Client.token = expectedToken
+        testObject.token = expectedToken
 
         mockNetwork.sendRequestStub = { request, completion in
 
             do {
                 let urlRequest = try request.asURLRequest()
 
-                XCTAssertEqual(urlRequest.url?.absoluteString, Client.baseURLPath + TestSessionEndpoint.create.path)
+                XCTAssertEqual(urlRequest.url?.absoluteString, self.testObject.baseURLPath + TestSessionEndpoint.create.path)
                 XCTAssertEqual(urlRequest.httpMethod, TestSessionEndpoint.create.method.rawValue)
                 XCTAssertEqual(urlRequest.allHTTPHeaderFields?["Authorization"], expectedToken)
 
@@ -112,12 +116,13 @@ class Client_TestSessionTest: WingKitTestCase {
                         return
                 }
 
-                XCTAssertEqual(patientJSON["id"] as? String, patientData.id)
-                XCTAssertEqual(patientJSON["ethnicity"] as? String, patientData.ethnicity.rawValue)
-                XCTAssertEqual(patientJSON["biologicalSex"] as? String, patientData.biologicalSex.rawValue)
+                XCTAssertEqual(patientJSON["externalId"] as? String, patientData.id)
+                XCTAssertEqual(patientJSON["ethnicity"] as? String, patientData.ethnicity?.rawValue)
+                XCTAssertEqual(patientJSON["biologicalSex"] as? String, patientData.biologicalSex?.rawValue)
                 XCTAssertEqual(patientJSON["height"] as? Int, patientData.height)
 
-                guard let expectedBirthdate = Calendar.current.date(byAdding: .year, value: -patientData.age, to: Date()),
+                guard let age = patientData.age,
+                    let expectedBirthdate = Calendar.current.date(byAdding: .year, value: -age, to: Date()),
                     let actualBirthdate = (patientJSON["dob"] as? String)?.dateFromISO8601 else {
                         XCTFail()
                         return
@@ -134,6 +139,7 @@ class Client_TestSessionTest: WingKitTestCase {
             completion([
                 TestSession.Keys.id: expectedTestSessionId,
                 TestSession.Keys.startedAt: expectedStartedAt.iso8601,
+                TestSession.Keys.referenceMetric: expectedReferenceMetric.rawValue,
                 TestSession.Keys.uploads: [
                     [
                         UploadTarget.Keys.id: expectedUploadId1,
@@ -152,7 +158,7 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        Client.createTestSession(with: patientData) { (testSession, error) in
+        testObject.createTestSession(with: patientData) { (testSession, error) in
 
             guard let testSession = testSession else {
                 XCTFail()
@@ -201,7 +207,7 @@ class Client_TestSessionTest: WingKitTestCase {
         let completionCallbackExpectation = expectation(description: "wait for callback")
         let sendRequestExpectation = expectation(description: "wait for send request to be called")
 
-        Client.token = UUID().uuidString
+        testObject.token = UUID().uuidString
 
         mockNetwork.sendRequestStub = { request, completion in
 
@@ -225,7 +231,7 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        Client.createTestSession(with: patientData) { (testSession, error) in
+        testObject.createTestSession(with: patientData) { (testSession, error) in
 
             XCTAssertNil(testSession)
 
@@ -253,7 +259,7 @@ class Client_TestSessionTest: WingKitTestCase {
             age: 27
         )
 
-        Client.token = UUID().uuidString
+        testObject.token = UUID().uuidString
 
         let completionCallbackExpectation = expectation(description: "wait for callback")
         let sendRequestExpectation = expectation(description: "wait for send request to be called")
@@ -266,7 +272,7 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        Client.createTestSession(with: patientData) { (testSession, error) in
+        testObject.createTestSession(with: patientData) { (testSession, error) in
 
             XCTAssertNil(testSession)
 
@@ -294,7 +300,7 @@ class Client_TestSessionTest: WingKitTestCase {
             age: 27
         )
 
-        Client.token = UUID().uuidString
+        testObject.token = UUID().uuidString
 
         let expectedStatusCode = 400
         let completionCallbackExpectation = expectation(description: "wait for callback")
@@ -308,7 +314,7 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        Client.createTestSession(with: patientData) { (testSession, error) in
+        testObject.createTestSession(with: patientData) { (testSession, error) in
 
             XCTAssertNil(testSession)
 
@@ -335,11 +341,11 @@ class Client_TestSessionTest: WingKitTestCase {
 
     func testRetrieveTestSessionWhenTokenIsNil() {
 
-        Client.token = nil
+        testObject.token = nil
 
         let errorExpectation = expectation(description: "wait for error")
 
-        Client.retrieveTestSession(withId: UUID().uuidString) { (testSession, error) in
+        testObject.retrieveTestSession(withId: UUID().uuidString) { (testSession, error) in
             guard let error = error else {
                 XCTFail()
                 return
@@ -356,7 +362,7 @@ class Client_TestSessionTest: WingKitTestCase {
 
     func testRetrieveTestSessionWhenSuccessful() {
 
-        Client.token = UUID().uuidString
+        testObject.token = UUID().uuidString
 
         let expectedTestSessionId = UUID().uuidString
         let expectedStartedAt = Date().addingTimeInterval(-700)
@@ -404,7 +410,7 @@ class Client_TestSessionTest: WingKitTestCase {
                 let urlRequest = try request.asURLRequest()
 
                 XCTAssertEqual(urlRequest.url?.absoluteString,
-                               Client.baseURLPath + TestSessionEndpoint.retrieve(sessionId: expectedTestSessionId).path)
+                               self.testObject.baseURLPath + TestSessionEndpoint.retrieve(sessionId: expectedTestSessionId).path)
                 XCTAssertEqual(urlRequest.httpMethod,
                                TestSessionEndpoint.retrieve(sessionId: expectedTestSessionId).method.rawValue)
 
@@ -471,7 +477,7 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        Client.retrieveTestSession(withId: expectedTestSessionId) { (testSession, error) in
+        testObject.retrieveTestSession(withId: expectedTestSessionId) { (testSession, error) in
 
             guard let testSession = testSession else {
                 XCTFail()
@@ -565,7 +571,7 @@ class Client_TestSessionTest: WingKitTestCase {
 
     func testRetrieveTestSessionWhenDecodingFails() {
 
-        Client.token = UUID().uuidString
+        testObject.token = UUID().uuidString
 
         let expectedTestSessionId = UUID().uuidString
         let expectedStartedAt = Date()
@@ -603,7 +609,7 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        Client.retrieveTestSession(withId: expectedTestSessionId) { (testSession, error) in
+        testObject.retrieveTestSession(withId: expectedTestSessionId) { (testSession, error) in
 
             XCTAssertNil(testSession)
 
@@ -623,7 +629,7 @@ class Client_TestSessionTest: WingKitTestCase {
 
     func testRetrieveTestSessionWhenResponseIsInvalid() {
 
-        Client.token = UUID().uuidString
+        testObject.token = UUID().uuidString
 
         let completionCallbackExpectation = expectation(description: "wait for callback")
         let sendRequestExpectation = expectation(description: "wait for send request to be called")
@@ -636,7 +642,7 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        Client.retrieveTestSession(withId: UUID().uuidString) { (testSession, error) in
+        testObject.retrieveTestSession(withId: UUID().uuidString) { (testSession, error) in
 
             XCTAssertNil(testSession)
 
@@ -656,7 +662,7 @@ class Client_TestSessionTest: WingKitTestCase {
 
     func testRetrieveTestSessionWhenServerRespondsWithError() {
 
-        Client.token = UUID().uuidString
+        testObject.token = UUID().uuidString
 
         let expectedStatusCode = 400
         let completionCallbackExpectation = expectation(description: "wait for callback")
@@ -670,7 +676,7 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        Client.retrieveTestSession(withId: UUID().uuidString) { (testSession, error) in
+        testObject.retrieveTestSession(withId: UUID().uuidString) { (testSession, error) in
 
             XCTAssertNil(testSession)
 

@@ -1,0 +1,6 @@
+author: Sparo
+author_url: https://sparohealth.com
+github_url: https://github.com/sparodev/WingKit
+module: WingKit
+output: docs
+theme: fullwidth

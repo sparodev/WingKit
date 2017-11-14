@@ -39,8 +39,13 @@ extension NetworkRequest: URLRequestConvertible {
     }
 }
 
+/// The `NetworkError` enum describes domain specific errors for the `Network` class.
 public enum NetworkError: Error {
+
+    /// Indicates the response json could not be parsed.
     case invalidResponse
+
+    /// Indicates the response's status code wasn't included in the endpoint's acceptable status codes.
     case unacceptableStatusCode(code: Int)
 }
 
@@ -59,7 +64,7 @@ internal class Network: NetworkProtocol {
     fileprivate let cognitoRegion = AWSRegionType.USEast1
     fileprivate let bucketRegion = AWSRegionType.USEast1
 
-    init() {
+    internal init() {
 
         AWSServiceManager.default().defaultServiceConfiguration = AWSServiceConfiguration(
             region: bucketRegion,
@@ -70,7 +75,7 @@ internal class Network: NetworkProtocol {
         )
     }
 
-    func send(request: URLRequestConvertible, completion: @escaping (JSON?, Error?) -> Void) {
+    internal func send(request: URLRequestConvertible, completion: @escaping (JSON?, Error?) -> Void) {
 
             var urlRequest: URLRequest
             do {
@@ -113,7 +118,7 @@ internal class Network: NetworkProtocol {
         task.resume()
     }
 
-    func uploadFile(atFilepath filepath: String, toBucket bucket: String,
+    internal func uploadFile(atFilepath filepath: String, toBucket bucket: String,
                     withKey key: String, completion: @escaping (Error?) -> Void) {
 
         let expression = AWSS3TransferUtilityUploadExpression()

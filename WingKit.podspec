@@ -17,7 +17,7 @@ Pod::Spec.new do |s|
 
   s.name         = "WingKit"
   s.version      = "0.0.1"
-  s.summary      = "A short description of WingKit."
+  s.summary      = "WingKit is a library written in Swift that allows third parties to interface with the Wing REST API in order to perform lung function tests."
 
   # This description is used to generate tags and improve search results.
   #   * Think: What does it do? Why did you write it? What is the focus?

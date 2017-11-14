@@ -14,7 +14,7 @@ enum ReachabilityMonitorError: Error {
 }
 
 /**
- The delegate of a ReachabilityMonitor object must adopt the `ReachabilityMonitorDelegate` protocol. Methods of the
+ The delegate of a `ReachabilityMonitor` object must adopt the `ReachabilityMonitorDelegate` protocol. Methods of the
  protocol allow the delegate to observe network reachability state changes..
  */
 public protocol ReachabilityMonitorDelegate: class {
@@ -35,7 +35,8 @@ public class ReachabilityMonitor {
     /// The object that acts as the delegate for the monitor.
     public weak var delegate: ReachabilityMonitorDelegate?
 
-    fileprivate(set) var isActive = false
+    /// Indicates whether the monitor is active or not.
+    public fileprivate(set) var isActive = false
 
     /// Indicates whether or not the device is connected to the internet.
     public var isConnectedToInternet: Bool {
@@ -103,7 +104,7 @@ public class ReachabilityMonitor {
 
      - parameter notification:
      */
-    @objc func reachabilityChanged(_ notification: Notification) {
+    @objc fileprivate func reachabilityChanged(_ notification: Notification) {
         DispatchQueue.main.async {
             self.delegate?.reachabilityMonitorDidChangeReachability(self)
         }

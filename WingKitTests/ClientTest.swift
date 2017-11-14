@@ -10,15 +10,40 @@
 import XCTest
 
 class ClientTest: WingKitTestCase {
+
+    var testObject: Client!
     
     override func setUp() {
         super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+
+        testObject = Client()
     }
     
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+    }
+
+    func testOAuthCredentialsInit() {
+        let expectedId = UUID().uuidString
+        let expectedSecret = UUID().uuidString
+
+        let testObject = OAuthCredentials(id: expectedId, secret: expectedSecret)
+
+        XCTAssertEqual(testObject.id, expectedId)
+        XCTAssertEqual(testObject.secret, expectedSecret)
+    }
+
+    func testAuthenticationEndpointPath() {
+        XCTAssertEqual(AuthenticationEndpoint.authenticate.path, "/authenticate")
+    }
+
+    func testAuthenticationEndpointMethod() {
+        XCTAssertEqual(AuthenticationEndpoint.authenticate.method, .post)
+    }
+
+    func testAuthenticationEndpointAcceptableStatusCodes() {
+        XCTAssertEqual(AuthenticationEndpoint.authenticate.acceptableStatusCodes, [200])
     }
     
     func testRequestCreationWithValidURL() {
@@ -41,7 +66,7 @@ class ClientTest: WingKitTestCase {
 
         var request: NetworkRequest?
         do {
-            request = try Client.request(for: TestEndpoint.test)
+            request = try testObject.request(for: TestEndpoint.test)
         } catch {
             XCTFail()
         }
@@ -51,7 +76,7 @@ class ClientTest: WingKitTestCase {
             return
         }
 
-        XCTAssertEqual(createdRequest.url.absoluteString, Client.baseURLPath + TestEndpoint.test.path)
+        XCTAssertEqual(createdRequest.url.absoluteString, testObject.baseURLPath + TestEndpoint.test.path)
         XCTAssertEqual(createdRequest.method, TestEndpoint.test.method)
         XCTAssertEqual(createdRequest.acceptableStatusCodes.count, 1)
         XCTAssertEqual(createdRequest.acceptableStatusCodes.first, 200)
@@ -79,7 +104,7 @@ class ClientTest: WingKitTestCase {
 
         var request: NetworkRequest?
         do {
-            request = try Client.request(for: TestEndpoint.test)
+            request = try testObject.request(for: TestEndpoint.test)
         } catch ClientError.invalidURL {
             errorExpectation.fulfill()
         } catch {
@@ -111,7 +136,7 @@ class ClientTest: WingKitTestCase {
 
         var request: NetworkRequest?
         do {
-            request = try Client.request(for: TestEndpoint.test)
+            request = try testObject.request(for: TestEndpoint.test)
         } catch {
             XCTFail()
         }
@@ -165,7 +190,7 @@ class ClientTest: WingKitTestCase {
 
         var request: NetworkRequest?
         do {
-            request = try Client.request(
+            request = try testObject.request(
                 for: TestEndpoint.test,
                 headers: [
                     "Accept": expectedAcceptValue,
@@ -233,7 +258,7 @@ class ClientTest: WingKitTestCase {
 
         var request: NetworkRequest?
         do {
-            request = try Client.request(
+            request = try testObject.request(
                 for: TestEndpoint.test,
                 parameters: [
                     intValueKey: expectedIntValue,
@@ -265,5 +290,96 @@ class ClientTest: WingKitTestCase {
 
         XCTAssertEqual(intValue, expectedIntValue)
         XCTAssertEqual(stringValue, expectedStringValue)
+    }
+
+    func testAuthenticateReturnsTokenFromResponse() {
+
+        let expectedToken = UUID().uuidString
+        let expectedClientID = UUID().uuidString
+        let expectedClientSecret = UUID().uuidString
+
+        mockNetwork.sendRequestStub = { request, completion in
+
+            guard let networkRequest = request as? NetworkRequest else {
+                XCTFail("Found unexpected request: \(request)")
+                return
+            }
+
+            XCTAssertEqual(networkRequest.parameters![OAuthParameterKeys.id] as! String, expectedClientID)
+            XCTAssertEqual(networkRequest.parameters![OAuthParameterKeys.secret] as! String, expectedClientSecret)
+            XCTAssertEqual(networkRequest.url.absoluteString,
+                           self.testObject.baseURLPath + AuthenticationEndpoint.authenticate.path)
+
+            completion(["token": expectedToken], nil)
+        }
+
+        let callbackExpectation = expectation(description: "wait for callback")
+
+        testObject.oauth = OAuthCredentials(id: expectedClientID, secret: expectedClientSecret)
+
+        testObject.authenticate { (token, error) in
+
+            if let error = error {
+                XCTFail("Caught unexpected error: \(error)")
+                return
+            }
+
+            guard let token = token else {
+                XCTFail("Expected to find a valid token.")
+                return
+            }
+
+            XCTAssertEqual(token, expectedToken)
+
+            callbackExpectation.fulfill()
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
+    func testAuthenticateWhenNoTokenFoundInResponse() {
+
+        mockNetwork.sendRequestStub = { request, completion in
+            completion([:], nil)
+        }
+
+        let callbackExpectation = expectation(description: "wait for callback")
+
+        testObject.oauth = OAuthCredentials(id: UUID().uuidString, secret: UUID().uuidString)
+
+        testObject.authenticate { (token, error) in
+
+            guard let error = error else {
+                XCTFail("Expected to catch an error.")
+                return
+            }
+
+            switch error {
+            case ClientError.unauthorized: callbackExpectation.fulfill()
+            default: XCTFail("Caught unexpected error: \(error)")
+            }
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
+    }
+
+    func testAuthenticateRequiresOAuthToBeConfigured() {
+
+        let callbackExpectation = expectation(description: "wait for callback")
+
+        testObject.authenticate { (token, error) in
+
+            guard let error = error else {
+                XCTFail("Expected to catch an error.")
+                return
+            }
+
+            switch error {
+            case ClientError.unauthorized: callbackExpectation.fulfill()
+            default: XCTFail("Caught unexpected error: \(error)")
+            }
+        }
+
+        waitForExpectations(timeout: 1, handler: nil)
     }
 }

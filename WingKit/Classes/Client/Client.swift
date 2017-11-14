@@ -8,28 +8,43 @@
 
 import Foundation
 
+/// Represents the OAuth credentials used to authenticate an application with the Wing API.
 public struct OAuthCredentials {
+
+    /// The client id.
     public var id: String
+
+    /// The client secret.
     public var secret: String
 
+    /**
+     Initializes a `OAuthCredentials` structure.
+
+     - parameter id: The client id of your application.
+     - parameter secret: The client secret of your application.
+     */
     public init(id: String, secret: String) {
         self.id = id
         self.secret = secret
     }
 }
 
-struct OAuthParameterKeys {
+internal struct OAuthParameterKeys {
     static let id = "id"
     static let secret = "secret"
 }
 
+/// The `ClientError` enum describes domain specific errors for the `Client` class.
 public enum ClientError: Error {
+
+    /// Indicates the url of the request is invalid.
     case invalidURL
+
+    /// Indicates the request failed due to authentcataion failing.
     case unauthorized
-    case invalidPatientData
 }
 
-fileprivate enum AuthenticationEndpoint: Endpoint {
+internal enum AuthenticationEndpoint: Endpoint {
     case authenticate
 
     var path: String {
@@ -52,7 +67,7 @@ fileprivate enum AuthenticationEndpoint: Endpoint {
 }
 
 /**
- The 'Client' class acts as the interface for the Wing REST API. All Wing API Requests are routed through this class
+ The `Client` class acts as the interface for the Wing REST API. All Wing API Requests are routed through this class
  to apply the necessary authentication to the requests.
  */
 
@@ -60,19 +75,25 @@ public class Client {
 
     // MARK: - Properties
 
-    public static let baseURLPath = "https://api-development.mywing.io/api/v2"
+    internal let baseURLPath = "https://api-development.mywing.io/api/v2"
 
-    /// The OAuth credentials required to authenticate with the Wing API.
-    public static var oauth: OAuthCredentials? = nil
+    /**
+     The OAuth credentials assigned to your application to access the Wing API. Used to authenticate with the Wing API
+     in order to receive a token to use for subsequent authorized requests.
+     */
+    public var oauth: OAuthCredentials? = nil
 
     /// The authorization token used to make authorized requests.
-    public static var token: String? {
-        return "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IktyNDJ5b2pHdzM4V3oiLCJ0eXBlIjoiYXV0aCIsImtleUdlbiI6IjEyRUJBYmxnTHJOSlAiLCJpYXQiOjE1MDk0NzU1ODcsImV4cCI6MTU0MTAxMTU4N30.PG6wEYDBwuZeWaUhIQGRPtH1UwiFqBXHs-zOqkuP3CI"
-    }
+    public var token: String?
 
-    internal static func request(for endpoint: Endpoint,
-                                parameters: [String: Any]? = nil,
-                                headers: [String: String]? = nil) throws -> NetworkRequest {
+    // MARK: - Initialization
+
+    /// Initializes an instance of the `Client` class.
+    public init() {}
+
+    internal func request(for endpoint: Endpoint,
+                          parameters: [String: Any]? = nil,
+                          headers: [String: String]? = nil) throws -> NetworkRequest {
 
         guard let url = URL(string: baseURLPath + endpoint.path) else {
             throw ClientError.invalidURL
@@ -112,7 +133,7 @@ public class Client {
          - `NetworkError.invalidResponse` if the token could not be parsed from the response.
          - `NetworkError.unacceptableStatusCode` if an failure status code is received in the response.
      */
-    public static func authenticate(completion: @escaping (_ token: String?, _ error: Error?) -> Void) {
+    public func authenticate(completion: @escaping (_ token: String?, _ error: Error?) -> Void) {
 
         guard let oauth = oauth else {
             completion(nil, ClientError.unauthorized)
@@ -141,7 +162,7 @@ public class Client {
 
             guard let json = json,
                 let token = json["token"] as? String else {
-                completion(nil, NetworkError.invalidResponse)
+                completion(nil, ClientError.unauthorized)
                 return
             }
 
