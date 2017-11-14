@@ -1,6 +1,40 @@
 {
   "warnings": [
-
+    {
+      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Protocols/Codable.swift",
+      "line": 22,
+      "symbol": "JSONDecoder",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test/Test.swift",
+      "line": 74,
+      "symbol": "Test.init(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/Test Session/TestSession.swift",
+      "line": 167,
+      "symbol": "TestSession.init(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/UploadTarget/UploadTarget.swift",
+      "line": 11,
+      "symbol": "UploadTarget",
+      "symbol_kind": "source.lang.swift.decl.class",
+      "warning": "undocumented"
+    },
+    {
+      "file": "/Users/mwahlig/Projects/SparoLabs/WingKit/WingKit/Classes/UploadTarget/UploadTarget.swift",
+      "line": 23,
+      "symbol": "UploadTarget.init(from:)",
+      "symbol_kind": "source.lang.swift.decl.function.method.instance",
+      "warning": "undocumented"
+    }
   ],
   "source_directory": "/Users/mwahlig/Projects/SparoLabs/WingKit"
 }
