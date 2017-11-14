@@ -1,4 +1,4 @@
-![WingKit: a Lung Function Test SDK](https://raw.githubusercontent.com/sparodev/WingKit/master/wingkit-logo.png)
+![WingKit: a Lung Function Test SDK](https://github.com/sparodev/WingKit/blob/master/wingkit-logo.png)
 
 WingKit is a library that allows third parties to integrate with the Wing REST API to perform lung function tests.
 
