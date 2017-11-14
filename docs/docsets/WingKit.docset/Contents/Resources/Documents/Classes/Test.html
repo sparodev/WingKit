@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>TestSessionManagerError Enumeration Reference</title>
+    <title>Test Class Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Enum/TestSessionManagerError" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Class/Test" class="dashAnchor"></a>
 
-    <a title="TestSessionManagerError Enumeration Reference"></a>
+    <a title="Test Class Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">WingKit Reference</a>
       <img class="carat" src="../img/carat.png" />
-      TestSessionManagerError Enumeration Reference
+      Test Class Reference
     </p>
 
     <div class="content-wrapper">
@@ -169,14 +169,14 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>TestSessionManagerError</h1>
+            <h1>Test</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="kt">TestSessionManagerError</span><span class="p">:</span> <span class="kt">Error</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Test</span><span class="p">:</span> <span class="kt">Decodable</span></code></pre>
 
                 </div>
               </div>
-            <p>The <code>TestSessionManagerError</code> enum describes domain specific errors for the <code><a href="../Classes/TestSessionManager.html">TestSessionManager</a></code> class.</p>
+            <p>The <code>Test</code> struct represents a lung function test.</p>
 
           </div>
         </section>
@@ -188,9 +188,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7WingKit23TestSessionManagerErrorO08retrievecD6FailedA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/retrieveTestSessionFailed" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit23TestSessionManagerErrorO08retrievecD6FailedA2CmF">retrieveTestSessionFailed</a>
+                    <a name="/s:7WingKit4TestC2idSSv"></a>
+                    <a name="//apple_ref/swift/Property/id" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit4TestC2idSSv">id</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -198,30 +198,26 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicates the specified test session could not be loaded.</p>
+                        <p>The identifier for the test.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">case</span> <span class="n">retrieveTestSessionFailed</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7WingKit23TestSessionManagerErrorO24createUploadTargetFailedA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/createUploadTargetFailed" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit23TestSessionManagerErrorO24createUploadTargetFailedA2CmF">createUploadTargetFailed</a>
+                    <a name="/s:7WingKit4TestC6statusAA0C6StatusOv"></a>
+                    <a name="//apple_ref/swift/Property/status" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit4TestC6statusAA0C6StatusOv">status</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -229,30 +225,26 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicates a upload target could not be created.</p>
+                        <p>The status of processing for the test.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">case</span> <span class="n">createUploadTargetFailed</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">status</span><span class="p">:</span> <span class="kt"><a href="../Enums/TestStatus.html">TestStatus</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">started</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7WingKit23TestSessionManagerErrorO17processingTimeoutA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/processingTimeout" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit23TestSessionManagerErrorO17processingTimeoutA2CmF">processingTimeout</a>
+                    <a name="/s:7WingKit4TestC7takenAt10Foundation4DateVSgv"></a>
+                    <a name="//apple_ref/swift/Property/takenAt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit4TestC7takenAt10Foundation4DateVSgv">takenAt</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -260,30 +252,26 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicates the processing request has timed out.</p>
+                        <p>The date/time for when the test was taken at.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">case</span> <span class="n">processingTimeout</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">takenAt</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7WingKit23TestSessionManagerErrorO26uploadTargetCreationFailedA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/uploadTargetCreationFailed" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit23TestSessionManagerErrorO26uploadTargetCreationFailedA2CmF">uploadTargetCreationFailed</a>
+                    <a name="/s:7WingKit4TestC14breathDurationSdSgv"></a>
+                    <a name="//apple_ref/swift/Property/breathDuration" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit4TestC14breathDurationSdSgv">breathDuration</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -291,30 +279,26 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicates that an upload target could not be created to upload a test recording to.</p>
+                        <p>The length of time that the patient breathed into the device.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">case</span> <span class="n">uploadTargetCreationFailed</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">breathDuration</span><span class="p">:</span> <span class="kt">Double</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
                     </section>
                   </div>
                 </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7WingKit23TestSessionManagerErrorO16testUploadFailedA2CmF"></a>
-                    <a name="//apple_ref/swift/Element/testUploadFailed" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit23TestSessionManagerErrorO16testUploadFailedA2CmF">testUploadFailed</a>
+                    <a name="/s:7WingKit4TestC11exhaleCurveSaySaySdGGSgv"></a>
+                    <a name="//apple_ref/swift/Property/exhaleCurve" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit4TestC11exhaleCurveSaySaySdGGSgv">exhaleCurve</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -322,14 +306,149 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicates the test recording failed to upload to S3.</p>
+                        <p>The values for the exhale curve graph.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="k">case</span> <span class="n">testUploadFailed</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">exhaleCurve</span><span class="p">:</span> <span class="p">[[</span><span class="kt">Double</span><span class="p">]]?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit4TestC11totalVolumeSdSgv"></a>
+                    <a name="//apple_ref/swift/Property/totalVolume" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit4TestC11totalVolumeSdSgv">totalVolume</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The total volume exhaled (in liters).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">totalVolume</span><span class="p">:</span> <span class="kt">Double</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit4TestC3pefSdSgv"></a>
+                    <a name="//apple_ref/swift/Property/pef" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit4TestC3pefSdSgv">pef</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The PEF value for the test (in liters per second).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">pef</span><span class="p">:</span> <span class="kt">Double</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit4TestC4fev1SdSgv"></a>
+                    <a name="//apple_ref/swift/Property/fev1" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit4TestC4fev1SdSgv">fev1</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The FEV1 value for the test (in liters).</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">fev1</span><span class="p">:</span> <span class="kt">Double</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit4TestC14uploadTargetIdSSSgv"></a>
+                    <a name="//apple_ref/swift/Property/uploadTargetId" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit4TestC14uploadTargetIdSSSgv">uploadTargetId</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The id of the associated upload target.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">uploadTargetId</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit4TestCACSgAA11JSONDecoderC4from_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit4TestCACSgAA11JSONDecoderC4from_tcfc">init(from:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Test</span><span class="p">:</span> <span class="kt">Decodable</span></code></pre>
 
                         </div>
                       </div>

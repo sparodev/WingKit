@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>TestSessionRecorder Class Reference</title>
+    <title>TestSession Class Reference</title>
     <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
     <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
     <meta charset="utf-8">
@@ -14,9 +14,9 @@
   </head>
   <body>
 
-    <a name="//apple_ref/swift/Class/TestSessionRecorder" class="dashAnchor"></a>
+    <a name="//apple_ref/swift/Class/TestSession" class="dashAnchor"></a>
 
-    <a title="TestSessionRecorder Class Reference"></a>
+    <a title="TestSession Class Reference"></a>
 
     <header class="header">
       <p class="header-col header-col--primary">
@@ -44,7 +44,7 @@
     <p class="breadcrumbs">
       <a class="breadcrumb" href="../index.html">WingKit Reference</a>
       <img class="carat" src="../img/carat.png" />
-      TestSessionRecorder Class Reference
+      TestSession Class Reference
     </p>
 
     <div class="content-wrapper">
@@ -169,14 +169,14 @@
 
         <section class="section">
           <div class="section-content">
-            <h1>TestSessionRecorder</h1>
+            <h1>TestSession</h1>
               <div class="declaration">
                 <div class="language">
-                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TestSessionRecorder</span></code></pre>
+                  <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TestSession</span><span class="p">:</span> <span class="kt">Decodable</span></code></pre>
 
                 </div>
               </div>
-            <p>The <code>TestSessionRecorder</code> class is used to detect and record when a user blows into the Wing sensor.</p>
+            <p>The <code>TestSession</code> struct represents a session of multiple lung function tests.</p>
 
           </div>
         </section>
@@ -184,20 +184,13 @@
         <section class="section">
           <div class="section-content">
             <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Properties"></a>
-                <a name="//apple_ref/swift/Section/Properties" class="dashAnchor"></a>
-                <a href="#/Properties">
-                  <h3 class="section-name">Properties</h3>
-                </a>
-              </div>
               <ul class="item-container">
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7WingKit19TestSessionRecorderC8delegateAA0cE8Delegate_pSgXwv"></a>
-                    <a name="//apple_ref/swift/Property/delegate" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit19TestSessionRecorderC8delegateAA0cE8Delegate_pSgXwv">delegate</a>
+                    <a name="/s:7WingKit11TestSessionC2idSSv"></a>
+                    <a name="//apple_ref/swift/Property/id" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC2idSSv">id</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -205,14 +198,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The object that acts as the delegate for the recorder.</p>
+                        <p>The identifier for the test session.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">weak</span> <span class="k">var</span> <span class="nv">delegate</span><span class="p">:</span> <span class="kt"><a href="../Protocols/TestRecorderDelegate.html">TestRecorderDelegate</a></span><span class="p">?</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">id</span><span class="p">:</span> <span class="kt">String</span></code></pre>
 
                         </div>
                       </div>
@@ -222,9 +215,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7WingKit19TestSessionRecorderC12testDurationSdv"></a>
-                    <a name="//apple_ref/swift/Property/testDuration" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit19TestSessionRecorderC12testDurationSdv">testDuration</a>
+                    <a name="/s:7WingKit11TestSessionC9startedAt10Foundation4DateVv"></a>
+                    <a name="//apple_ref/swift/Property/startedAt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC9startedAt10Foundation4DateVv">startedAt</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -232,14 +225,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The duration of the recording session.</p>
+                        <p>The date/time for when the test session started.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">testDuration</span><span class="p">:</span> <span class="kt">TimeInterval</span> <span class="o">=</span> <span class="mf">6.0</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">startedAt</span><span class="p">:</span> <span class="kt">Date</span></code></pre>
 
                         </div>
                       </div>
@@ -249,9 +242,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7WingKit19TestSessionRecorderC23signalStrengthThresholdSdv"></a>
-                    <a name="//apple_ref/swift/Property/signalStrengthThreshold" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit19TestSessionRecorderC23signalStrengthThresholdSdv">signalStrengthThreshold</a>
+                    <a name="/s:7WingKit11TestSessionC7endedAt10Foundation4DateVSgv"></a>
+                    <a name="//apple_ref/swift/Property/endedAt" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC7endedAt10Foundation4DateVSgv">endedAt</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -259,14 +252,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The threshold that the sensor recording strength must surpass to be considered a valid test.</p>
+                        <p>The date/time for when the test session ended.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">let</span> <span class="nv">signalStrengthThreshold</span><span class="p">:</span> <span class="kt">Double</span> <span class="o">=</span> <span class="mf">0.6</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">endedAt</span><span class="p">:</span> <span class="kt">Date</span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -276,9 +269,9 @@
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7WingKit19TestSessionRecorderC29signalStrengthThresholdPassedSbv"></a>
-                    <a name="//apple_ref/swift/Property/signalStrengthThresholdPassed" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit19TestSessionRecorderC29signalStrengthThresholdPassedSbv">signalStrengthThresholdPassed</a>
+                    <a name="/s:7WingKit11TestSessionC16lungFunctionZoneAA04LungfG0OSgv"></a>
+                    <a name="//apple_ref/swift/Property/lungFunctionZone" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC16lungFunctionZoneAA04LungfG0OSgv">lungFunctionZone</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -286,15 +279,14 @@
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Indicates whether or not the recorded blow has passed the required signal strength threshold to be considered
-a valid, processable blow.</p>
+                        <p>The lung function based on the result of the test.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">signalStrengthThresholdPassed</span> <span class="o">=</span> <span class="kc">false</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">lungFunctionZone</span><span class="p">:</span> <span class="kt"><a href="../Enums/LungFunctionZone.html">LungFunctionZone</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -304,9 +296,9 @@ a valid, processable blow.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7WingKit19TestSessionRecorderC5stateAA0cE5StateOv"></a>
-                    <a name="//apple_ref/swift/Property/state" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit19TestSessionRecorderC5stateAA0cE5StateOv">state</a>
+                    <a name="/s:7WingKit11TestSessionC16respiratoryStateAA011RespiratoryF0OSgv"></a>
+                    <a name="//apple_ref/swift/Property/respiratoryState" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC16respiratoryStateAA011RespiratoryF0OSgv">respiratoryState</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -314,14 +306,14 @@ a valid, processable blow.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The current state of the recorder.</p>
+                        <p>The respiratory state based on the result of the test.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">fileprivate</span><span class="p">(</span><span class="k">set</span><span class="p">)</span> <span class="k">var</span> <span class="nv">state</span><span class="p">:</span> <span class="kt"><a href="../Enums/TestRecorderState.html">TestRecorderState</a></span> <span class="o">=</span> <span class="o">.</span><span class="n">ready</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">respiratoryState</span><span class="p">:</span> <span class="kt"><a href="../Enums/RespiratoryState.html">RespiratoryState</a></span><span class="p">?</span></code></pre>
 
                         </div>
                       </div>
@@ -331,9 +323,9 @@ a valid, processable blow.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7WingKit19TestSessionRecorderC17recordingFilepathSSSgv"></a>
-                    <a name="//apple_ref/swift/Property/recordingFilepath" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit19TestSessionRecorderC17recordingFilepathSSSgv">recordingFilepath</a>
+                    <a name="/s:7WingKit11TestSessionC15referenceMetricAA09ReferenceF0Ov"></a>
+                    <a name="//apple_ref/swift/Property/referenceMetric" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC15referenceMetricAA09ReferenceF0Ov">referenceMetric</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -341,133 +333,14 @@ a valid, processable blow.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>The filepath where the recording is saved to.</p>
+                        <p>The metric used to determine the best test candidate.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">recordingFilepath</span><span class="p">:</span> <span class="kt">String</span><span class="p">?</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Initialization"></a>
-                <a name="//apple_ref/swift/Section/Initialization" class="dashAnchor"></a>
-                <a href="#/Initialization">
-                  <h3 class="section-name">Initialization</h3>
-                </a>
-              </div>
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7WingKit19TestSessionRecorderCACycfc"></a>
-                    <a name="//apple_ref/swift/Method/init()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit19TestSessionRecorderCACycfc">init()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Initializes an instance of the <code>TestSessionRecorder</code> class.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">()</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Configuration"></a>
-                <a name="//apple_ref/swift/Section/Configuration" class="dashAnchor"></a>
-                <a href="#/Configuration">
-                  <h3 class="section-name">Configuration</h3>
-                </a>
-              </div>
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7WingKit19TestSessionRecorderC9configureyyKF"></a>
-                    <a name="//apple_ref/swift/Method/configure()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit19TestSessionRecorderC9configureyyKF">configure()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Configures the blow detection and audio recorders. Starts the blow detection recorder.</p>
-<div class="aside aside-throws">
-    <p class="aside-title">Throws</p>
-    TestSessionRecorder.Error.configurationFailed if either the blow detection or audio recorders configuration fails.
-
-</div>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">configure</span><span class="p">()</span> <span class="k">throws</span></code></pre>
-
-                        </div>
-                      </div>
-                    </section>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="task-group">
-              <div class="task-name-container">
-                <a name="/Start/Stop%20Recorder"></a>
-                <a name="//apple_ref/swift/Section/Start/Stop Recorder" class="dashAnchor"></a>
-                <a href="#/Start/Stop%20Recorder">
-                  <h3 class="section-name">Start/Stop Recorder</h3>
-                </a>
-              </div>
-              <ul class="item-container">
-                <li class="item">
-                  <div>
-                    <code>
-                    <a name="/s:7WingKit19TestSessionRecorderC14startRecordingyyF"></a>
-                    <a name="//apple_ref/swift/Method/startRecording()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit19TestSessionRecorderC14startRecordingyyF">startRecording()</a>
-                    </code>
-                  </div>
-                  <div class="height-container">
-                    <div class="pointer-container"></div>
-                    <section class="section">
-                      <div class="pointer"></div>
-                      <div class="abstract">
-                        <p>Starts the recording for a lung function test.</p>
-
-                      </div>
-                      <div class="declaration">
-                        <h4>Declaration</h4>
-                        <div class="language">
-                          <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">startRecording</span><span class="p">()</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">referenceMetric</span><span class="p">:</span> <span class="kt"><a href="../Enums/ReferenceMetric.html">ReferenceMetric</a></span></code></pre>
 
                         </div>
                       </div>
@@ -477,9 +350,9 @@ a valid, processable blow.</p>
                 <li class="item">
                   <div>
                     <code>
-                    <a name="/s:7WingKit19TestSessionRecorderC13stopRecordingyyF"></a>
-                    <a name="//apple_ref/swift/Method/stopRecording()" class="dashAnchor"></a>
-                    <a class="token" href="#/s:7WingKit19TestSessionRecorderC13stopRecordingyyF">stopRecording()</a>
+                    <a name="/s:7WingKit11TestSessionC12pefPredictedSdSgv"></a>
+                    <a name="//apple_ref/swift/Property/pefPredicted" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC12pefPredictedSdSgv">pefPredicted</a>
                     </code>
                   </div>
                   <div class="height-container">
@@ -487,14 +360,257 @@ a valid, processable blow.</p>
                     <section class="section">
                       <div class="pointer"></div>
                       <div class="abstract">
-                        <p>Ends the recording session.</p>
+                        <p>The predicted PEF value for the patient with the demographics given when creating the test session.</p>
 
                       </div>
                       <div class="declaration">
                         <h4>Declaration</h4>
                         <div class="language">
                           <p class="aside-title">Swift</p>
-                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">func</span> <span class="nf">stopRecording</span><span class="p">()</span></code></pre>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">pefPredicted</span><span class="p">:</span> <span class="kt">Double</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit11TestSessionC13fev1PredictedSdSgv"></a>
+                    <a name="//apple_ref/swift/Property/fev1Predicted" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC13fev1PredictedSdSgv">fev1Predicted</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The predicted FEV1 value for the patient with the demographics given when creating the test session.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">fev1Predicted</span><span class="p">:</span> <span class="kt">Double</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit11TestSessionC8latitudeSdSgv"></a>
+                    <a name="//apple_ref/swift/Property/latitude" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC8latitudeSdSgv">latitude</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The latitude of the device at time of session start.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">latitude</span><span class="p">:</span> <span class="kt">Double</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit11TestSessionC9longitudeSdSgv"></a>
+                    <a name="//apple_ref/swift/Property/longitude" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC9longitudeSdSgv">longitude</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The longitude of the device at time of session start.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">longitude</span><span class="p">:</span> <span class="kt">Double</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit11TestSessionC8altitudeSdSgv"></a>
+                    <a name="//apple_ref/swift/Property/altitude" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC8altitudeSdSgv">altitude</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The altitude of the device at time of session start.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">altitude</span><span class="p">:</span> <span class="kt">Double</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit11TestSessionC5floorSdSgv"></a>
+                    <a name="//apple_ref/swift/Property/floor" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC5floorSdSgv">floor</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The estimated floor of the device at time of session start.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">floor</span><span class="p">:</span> <span class="kt">Double</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit11TestSessionC04bestC0AA0C0CSgv"></a>
+                    <a name="//apple_ref/swift/Property/bestTest" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC04bestC0AA0C0CSgv">bestTest</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The test chosen as the best test candidate to derive results from.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">bestTest</span><span class="p">:</span> <span class="kt"><a href="../Classes/Test.html">Test</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit11TestSessionC5testsSayAA0C0CGv"></a>
+                    <a name="//apple_ref/swift/Property/tests" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC5testsSayAA0C0CGv">tests</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>The tests taken during the test session.</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">tests</span><span class="p">:</span> <span class="p">[</span><span class="kt"><a href="../Classes/Test.html">Test</a></span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit11TestSessionC04bestC6ChoiceAA04BestcF0OSgv"></a>
+                    <a name="//apple_ref/swift/Property/bestTestChoice" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionC04bestC6ChoiceAA04BestcF0OSgv">bestTestChoice</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>How the best test was chosen</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="k">var</span> <span class="nv">bestTestChoice</span><span class="p">:</span> <span class="kt"><a href="../Enums/BestTestChoice.html">BestTestChoice</a></span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:7WingKit11TestSessionCACSgAA11JSONDecoderC4from_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(from:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:7WingKit11TestSessionCACSgAA11JSONDecoderC4from_tcfc">init(from:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Undocumented</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">TestSession</span><span class="p">:</span> <span class="kt">Decodable</span></code></pre>
 
                         </div>
                       </div>
