@@ -52,7 +52,8 @@ class TestSessionManagerTest: WingKitTestCase {
                 return
             }
 
-            let expectedEndpoint = TestSessionEndpoint.retrieve(sessionId: self.testSession.id)
+            let expectedEndpoint = self.retrieveTestSessionEndpoint()
+
             XCTAssertEqual(networkRequest.url.absoluteString, self.client.baseURLPath + expectedEndpoint.path)
             XCTAssertEqual(networkRequest.method, expectedEndpoint.method)
 
@@ -118,7 +119,7 @@ class TestSessionManagerTest: WingKitTestCase {
                 return
             }
 
-            let expectedEndpoint = TestSessionEndpoint.retrieve(sessionId: self.testSession.id)
+            let expectedEndpoint = self.retrieveTestSessionEndpoint()
             let expectedURL = self.client.baseURLPath + expectedEndpoint.path
 
             guard networkRequest.url.absoluteString == expectedURL
@@ -398,8 +399,8 @@ class TestSessionManagerTest: WingKitTestCase {
                 return
             }
 
-            let retrieveTestSessionURL = self.client.baseURLPath + TestSessionEndpoint.retrieve(sessionId: self.testSession.id).path
-            let createUploadTargetURL = self.client.baseURLPath + UploadTargetEndpoint.create(sessionId: self.testSession.id).path
+            let retrieveTestSessionURL = self.client.baseURLPath + self.retrieveTestSessionEndpoint().path
+            let createUploadTargetURL = self.client.baseURLPath + self.createUploadTargetEndpoint().path
 
             switch networkRequest.url.absoluteString {
             case retrieveTestSessionURL:
@@ -485,8 +486,8 @@ class TestSessionManagerTest: WingKitTestCase {
                 return
             }
 
-            let retrieveTestSessionURL = self.client.baseURLPath + TestSessionEndpoint.retrieve(sessionId: self.testSession.id).path
-            let createUploadTargetURL = self.client.baseURLPath + UploadTargetEndpoint.create(sessionId: self.testSession.id).path
+            let retrieveTestSessionURL = self.client.baseURLPath + self.retrieveTestSessionEndpoint().path
+            let createUploadTargetURL = self.client.baseURLPath + self.createUploadTargetEndpoint().path
 
             switch networkRequest.url.absoluteString {
             case retrieveTestSessionURL:
@@ -693,6 +694,7 @@ class TestSessionManagerTest: WingKitTestCase {
 
         let json: JSON = [
             TestSession.Keys.id: "testId",
+            TestSession.Keys.patientId: "patientId",
             TestSession.Keys.startedAt: Date().addingTimeInterval(-8000).iso8601,
             TestSession.Keys.endedAt: Date().iso8601,
             TestSession.Keys.lungFunctionZone: LungFunctionZone.greenZone.rawValue,
@@ -730,7 +732,7 @@ class TestSessionManagerTest: WingKitTestCase {
             }
 
             switch networkRequest.url.absoluteString {
-            case self.client.baseURLPath + UploadTargetEndpoint.create(sessionId: self.testSession.id).path:
+            case self.client.baseURLPath + self.createUploadTargetEndpoint().path:
 
                 completion([
                     UploadTarget.Keys.id: expectedUploadTargetId,
@@ -779,6 +781,7 @@ class TestSessionManagerTest: WingKitTestCase {
 
         let json: JSON = [
             TestSession.Keys.id: "testId",
+            TestSession.Keys.patientId: "patientId",
             TestSession.Keys.startedAt: Date().addingTimeInterval(-8000).iso8601,
             TestSession.Keys.endedAt: Date().iso8601,
             TestSession.Keys.lungFunctionZone: LungFunctionZone.greenZone.rawValue,
@@ -814,7 +817,7 @@ class TestSessionManagerTest: WingKitTestCase {
             }
 
             switch networkRequest.url.absoluteString {
-            case self.client.baseURLPath + UploadTargetEndpoint.create(sessionId: self.testSession.id).path:
+            case self.client.baseURLPath + self.createUploadTargetEndpoint().path:
 
                 completion([
                     UploadTarget.Keys.id: expectedUploadTargetId,
@@ -851,6 +854,7 @@ class TestSessionManagerTest: WingKitTestCase {
 
         var json: JSON = [
             TestSession.Keys.id: "testId",
+            TestSession.Keys.patientId: "patientId",
             TestSession.Keys.startedAt: Date().addingTimeInterval(-8000).iso8601,
             TestSession.Keys.endedAt: Date().iso8601,
             TestSession.Keys.lungFunctionZone: LungFunctionZone.greenZone.rawValue,
@@ -919,5 +923,13 @@ class TestSessionManagerTest: WingKitTestCase {
         for _ in 0 ..< numberOfUploads {
             testObject.uploadRecording(atFilepath: "testpath", completion: { error in })
         }
+    }
+
+    func retrieveTestSessionEndpoint() -> Endpoint {
+        return TestSessionEndpoint.retrieve(patientId: self.testSession.patientId, sessionId: self.testSession.id)
+    }
+
+    func createUploadTargetEndpoint() -> Endpoint {
+        return UploadTargetEndpoint.create(patientId: self.testSession.patientId, sessionId: self.testSession.id)
     }
 }

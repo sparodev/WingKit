@@ -117,7 +117,7 @@ public class TestSessionManager {
             return
         }
 
-        client.retrieveTestSession(withId: testSession.id) { (testSession, error) in
+        client.retrieveTestSession(withId: testSession.id, patientId: testSession.patientId) { (testSession, error) in
 
             guard let testSession = testSession else {
 
@@ -208,7 +208,8 @@ public class TestSessionManager {
             return
         }
 
-        self.client.createUploadTarget(forTestSessionId: testSession.id) { (uploadTarget, error) in
+        self.client.createUploadTarget(forTestSessionId: testSession.id,
+                                       patientId: testSession.patientId) { (uploadTarget, error) in
             guard let uploadTarget = uploadTarget else {
 
                 guard let error = error else {
