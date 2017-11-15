@@ -28,14 +28,18 @@ class Client_TestSessionTest: WingKitTestCase {
 
     func testTestSessionEndpointPaths() {
 
+        let patientId = "patient-id"
+        let sessionId = "session-id"
+
         XCTAssertEqual(TestSessionEndpoint.create.path, "/test-sessions")
-        XCTAssertEqual(TestSessionEndpoint.retrieve(sessionId: "test-id").path, "/test-sessions/test-id")
+        XCTAssertEqual(TestSessionEndpoint.retrieve(patientId: patientId, sessionId: sessionId).path,
+                       "/patients/\(patientId)/test-sessions/\(sessionId)")
     }
 
     func testTestSessionEndpointMethods() {
 
         XCTAssertEqual(TestSessionEndpoint.create.method, .post)
-        XCTAssertEqual(TestSessionEndpoint.retrieve(sessionId: "test-id").method, .get)
+        XCTAssertEqual(TestSessionEndpoint.retrieve(patientId: "patient-id", sessionId: "test-id").method, .get)
     }
 
     // MARK: - Create Test Session
@@ -348,7 +352,8 @@ class Client_TestSessionTest: WingKitTestCase {
 
         let errorExpectation = expectation(description: "wait for error")
 
-        testObject.retrieveTestSession(withId: UUID().uuidString) { (testSession, error) in
+        testObject.retrieveTestSession(withId: UUID().uuidString,
+                                       patientId: UUID().uuidString) { (testSession, error) in
             guard let error = error else {
                 XCTFail()
                 return
@@ -413,10 +418,11 @@ class Client_TestSessionTest: WingKitTestCase {
             do {
                 let urlRequest = try request.asURLRequest()
 
-                XCTAssertEqual(urlRequest.url?.absoluteString,
-                               self.testObject.baseURLPath + TestSessionEndpoint.retrieve(sessionId: expectedTestSessionId).path)
-                XCTAssertEqual(urlRequest.httpMethod,
-                               TestSessionEndpoint.retrieve(sessionId: expectedTestSessionId).method.rawValue)
+                let expectedEndpoint = TestSessionEndpoint.retrieve(patientId: expectedPatientId,
+                                                                    sessionId: expectedTestSessionId)
+
+                XCTAssertEqual(urlRequest.url?.absoluteString, self.testObject.baseURLPath + expectedEndpoint.path)
+                XCTAssertEqual(urlRequest.httpMethod, expectedEndpoint.method.rawValue)
 
             } catch {
                 XCTFail()
@@ -482,7 +488,8 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        testObject.retrieveTestSession(withId: expectedTestSessionId) { (testSession, error) in
+        testObject.retrieveTestSession(withId: expectedTestSessionId,
+                                       patientId: expectedPatientId) { (testSession, error) in
 
             guard let testSession = testSession else {
                 XCTFail()
@@ -580,6 +587,7 @@ class Client_TestSessionTest: WingKitTestCase {
         testObject.token = UUID().uuidString
 
         let expectedTestSessionId = UUID().uuidString
+        let expectedPatientId = UUID().uuidString
         let expectedStartedAt = Date()
 
         let expectedUploadId1 = UUID().uuidString
@@ -615,7 +623,8 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        testObject.retrieveTestSession(withId: expectedTestSessionId) { (testSession, error) in
+        testObject.retrieveTestSession(withId: expectedTestSessionId,
+                                       patientId: expectedPatientId) { (testSession, error) in
 
             XCTAssertNil(testSession)
 
@@ -648,7 +657,8 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        testObject.retrieveTestSession(withId: UUID().uuidString) { (testSession, error) in
+        testObject.retrieveTestSession(withId: UUID().uuidString,
+                                       patientId: UUID().uuidString) { (testSession, error) in
 
             XCTAssertNil(testSession)
 
@@ -682,7 +692,8 @@ class Client_TestSessionTest: WingKitTestCase {
         }
 
 
-        testObject.retrieveTestSession(withId: UUID().uuidString) { (testSession, error) in
+        testObject.retrieveTestSession(withId: UUID().uuidString,
+                                       patientId: UUID().uuidString) { (testSession, error) in
 
             XCTAssertNil(testSession)
 

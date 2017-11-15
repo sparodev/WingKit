@@ -29,6 +29,7 @@ class Client_UploadTargetTest: WingKitTestCase {
         testObject.token = "token"
 
         let sessionId = UUID().uuidString
+        let patientId = UUID().uuidString
 
         let expectedTargetId = UUID().uuidString
         let expectedTargetKey = "target-key"
@@ -41,11 +42,11 @@ class Client_UploadTargetTest: WingKitTestCase {
 
             do {
                 let urlRequest = try request.asURLRequest()
+                let expectedEndpoint = UploadTargetEndpoint.create(patientId: patientId, sessionId: sessionId)
 
                 XCTAssertEqual(urlRequest.url?.absoluteString,
-                               self.testObject.baseURLPath + UploadTargetEndpoint.create(sessionId: sessionId).path)
-                XCTAssertEqual(urlRequest.httpMethod,
-                               UploadTargetEndpoint.create(sessionId: sessionId).method.rawValue)
+                               self.testObject.baseURLPath + expectedEndpoint.path)
+                XCTAssertEqual(urlRequest.httpMethod, expectedEndpoint.method.rawValue)
             } catch {
                 XCTFail()
             }
@@ -59,7 +60,7 @@ class Client_UploadTargetTest: WingKitTestCase {
             sendRequestExpectation.fulfill()
         }
 
-        testObject.createUploadTarget(forTestSessionId: sessionId) { target, error in
+        testObject.createUploadTarget(forTestSessionId: sessionId, patientId: patientId) { target, error in
 
             guard let target = target else {
                 XCTFail()
@@ -81,6 +82,7 @@ class Client_UploadTargetTest: WingKitTestCase {
         testObject.token = "token"
 
         let sessionId = UUID().uuidString
+        let patientId = UUID().uuidString
 
         let expectedTargetKey = "target-key"
         let expectedTargetBucket = "target-bucket"
@@ -98,7 +100,7 @@ class Client_UploadTargetTest: WingKitTestCase {
             sendRequestExpectation.fulfill()
         }
 
-        testObject.createUploadTarget(forTestSessionId: sessionId) { target, error in
+        testObject.createUploadTarget(forTestSessionId: sessionId, patientId: patientId) { target, error in
 
             XCTAssertNil(target)
 
@@ -119,6 +121,7 @@ class Client_UploadTargetTest: WingKitTestCase {
     func testCreateUploadTargetWhenResponseIsInvalid() {
 
         let sessionId = UUID().uuidString
+        let patientId = UUID().uuidString
 
         let completionCallbackExpectation = expectation(description: "wait for callback")
         let sendRequestExpectation = expectation(description: "wait for send request to be called")
@@ -132,7 +135,7 @@ class Client_UploadTargetTest: WingKitTestCase {
             sendRequestExpectation.fulfill()
         }
 
-        testObject.createUploadTarget(forTestSessionId: sessionId) { target, error in
+        testObject.createUploadTarget(forTestSessionId: sessionId, patientId: patientId) { target, error in
 
             XCTAssertNil(target)
 
@@ -153,6 +156,7 @@ class Client_UploadTargetTest: WingKitTestCase {
     func testCreateUploadTargetWhenServerRespondsWithError() {
 
         let sessionId = UUID().uuidString
+        let patientId = UUID().uuidString
         let expectedStatusCode = 400
 
         let completionCallbackExpectation = expectation(description: "wait for callback")
@@ -167,7 +171,7 @@ class Client_UploadTargetTest: WingKitTestCase {
             sendRequestExpectation.fulfill()
         }
 
-        testObject.createUploadTarget(forTestSessionId: sessionId) { target, error in
+        testObject.createUploadTarget(forTestSessionId: sessionId, patientId: patientId) { target, error in
 
             XCTAssertNil(target)
 

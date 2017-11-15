@@ -11,12 +11,12 @@ import Foundation
 internal enum TestSessionEndpoint: Endpoint {
 
     case create
-    case retrieve(sessionId: String)
+    case retrieve(patientId: String, sessionId: String)
 
     var path: String {
         switch self {
         case .create: return "/patients/5yEwdO6MVR8ZA/test-sessions"
-        case .retrieve(let sessionId): return "/patients/5yEwdO6MVR8ZA/test-sessions/\(sessionId)"
+        case .retrieve(let patientId, let sessionId): return "/patients/\(patientId)/test-sessions/\(sessionId)"
         }
     }
 
@@ -202,7 +202,7 @@ public extension Client {
          - `NetworkError.unacceptableStatusCode` if an failure status code is received in the response.
          - `DecodingError.decodingFailed` if the response json could not be decoded.
      */
-    public func retrieveTestSession(withId id: String, completion: @escaping (_ testSession: TestSession?, _ error: Error?) -> Void) {
+    public func retrieveTestSession(withId id: String, patientId: String, completion: @escaping (_ testSession: TestSession?, _ error: Error?) -> Void) {
 
         guard token != nil else {
             completion(nil, ClientError.unauthorized)
@@ -211,7 +211,7 @@ public extension Client {
 
         var request: URLRequestConvertible
         do {
-            request = try self.request(for: TestSessionEndpoint.retrieve(sessionId: id))
+            request = try self.request(for: TestSessionEndpoint.retrieve(patientId: patientId, sessionId: id))
         } catch {
             return completion(nil, error)
         }

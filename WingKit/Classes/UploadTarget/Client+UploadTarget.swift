@@ -10,11 +10,11 @@ import Foundation
 
 internal enum UploadTargetEndpoint: Endpoint {
 
-    case create(sessionId: String)
+    case create(patientId: String, sessionId: String)
 
     var path: String {
         switch self {
-        case .create(let sessionId): return "/patients/5yEwdO6MVR8ZA/test-sessions/\(sessionId)/upload"
+        case .create(let patientId, let sessionId): return "/patients/\(patientId)/test-sessions/\(sessionId)/upload"
         }
     }
 
@@ -33,7 +33,7 @@ internal enum UploadTargetEndpoint: Endpoint {
 
 extension Client {
 
-    internal func createUploadTarget(forTestSessionId testSessionId: String,
+    internal func createUploadTarget(forTestSessionId testSessionId: String, patientId: String,
                                    completion: @escaping (UploadTarget?, Error?) -> Void) {
 
         guard token != nil else {
@@ -43,7 +43,7 @@ extension Client {
 
         var request: URLRequestConvertible
         do {
-            request = try self.request(for: UploadTargetEndpoint.create(sessionId: testSessionId))
+            request = try self.request(for: UploadTargetEndpoint.create(patientId: patientId, sessionId: testSessionId))
         } catch {
             return completion(nil, error)
         }
