@@ -82,6 +82,7 @@ class Client_TestSessionTest: WingKitTestCase {
 
         let expectedToken = UUID().uuidString
         let expectedTestSessionId = UUID().uuidString
+        let expectedPatientId = UUID().uuidString
         let expectedStartedAt = Date()
         let expectedReferenceMetric = ReferenceMetric.fev1
 
@@ -138,6 +139,7 @@ class Client_TestSessionTest: WingKitTestCase {
 
             completion([
                 TestSession.Keys.id: expectedTestSessionId,
+                TestSession.Keys.patientId: expectedPatientId,
                 TestSession.Keys.startedAt: expectedStartedAt.iso8601,
                 TestSession.Keys.referenceMetric: expectedReferenceMetric.rawValue,
                 TestSession.Keys.uploads: [
@@ -166,6 +168,7 @@ class Client_TestSessionTest: WingKitTestCase {
             }
 
             XCTAssertEqual(testSession.id, expectedTestSessionId)
+            XCTAssertEqual(testSession.patientId, expectedPatientId)
             XCTAssertEqual(testSession.startedAt.timeIntervalSinceReferenceDate,
                            expectedStartedAt.timeIntervalSinceReferenceDate,
                            accuracy: 0.02)
@@ -365,6 +368,7 @@ class Client_TestSessionTest: WingKitTestCase {
         testObject.token = UUID().uuidString
 
         let expectedTestSessionId = UUID().uuidString
+        let expectedPatientId = UUID().uuidString
         let expectedStartedAt = Date().addingTimeInterval(-700)
         let expectedEndedAt = Date()
 
@@ -420,6 +424,7 @@ class Client_TestSessionTest: WingKitTestCase {
 
             completion([
                 TestSession.Keys.id: expectedTestSessionId,
+                TestSession.Keys.patientId: expectedPatientId,
                 TestSession.Keys.startedAt: expectedStartedAt.iso8601,
                 TestSession.Keys.endedAt: expectedEndedAt.iso8601,
                 TestSession.Keys.bestTestChoice: expectedBestTestChoice.rawValue,
@@ -487,6 +492,7 @@ class Client_TestSessionTest: WingKitTestCase {
             // Assert test session values
 
             XCTAssertEqual(testSession.id, expectedTestSessionId)
+            XCTAssertEqual(testSession.patientId, expectedPatientId)
             XCTAssertEqual(testSession.startedAt.timeIntervalSinceReferenceDate,
                            expectedStartedAt.timeIntervalSinceReferenceDate,
                            accuracy: 0.02)

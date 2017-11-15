@@ -24,6 +24,7 @@ class TestSessionTest: WingKitTestCase {
     func testIsDecodableFromJSON() {
 
         let expectedId = UUID().uuidString
+        let expectedPatientId = UUID().uuidString
         let expectedStartedAt = Date()
         let expectedEndedAt = Date().addingTimeInterval(30)
         let expectedLungFunctionZone = LungFunctionZone.yellowZone
@@ -38,6 +39,7 @@ class TestSessionTest: WingKitTestCase {
 
         let json: JSON = [
             TestSession.Keys.id: expectedId,
+            TestSession.Keys.patientId: expectedPatientId,
             TestSession.Keys.startedAt: expectedStartedAt.iso8601,
             TestSession.Keys.endedAt: expectedEndedAt.iso8601,
             TestSession.Keys.lungFunctionZone: expectedLungFunctionZone.rawValue,
@@ -72,6 +74,7 @@ class TestSessionTest: WingKitTestCase {
         }
 
         XCTAssertEqual(testObject.id, expectedId)
+        XCTAssertEqual(testObject.patientId, expectedPatientId)
         XCTAssertEqual(testObject.startedAt.timeIntervalSinceReferenceDate, expectedStartedAt.timeIntervalSinceReferenceDate, accuracy: 0.02)
         XCTAssertEqual(testObject.endedAt!.timeIntervalSinceReferenceDate, expectedEndedAt.timeIntervalSinceReferenceDate, accuracy: 0.02)
         XCTAssertEqual(testObject.lungFunctionZone, expectedLungFunctionZone)

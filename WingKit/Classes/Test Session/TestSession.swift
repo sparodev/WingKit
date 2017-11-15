@@ -99,6 +99,7 @@ public class TestSession: Decodable {
         static let id = "id"
         static let startedAt = "startedAt"
         static let endedAt = "endedAt"
+        static let patientId = "patientId"
         static let lungFunctionZone = "lungFunctionZone"
         static let respiratoryState = "respiratoryState"
         static let referenceMetric = "referenceMetric"
@@ -152,6 +153,8 @@ public class TestSession: Decodable {
     /// The estimated floor of the device at time of session start.
     public var floor: Double?
 
+    public var patientId: String
+
     /// The test chosen as the best test candidate to derive results from.
     public var bestTest: Test?
 
@@ -168,6 +171,7 @@ public class TestSession: Decodable {
 
         guard let json = decoder.json,
             let id = json[Keys.id] as? String,
+            let patientId = json[Keys.patientId] as? String,
             let startedAt = (json[Keys.startedAt] as? String)?.dateFromISO8601,
             let referenceMetricString = json[Keys.referenceMetric] as? String,
             let referenceMetric = ReferenceMetric(rawValue: referenceMetricString) else {
@@ -175,6 +179,7 @@ public class TestSession: Decodable {
         }
 
         self.id = id
+        self.patientId = patientId
         self.startedAt = startedAt
         self.referenceMetric = referenceMetric
 

@@ -693,6 +693,7 @@ class TestSessionManagerTest: WingKitTestCase {
 
         let json: JSON = [
             TestSession.Keys.id: "testId",
+            TestSession.Keys.patientId: "patientId",
             TestSession.Keys.startedAt: Date().addingTimeInterval(-8000).iso8601,
             TestSession.Keys.endedAt: Date().iso8601,
             TestSession.Keys.lungFunctionZone: LungFunctionZone.greenZone.rawValue,
@@ -779,6 +780,7 @@ class TestSessionManagerTest: WingKitTestCase {
 
         let json: JSON = [
             TestSession.Keys.id: "testId",
+            TestSession.Keys.patientId: "patientId",
             TestSession.Keys.startedAt: Date().addingTimeInterval(-8000).iso8601,
             TestSession.Keys.endedAt: Date().iso8601,
             TestSession.Keys.lungFunctionZone: LungFunctionZone.greenZone.rawValue,
@@ -851,6 +853,7 @@ class TestSessionManagerTest: WingKitTestCase {
 
         var json: JSON = [
             TestSession.Keys.id: "testId",
+            TestSession.Keys.patientId: "patientId",
             TestSession.Keys.startedAt: Date().addingTimeInterval(-8000).iso8601,
             TestSession.Keys.endedAt: Date().iso8601,
             TestSession.Keys.lungFunctionZone: LungFunctionZone.greenZone.rawValue,
