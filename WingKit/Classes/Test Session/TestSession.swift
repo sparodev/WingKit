@@ -153,6 +153,7 @@ public class TestSession: Decodable {
     /// The estimated floor of the device at time of session start.
     public var floor: Double?
 
+    /// The ID of the associated Wing patient.
     public var patientId: String
 
     /// The test chosen as the best test candidate to derive results from.

@@ -29,7 +29,7 @@ platform :ios, '11.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'WingKit', '~> 1.0'
+    pod 'WingKit', '~> 0.1.0'
 end
 ```
 
