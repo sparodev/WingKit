@@ -47,6 +47,10 @@ target '<Your Target Name>' do
 end
 ```
 
+## Documentation
+
+The documentation for WingKit can be found here: https://sparodev.github.io/WingKit/.
+
 ## Examples
 
 Check out the [WingKitExample repo](https://github.com/sparodev/WingKitExample) for an example of how to integrate with WingKit to perform a lung function test and view the results.
