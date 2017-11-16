@@ -24,7 +24,6 @@ To integrate WingKit into your project, specifiy it in your `Podfile`:
 #### Production
 
 ```ruby
-source 'https://github.com/sparodev/Wing-CocoaPodSpecs'
 platform :ios, '11.0'
 use_frameworks!
 
