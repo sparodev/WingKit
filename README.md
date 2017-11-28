@@ -28,7 +28,7 @@ platform :ios, '11.0'
 use_frameworks!
 
 target '<Your Target Name>' do
-    pod 'WingKit', '0.1.0-stubPatient'
+    pod 'WingKit', '0.1.1'
 end
 ```
 

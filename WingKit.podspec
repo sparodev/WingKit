@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "WingKit"
-  s.version      = "0.1.0"
+  s.version      = "0.1.1"
   s.summary      = "WingKit is a library that allows third parties to integrate with the Wing REST API to perform lung function tests."
 
   # This description is used to generate tags and improve search results.
@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
   #  Popular ones are 'MIT', 'BSD' and 'Apache License, Version 2.0'.
   #
 
-  s.license      = "MIT"
+  s.license      = ""
 
 
   # ――― Author Metadata  ――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
