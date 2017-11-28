@@ -30,8 +30,8 @@ public struct OAuthCredentials {
 }
 
 internal struct OAuthParameterKeys {
-    static let id = "id"
-    static let secret = "secret"
+    static let id = "clientId"
+    static let secret = "clientSecret"
 }
 
 /// The `ClientError` enum describes domain specific errors for the `Client` class.
@@ -49,7 +49,7 @@ internal enum AuthenticationEndpoint: Endpoint {
 
     var path: String {
         switch self {
-        case .authenticate: return "/authenticate"
+        case .authenticate: return "/accounts/login"
         }
     }
 
@@ -75,7 +75,7 @@ public class Client {
 
     // MARK: - Properties
 
-    internal let baseURLPath = "https://api-development.mywing.io/api/v2"
+    internal let baseURLPath = "https://3rd-party-api.mywing.io/v2"
 
     /**
      The OAuth credentials assigned to your application to access the Wing API. Used to authenticate with the Wing API

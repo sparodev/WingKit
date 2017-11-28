@@ -15,7 +15,7 @@ internal enum TestSessionEndpoint: Endpoint {
 
     var path: String {
         switch self {
-        case .create: return "/patients/5yEwdO6MVR8ZA/test-sessions"
+        case .create: return "/test-sessions"
         case .retrieve(let patientId, let sessionId): return "/patients/\(patientId)/test-sessions/\(sessionId)"
         }
     }

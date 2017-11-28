@@ -35,7 +35,7 @@ class ClientTest: WingKitTestCase {
     }
 
     func testAuthenticationEndpointPath() {
-        XCTAssertEqual(AuthenticationEndpoint.authenticate.path, "/authenticate")
+        XCTAssertEqual(AuthenticationEndpoint.authenticate.path, "/accounts/login")
     }
 
     func testAuthenticationEndpointMethod() {
